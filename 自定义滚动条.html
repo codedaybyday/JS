@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+*{
+	padding:0;
+	margin:0;
+}
+#div1{
+	height:300px;
+	width:20px;
+	background:#ccc;
+	position:absolute;
+	left:202px;
+}
+#small{
+	height:20px;
+	width:20px;
+	position:absolute;
+	left:0;
+	top:0;
+	background:red;
+	cursor:pointer;
+}
+#text{
+	height:300px;
+	width:200px;
+	position:absolute;
+	overflow:hidden;
+	border:1px solid black;
+}
+#word{
+	position:absolute;
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	Drag('small');
+}
+
+function Drag(id){		//拖拽
+	var oDiv = document.getElementById(id);
+	var oText = document.getElementById('text');
+	var oWord = document.getElementById('word');
+	oDiv.onmousedown = fnDown;
+	function fnDown(ev){
+		var event = window.event || ev;
+		//var disX = event.clientX - this.offsetLeft;
+		var disY = event.clientY - this.offsetTop;
+		if(oDiv.setCapture){	//	兼容IE
+			oDiv.onmousemove = fnMove;
+			oDiv.setCapture();	//事件捕获
+			oDiv.onmouseup = fnUp;			///////////////////////----------2
+			/*oDiv.onmouseup = function(){	//////////////--------------1
+				fnUp();	//这样写的时候fnUp中this变量是window对象，而不是此div元素 了，所以this.onmousemove = 
+						//null;根本没有取消div元素的鼠标移动事件
+				if(this.releaseCapture){		
+					this.releaseCapture();
+				}
+			};*/
+		}else{
+			document.onmousemove = fnMove;
+			document.onmouseup = fnUp;
+		}
+		
+		return false;
+
+		function fnMove(ev){
+			var event = window.event || ev;
+			//oDiv.style.left = event.clientX - disX + 'px';
+			var t = event.clientY - disY;
+			if(t<0){
+				t = 0;
+			}
+			if(t>oDiv.parentNode.offsetHeight - oDiv.offsetHeight){
+				t = oDiv.parentNode.offsetHeight - oDiv.offsetHeight;
+			}
+			var scale = t/(oDiv.parentNode.offsetHeight - oDiv.offsetHeight);
+			oWord.style.top = -scale*(oWord.offsetHeight - oDiv.parentNode.offsetHeight)+'px';
+			oDiv.style.top = t + 'px';
+		}
+		function fnUp(){
+			this.onmousemove = null;
+			this.onmouseup = null;
+			if(this.releaseCapture){		//为什么把这句注释掉，再注释掉2处，改成1处的样子 处，FF就会出现bug，放开鼠标的时候，小块还是会跟着动
+				this.releaseCapture();
+			}
+		}
+	}
+
+}
+</script>
+</head>
+<body>
+	<div id="text"><div id="word">关于SEO，严谨的定义如下：SEO是指在了解搜索引擎自然排名机制的基础上，对网站进行内部及外部的调整优化，改进网站在搜索引擎中关键词的自然排名，获得更多流量，吸引更多目标客户，从而达到网络营销及品牌建设的目标。搜索引擎检索原则是不断更改的，检索原则的更改会直接导致网站关键字在搜索引擎上排名的变化，所以搜索引擎优化并非一劳永逸。
+在意识层面，站长对SEO可以形象理解为: 当用户进入搜索引擎，就好像进入了一个偌大的图书馆。那么在这个图书馆里面有非常多的分类,分类分成大分类（可以理解为书架）小分类（可以理解为书架上面的格子）以及具体到最小的分类（书的内容）——长尾关键词。
+在图书馆里面每天都在增加新的内容，那么一个新的网站出现就等于一个分类里面的一本新书出现。那么书里面的书名以及顺序就相对应到网站的TITLE以及Description。可是如果“别人”（可以指搜索引擎）进入图书馆去泡馆的时候发现这本书，虽然是这个分类或者一个系列里的书，但是这本书的书名跟之前的一些书的书名完全一样，那么肯定会让读者误会站长们是在抄袭别人的书，所以原创将影响到站长们的排名。那么虽然站长们的网站是新的，但是其实在刚开始站长们就不可能有一个好的排名了。这严重影响到日后的优化。</div></div>
+	<div id="div1"><div id="small"></div></div>
+</body>
+</html>

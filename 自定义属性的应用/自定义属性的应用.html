@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>自定义属性的应用</title>
+	<script >
+		window.onload=function (){
+			var oLi=document.getElementsByTagName('li');
+			for(var i=0;i<oLi.length;i++){
+				oLi[i].onOff=true;
+				oLi[i].onclick=function (){
+					if(this.onOff){
+						this.style.background='url(img/active.png)';
+						this.onOff=false;
+					}else{
+						this.style.background='url(img/normal.png)';
+						this.onOff=true;
+					}
+				};
+			}
+		};
+	</script>
+	<style>
+		ul{
+			list-style:none;
+		}
+		li{
+			float:left;
+			margin-right:10px;
+			height:140px;
+			width:114px;
+			background:url(img/normal.png) no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</body>
+</html>

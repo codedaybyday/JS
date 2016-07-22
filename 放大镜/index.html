@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>放大镜</title>
+<script>
+window.onload = function(){
+	var big_pic = document.getElementById('big_pic');
+	var small_pic = document.getElementById('small_pic');
+	var square = document.getElementById('square');
+	var oMark = document.getElementById('mark');
+	var oImg = document.getElementsByTagName('img')[1];
+	small_pic.onmouseover = function (){
+		square.style.display = 'block';
+		big_pic.style.display = 'block';
+		
+	};
+	small_pic.onmousemove = function (evt){
+		var e = evt || event;
+		var left = e.clientX - square.offsetWidth/2;
+		var top = e.clientY - square.offsetHeight/2;
+		if(left < oMark.offsetLeft){
+			left = oMark.offsetLeft;
+		}else if(left >= oMark.offsetWidth -square.offsetWidth+oMark.offsetLeft){
+			left = oMark.offsetWidth -square.offsetWidth+oMark.offsetLeft;
+		}
+		if(top < oMark.offsetTop){
+			top = oMark.offsetTop;
+		}else if(top >=  oMark.offsetHeight -square.offsetHeight+oMark.offsetTop){
+			top = oMark.offsetHeight-square.offsetHeight +oMark.offsetTop;
+		}
+		square.style.left = left + 'px';
+		square.style.top = top + 'px';
+		
+		var percentX = left/(oMark.offsetWidth - square.offsetWidth);
+		var percentY = top/(oMark.offsetHeight - square.offsetHeight);
+		//document.title = percentX;
+		oImg.style.left = -percentX * (oImg.offsetWidth - big_pic.offsetWidth - oMark.offsetLeft) + 'px';
+		oImg.style.top = -percentY * (oImg.offsetHeight - big_pic.offsetHeight - oMark.offsetTop) + 'px';
+	};
+	small_pic.onmouseout = function (){
+		square.style.display = 'none';
+		big_pic.style.display = 'none';
+	};
+};
+
+</script>
+<style >
+#small_pic{
+	height:200px;
+	width:200px;
+	padding:5px;
+	border:1px solid #ccc;
+	float:left;
+	position:relative;
+}
+#big_pic{
+	height:250px;
+	width:250px;
+	float:left;
+	overflow:hidden;
+	border:2px solid #ccc;
+	margin-left:4px;
+	display:none;
+	position:relative;
+}
+#big_pic img{
+	position:absolute;
+	top:0;
+	left:0;
+}
+#square{
+	height:50px;
+	width:50px;
+	position:absolute;
+	background:white;
+	display:block;
+	top:0;
+	left:0;
+	border:1px solid black;
+	filter:alpha(opacity:30);
+	opacity:0.3;
+	display:none;
+}
+#mark{
+	height:200px;
+	width:200px;
+	top:5px;
+	left:5px;
+	position:absolute;
+	display:block;
+}
+</style>
+</head>
+<body>
+	<div id="small_pic">
+		<img src="images/small.png"/>
+		<span id="mark"></span>
+		<span id="square"></span>
+	</div>
+	<div id="big_pic">
+		<img src="images/big.png" style="height:450px;width:450px;"/>
+	</div>
+</body>
+</html>

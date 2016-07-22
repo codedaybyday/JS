@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>碰撞运动+重力</title>
+<script>
+window.onload = function (){
+	var oInput = document.getElementsByTagName('input')[0];
+	var oDiv = document.getElementById('div1');
+	var lastX = 0;
+	var lastY = 0;
+	oInput.onclick = function (){
+		doMove(oDiv);
+	};
+	
+	oDiv.onmousedown = function(evt){
+		var e = evt||event;
+		var distanceX = e.clientX - this.offsetLeft;
+		var distanceY = e.clientY - this.offsetTop;
+		
+		document.onmousemove = function (evt){
+			var e = evt||event;
+			var left = e.clientX - distanceX;
+			var top = e.clientY - distanceY;
+			
+			oDiv.style.left = left + 'px';
+			oDiv.style.top = top + 'px';
+			
+			speedX = left - lastX;
+			speedY = top - lastY;
+			
+			lastX = left;
+			lastY = top;
+		};
+		document.onmouseup = function (){
+			document.onmousemove = null;
+			document.onmouseup = null;
+			doMove(oDiv);
+		};
+		
+		clearInterval(oDiv.timer);
+	};
+	
+};
+	
+var speedX = 0;
+var speedY = 0;
+function doMove(obj){			
+	clearInterval( obj.timer );
+	obj.timer = setInterval(function (){
+		speedY += 3;
+		obj.style.top = obj.offsetTop + speedY + 'px';
+		obj.style.left = obj.offsetLeft + speedX + 'px';
+		var t = document.documentElement.clientHeight - obj.offsetHeight;
+		var l = document.documentElement.clientWidth - obj.offsetWidth;
+		if(obj.offsetTop >= t){
+			speedY *= -0.8;
+			speedX *= 0.8
+			obj.style.top = t + 'px';;
+		}else if(obj.offsetTop <= 0){
+			speedY *= -1;
+			speedX *= 0.8
+			obj.style.top = 0;
+		}
+		
+		if(obj.offsetLeft >= l){
+			speedX *= -0.8;
+			obj.style.left = l + 'px';
+		}else if(obj.offsetLeft <= 0){
+			speedX *= -0.8;
+			obj.style.left = 0;
+		}
+		
+		if(Math.abs(speedX)<1){
+			speedX = 0;
+		}
+		if(Math.abs(speedY)<1){
+			speedY = 0;
+		}
+		
+		if(speedX == 0 && speedY == 0 && obj.offsetTop == t){
+			clearInterval(obj.timer);
+		}
+	},40);
+}
+</script>
+<style >
+#div1{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+}
+</style>
+</head>
+<body>
+	<input type="submit" value="点击运动"/>
+	<div id="div1"></div>
+</body>
+</html>

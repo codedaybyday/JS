@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>最新上线</title>
+	<script >
+		window.onload=function (){
+			var oLi=document.getElementsByTagName('li');
+			for(var i=0;i<oLi.length;i++){
+				oLi[i].onmouseover=function (){
+					var oDiv=this.getElementsByTagName('div')[0];
+					oDiv.style.display='block';
+				};
+				oLi[i].onmouseout=function (){
+					var oDiv=this.getElementsByTagName('div')[0];
+					oDiv.style.display='none';
+				};
+			}
+		};
+	</script>
+	<style>
+		#content{
+			height:300px;
+			width:400px;
+			margin:100px auto;
+			background:yellow;
+		}
+		h3{
+			height:30px;
+			line-height:30px;
+			border-bottom:2px solid gray;
+		}
+		ul{
+			height:100px;
+			width:360px;
+			margin:10px auto;
+			
+			list-style:none;
+		}
+		ul li{
+			height:100px;
+			width:50px;
+			float:left;
+			background:green;
+			margin-left:5px;
+			position:relative;
+		}
+		ul li div{
+			position:absolute;
+			height:80px;
+			width:50px;
+			background:red;
+			left:40px;
+			top:-60px;
+			display:none;
+			z-index:1;
+		}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<h3>最新上线</h3>
+		<ul>
+			<li>娱乐观
+				<div>娱乐观</div>
+			</li>
+			<li>封面人物
+				<div>娱乐观</div>
+			</li>
+			<li>酷客天气
+				<div>娱乐观</div>
+			</li>
+			<li>爱壁纸
+				<div>娱乐观</div>
+			</li>
+			<li>海岛大亨
+				<div>娱乐观</div>
+			</li>
+			<li>指南股票
+				<div>娱乐观</div>
+			</li>
+		</ul>
+		<ul>
+			<li>布丁电影
+				<div>娱乐观</div>
+			</li>
+			<li>搜狐汽车
+				<div>娱乐观</div>
+			</li>
+			<li>QQ个性
+				<div>娱乐观</div>
+			</li>
+			<li>图片故事
+				<div>娱乐观</div>
+			</li>
+			<li>QQ旅游
+				<div>娱乐观</div>
+			</li>
+			<li>驾校一点
+				<div>娱乐观</div>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

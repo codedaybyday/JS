@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>拖拽(应用了继承)</title>
+<script>
+window.onload = function(){
+	var drag1 = new Drag('div1');
+	var drag2 = new LimitDrag('div2');
+};
+function Drag( id ){
+	this.oDiv = document.getElementById(id);
+	this.distanceX = 0;
+	this.distanceY = 0;
+	var _this = this;
+	this.oDiv.onmousedown = function (evt){
+		_this.fnDown( evt);
+	};
+	
+};
+
+Drag.prototype.fnDown = function(evt){
+	var e = evt||event;
+	this.distanceX = e.clientX - this.oDiv.offsetLeft;
+	this.distanceY = e.clientY - this.oDiv.offsetTop;
+	var _this = this;
+	document.onmousemove = function (evt){
+		_this.fnMove(evt);
+	};
+	document.onmouseup = function (evt){
+		_this.fnUp(evt);
+	};
+};
+Drag.prototype.fnMove = function (evt){
+	var e = evt||event;
+	var left = e.clientX - this.distanceX;
+	var top = e.clientY - this.distanceY;
+	this.oDiv.style.left = left + 'px';
+	this.oDiv.style.top = top + 'px';
+};
+Drag.prototype.fnUp = function (){
+	document.onmousemove = null;
+	document.onmouseup = null;
+};
+//--------------------------------------------------
+
+function LimitDrag(id){
+	Drag.call(this,id);
+}
+for(var i in Drag.prototype){
+	LimitDrag.prototype[i] = Drag.prototype[i];
+}
+LimitDrag.prototype.fnMove = function (evt){
+	var e = evt||event;
+	var left = e.clientX - this.distanceX;
+	var top = e.clientY - this.distanceY;
+	if(left >= document.documentElement.clientWidth - this.oDiv.offsetWidth){
+		left =  document.documentElement.clientWidth - this.oDiv.offsetWidth;
+	}else if(left <= 0){
+		left = 0;
+	}
+	
+	if(top >= document.documentElement.clientHeight - this.oDiv.offsetHeight){
+		top =  document.documentElement.clientHeight - this.oDiv.offsetHeight;
+	}else if(top <= 0){
+		top = 0;
+	}
+	this.oDiv.style.left = left + 'px';
+	this.oDiv.style.top = top + 'px';
+};
+</script>
+<style >
+#div1{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+}
+#div2{
+	height:100px;
+	width:100px;
+	background:yellow;
+	position:absolute;
+}
+</style>
+</head>
+<body>
+	<div id="div1"></div>
+	<div id="div2"></div>
+</body>
+</html>

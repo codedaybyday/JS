@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>图片切换</title>
+	<script >
+		window.onload=function (){
+			var picArr1=["img/1.png","img/2.png","img/3.png","img/4.png"];
+			var textArr1=["雄鹰","圣女","梦幻美女","面具侠"];
+			var picArr2=["img/2.png","img/3.png","img/4.png"];
+			var textArr2=["圣女","梦幻美女","面具侠"];
+			showPic('content',picArr1,textArr1);
+			showPic('content2',picArr2,textArr2);
+		};
+		function showPic(id,picArr,textArr){
+			var oDiv=document.getElementById(id);
+			var counter=oDiv.getElementsByTagName('span')[0];
+			var text=oDiv.getElementsByTagName('span')[1];
+			var img1=oDiv.getElementsByTagName('img')[0];
+			
+			var aLi=oDiv.getElementsByTagName('li');
+			var aUl=oDiv.getElementsByTagName('ul');
+			for(var i=0;i<picArr.length;i++){
+				aUl[0].innerHTML+="<li></li>"
+			}
+			var num=0;
+			var oldLi=null;
+			img1.src=picArr[num];
+			counter.innerHTML=num+1+'/'+aLi.length;
+			text.innerHTML=textArr[num];
+			aLi[num].className="active";
+			oldLi=aLi[num];
+			for(var i=0;i<aLi.length;i++){
+				aLi[i].index=i;
+				aLi[i].onclick=function(){
+					img1.src=picArr[this.index];
+					counter.innerHTML=this.index+1+'/'+aLi.length;
+					text.innerHTML=textArr[this.index];
+					this.className="active";
+					oldLi.className="";
+					oldLi=aLi[this.index];
+				};
+			}
+		}
+	</script>
+	<style>
+			#content,#content2{
+				height:500px;
+				width:400px;
+				margin:30px auto;
+				position:relative;
+				background:url(img/loader_ico.gif) no-repeat center center;
+			}
+			#img1{
+				height:500px;
+				width:400px;
+				position:absolute;
+			}
+			span{
+				width:400px;
+				height:30px;
+				line-height:30px;
+				text-align:center;
+				position:absolute;
+				background:black;
+				display:block;
+				filter:alpha(opacity:70%);
+				opacity:0.7;
+				color:white;
+			}
+			#counter{
+				top:0;
+				left:0;
+			}
+			#text{
+				left:0;
+				bottom:0;
+			}
+			ul{
+				position:absolute;
+				list-style:none;
+				right:-50px;
+				top:0px;
+				margin:0;
+			}
+			ul li{
+				height:40px;
+				margin-bottom:5px;
+				width:40px;
+				background:gray;
+			}
+			.active{
+				background:yellow;
+			}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<img src="" id="img1"/>
+		<span id="counter">图片数目正在加载中</span>
+		<span id="text">图片说明正在加载中</span>
+		<ul>
+		</ul>
+	</div>
+	<div id="content2">
+		<img src="" id="img1"/>
+		<span id="counter">图片数目正在加载中</span>
+		<span id="text">图片说明正在加载中</span>
+		<ul>
+		</ul>
+	</div>
+</body>
+</html>

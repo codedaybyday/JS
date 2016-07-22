@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		#canvas{
+			background:#000;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var canvas = document.getElementById('canvas');
+			var cobj = canvas.getContext('2d');
+			//var angle = 0;
+			//cobj.translate(200,200);
+			var starArr = [];
+			for(var i=0;i<30;i++){
+				var star = {
+					x:30+(canvas.width-30)*Math.random(),
+					y:30+(canvas.height-30)*Math.random(),
+					radiuis1:20+10*Math.random(),
+					radiuis2:40+10*Math.random(),
+					color:"rgb("+parseInt(255*Math.random())+","+parseInt(255*Math.random())+","+parseInt(255*Math.random())+")",
+					angle:-5+10*Math.random(),
+					interval:1*2*Math.random()
+				};
+				starArr.push(star);
+			}
+			setInterval(function(){
+				cobj.clearRect(-200,-200,800,800);
+				for(var i=0;i<starArr.length;i++){
+					cobj.save();
+					starArr[i].angle += starArr[i].interval;
+					cobj.translate(starArr[i].x,starArr[i].y);
+					cobj.rotate(starArr[i].angle*Math.PI/180);
+					cobj.globalAlpha = Math.sin(starArr[i].angle*Math.PI/180);
+					cobj.scale(Math.sin(starArr[i].angle),Math.sin(starArr[i].angle));
+					//console.log(starArr[i].x)
+					drawStar(5,0,0,starArr[i].radiuis1,starArr[i].radiuis2,starArr[i].color);
+					cobj.restore();
+				}
+			},60);
+			
+			function drawStar(num,x,y,radius1,radius2,color){
+				var angle = 360/(num*2)*Math.PI/180;
+				var pointArr = [];
+				for(var i=0;i<num*2;i++){
+					var point = {};
+					if(i%2==0){
+						point.x = x+radius1*Math.cos(i*angle);
+						point.y = y+radius1*Math.sin(i*angle);
+					}else{
+						point.x = x+radius2*Math.cos(i*angle);
+						point.y = y+radius2*Math.sin(i*angle);
+					}
+					pointArr.push(point);
+				}
+				cobj.beginPath();
+				cobj.moveTo(pointArr[0].x,pointArr[0].y);
+				for(var i=1;i<pointArr.length;i++){
+					cobj.lineTo(pointArr[i].x,pointArr[i].y);
+				}
+				console.log(pointArr.length);
+				cobj.fillStyle = color;
+				//cobj.closePath();
+				cobj.fill();
+			}
+		}
+	</script>
+</head>
+<body>
+	<canvas id="canvas" width=500 height=500></canvas>
+</body>
+</html>

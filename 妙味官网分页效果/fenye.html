@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<script type="text/javascript" src="move.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	var json = {
+		title : [
+			'效果1',
+			'效果2',
+			'效果3',
+			'效果4',
+			'效果5',
+			'效果6',
+			'效果7',
+			'效果8',
+			'效果9',
+			'效果10',
+			'效果11',
+			'效果12',
+			'效果13',
+			'效果14',
+			'效果15',
+			'效果16',
+			'效果17',
+			'效果18',
+			'效果19',
+			'效果20',
+			'效果21',
+			'效果22',
+			'效果23',
+			'效果24',
+			'效果25',
+			'效果26',
+			'效果27',
+			'效果28',
+			'效果29',
+			'效果30',
+			'效果31',
+			'效果32',
+			'效果33',
+			'效果34',
+			'效果35',
+			'效果36',
+			'效果37',
+			'效果38',
+			'效果39',
+			'效果40',
+			'效果41',
+			'效果42',
+			'效果43',
+			'效果44',
+			'效果45',
+			'效果46',
+			'效果47',
+			'效果48',
+			'效果49',
+			'效果50',
+			'效果51',
+			'效果52',
+			'效果53',
+			'效果54',
+			'效果55',
+			'效果56',
+			'效果57',
+			'效果58',
+			'效果59',
+			'效果60',
+			'效果61',
+			'效果62',
+			'效果63',
+			'效果64',
+			'效果65',
+			'效果66',
+			'效果67',
+			'效果68',
+			'效果1',
+			'效果2',
+			'效果3',
+			'效果4',
+			'效果5',
+			'效果6',
+			'效果7',
+			'效果8',
+			'效果9',
+			'效果10',
+			'效果11',
+			'效果12',
+			'效果13',
+			'效果14',
+			'效果15',
+			'效果16',
+			'效果17',
+			'效果18',
+			'效果19',
+			'效果20',
+			'效果21',
+			'效果22',
+			'效果23',
+			'效果24',
+			'效果25',
+			'效果26',
+			'效果27',
+			'效果28',
+			'效果29',
+			'效果30',
+			'效果31',
+			'效果32',
+			'效果33',
+			'效果34',
+			'效果35',
+			'效果36',
+			'效果37',
+			'效果38',
+			'效果39',
+			'效果40',
+			'效果41',
+			'效果42',
+			'效果43',
+			'效果44',
+			'效果45',
+			'效果46',
+			'效果47',
+			'效果48',
+			'效果49',
+			'效果50',
+			'效果51',
+			'效果52',
+			'效果53',
+			'效果54',
+			'效果55',
+			'效果56',
+			'效果57',
+			'效果58',
+			'效果59',
+			'效果60',
+			'效果61',
+			'效果62',
+			'效果63',
+			'效果64',
+			'效果65',
+			'效果66',
+			'效果67',
+			'效果68'
+		]
+	};
+	var arr = [];
+	var cur = 9;
+	Page({
+		id:'div1',
+		nowNum:1,
+		allNum:Math.ceil(json.title.length/10),
+		callBack:function(now,all){
+			var pageNum = now*10<json.title.length?10:json.title.length - (now-1)*10;
+			var oUl = document.getElementsByTagName('ul')[0];
+			if(oUl.innerHTML == ''){
+				for(var i=0;i<pageNum;i++){
+					var oLi = document.createElement('li');
+					oUl.appendChild(oLi);
+				}
+				var aLi = document.getElementsByTagName('li');
+				for(var i=0;i<pageNum;i++){
+					var l = aLi[i].offsetLeft;
+					var t = aLi[i].offsetTop;
+					arr[i] = {left:l,top:t};
+				}
+
+				for(var i=0;i<pageNum;i++){
+					aLi[i].style.left = arr[i].left + 'px';
+					aLi[i].style.top = arr[i].top + 'px';
+					aLi[i].style.position = 'absolute';
+					aLi[i].innerHTML = json.title[(now-1)*10+i];
+				}
+
+			}else{
+				var aLi = document.getElementsByTagName('li');
+				/*for(var i=0;i<pageNum;i++){
+					aLi[i].innerHTML = json.title[(now-1)*10+i];
+				}*/
+				//var cur = pageNum - 1;
+				var timer1 = setInterval(function(){
+					startMove(aLi[cur],{left:200,top:200,opacity:0},moveType.buffMove);
+					cur--;
+					if(cur == -1){
+						clearInterval(timer1);
+						cur = pageNum - 1;
+						for(var i=0;i<pageNum;i++){
+							aLi[i].innerHTML = json.title[(now-1)*10+i];
+						}
+						var timer2 = setInterval(function(){	//匿名函数，cur是全局变量
+							startMove(aLi[cur],{left:arr[cur].left,top:arr[cur].top,opacity:100},moveType.buffMove);
+							cur--;
+							if(cur == -1){
+								clearInterval(timer2);
+								cur = pageNum - 1;
+							}
+						},200);
+					}
+				},200);
+			}
+		}
+	});
+};
+function Page(json){
+	var obj = document.getElementById(json.id);
+	var nowNum = json.nowNum;
+	var allNum = json.allNum;
+	var callBack = json.callBack;
+	if(nowNum >4 && allNum > 6){
+		var oA = document.createElement('a');
+		oA.innerHTML = '首页';
+		oA.href = '#1';
+		obj.appendChild(oA);
+	}
+	if(nowNum > 1){
+		var oA = document.createElement('a');
+		oA.innerHTML = '上一页';
+		oA.href = '#'+(nowNum - 1);
+		obj.appendChild(oA);
+	}
+	if(allNum<=5){
+		for(var i=1;i<=allNum;i++){
+			var oA = document.createElement('a');
+			if(nowNum == i){
+				oA.innerHTML = i;
+			}else{
+				oA.innerHTML = '['+i+']';
+			}
+			
+			oA.href = '#'+i;
+			obj.appendChild(oA);
+		}
+	}else{
+		for(var i=1;i<=5;i++){
+			var oA = document.createElement('a');
+			if(nowNum == 1 || nowNum == 2){
+				if(nowNum == i){
+					oA.innerHTML = i;
+				}else{
+					oA.innerHTML = '['+i+']';
+				}
+				oA.href = '#'+i;
+			}else if(allNum - nowNum == 1 || allNum - nowNum == 0){
+				if(allNum-nowNum == 0 && i == 5){
+					oA.innerHTML = allNum - 5 + i;
+				}else if(allNum - nowNum == 1 && i == 4){
+					oA.innerHTML = allNum - 5 + i;
+				}else{
+					oA.innerHTML = '['+(allNum - 5 + i)+']';
+				}
+				oA.href = '#' + (allNum - 5 + i);
+			}else{
+				if(i == 3){
+					oA.innerHTML = nowNum - 3 +i;
+				}else{
+					oA.innerHTML = '['+(nowNum - 3 +i)+']';
+				}
+				oA.href = '#'+(nowNum - 3 + i);
+			}
+			obj.appendChild(oA);
+		}
+	}
+	if(allNum - nowNum >=1){
+		var oA = document.createElement('a');
+		oA.innerHTML = '下一页';
+		oA.href = '#'+(nowNum +1);
+		obj.appendChild(oA);
+	}
+	if(allNum - nowNum >3 && allNum >6){
+		var oA = document.createElement('a');
+		oA.innerHTML = '尾页';
+		oA.href = '#'+allNum;
+		obj.appendChild(oA);
+	}
+	callBack(nowNum,allNum);
+	var aA = obj.getElementsByTagName('a');
+	for(var i=0;i<aA.length;i++){
+		aA[i].onclick = function(){
+			//alert(this.getAttribute('href'))
+			var num = parseInt( this.getAttribute('href').substring(1) );
+			//alert(num)
+			obj.innerHTML = '';
+			nowNum = num;
+			Page({
+				id:json.id,
+				nowNum:num,
+				allNum:allNum,
+				callBack:callBack
+			});
+		}
+	}
+
+}
+</script>
+<style type="text/css">
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+ul{
+	width:550px;
+	height:240px;
+	position:relative;
+	zoom:1;
+}
+ul li{
+	height:100px;
+	width:100px;
+	background:red;
+	margin-right:10px;
+	margin-bottom:10px;
+	float:left;
+}
+a{
+	padding:5px;
+}
+</style>
+</head>
+<body>
+<ul id="ul1"></ul>
+<div id="div1">
+	
+</div>
+</body>
+</html>

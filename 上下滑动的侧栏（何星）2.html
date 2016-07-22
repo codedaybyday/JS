@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns = "http://www.w3.org/1999/xhtml">
+<head>
+<style>
+#div1{height:100px;width:100px;background:red;right:0;top:50px;position:absolute;}
+</style>
+<meta http-equiv = "Content-Type" content = "text/html; charset = utf-8" />
+<meta http-equiv = "Content-Language" content = "zh-CN" />
+<meta name = "Keywords" content = "" />
+<meta name = "Description" content = "" />
+
+<script type = "text/javascript"> 
+window.onscroll = function(){
+	var odiv = document.getElementById('div1');
+	var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+	//odiv.style.top = scrollTop+(document.documentElement.clientHeight-odiv.offsetHeight)/2+'px';
+	var t = scrollTop+(document.documentElement.clientHeight-odiv.offsetHeight)/2;
+	startMove(odiv,parseInt(t));//转换为整数
+}
+var timer = null;
+function startMove(obj,target){
+	clearInterval(timer);
+	timer = setInterval(function(){
+		var speed = (target-obj.offsetTop)/8;
+		speed = speed>0?Math.ceil(speed):Math.floor(speed);
+		if(obj.offsetTop == target){//是否到达终点
+			clearInterval(timer);
+		}
+		else{
+			obj.style.top = obj.offsetTop+speed+'px';
+		}
+		txt1.value = obj.offsetTop+'mubiao'+target;
+	},30);//开启定时器
+}
+</script>
+</head>
+<body style = "height:2000px;">
+<input id = "txt1" type = "text" style = "position:fixed;top:20px;">
+<div id = "div1" ></div>
+
+</body>
+</html>

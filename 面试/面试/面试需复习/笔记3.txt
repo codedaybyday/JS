@@ -1,0 +1,148 @@
+一. 复习
+
+	1. XHTML语法规范有哪些？
+
+		1. 标签名和属性必须小写
+
+		2. 必须有结束标记
+
+		3. 属性值必须有双引号
+
+		4. 不允许交叉嵌套
+
+	2. 请写出插入图片标记及属性
+
+		<img src="" alt="" />
+
+	3. 请写出常用图片类型及图片类型的特点
+
+		1. jpg  2. gif  3. png png8 png24 png32
+
+	4. 路径分为几种并写出其特点
+
+		1. 相对路径 不可以跨盘符  2.绝对路径 
+
+	5. 列表分为几种，分别用代码表现
+
+		1. 无序 2. 有序 3.定义 <dl><dt></dt><dd></dd></dl> 
+
+	6. 请写出链接标记及属性
+
+		<a href="路径，完整的网络地址，空链接#">文字</a>
+
+	8. 请写出表格标记的结构及属性 eg：表格 行 列标记及属性
+
+		<table border="" width="" align="" cellpadding="" cellspacing="" bgcolor="" background="">
+			<tr align="" valing="">
+				<td colspan="" rowspan=""></td>
+			</tr>
+		</table>
+
+	9. 请写出细线表格的制作方法
+
+		1. border="0"
+		2. cellspacing="1"
+		3. table:bgcolor=red
+		4. td: bgcolor=black
+
+
+二. 表格的结构
+
+	<table>
+		<thead>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+		</tfott>
+	</table>
+
+
+	th 表头  加粗且居中的td
+
+	caption 表格的标题 ps：caption一定要写在table里面
+
+
+三. 表单
+
+	<form></form>
+
+	form的属性
+
+		1. action  告诉表单要提交哪去 
+
+		2. method  提交方式  get post
+
+
+	表单元素
+
+		1. 文本框  <input type="text" name="" /> 
+
+		2. 密码框  <input type="password" name="password" />
+
+		3. 单选按钮  <input type="radio" name="" value="" />
+
+		4. 多选按钮  <input type="checkbox" name="" value=""/>
+
+		5. 上传文件 <input type="file" name="" />
+
+		6. 下拉菜单  <select>
+				<option></option>
+			     </select>
+
+		7. 多行文本 <textarea rows="" cols=""></textarea>
+
+		8. 按钮
+
+			1. 提交按钮  <input type="submit" value="" />
+
+			2. 重置按钮  <input type="reset" value="" />
+
+			3. 图片按钮  <input type="image" src="图片的路径" /> ps:图片按钮也有提交的功能
+
+			4. 普通按钮 <input type="button" value="" /> ps：普通按钮没有任何功能
+
+
+
+四. CSS基础
+
+	1. 什么是web标准？web标准的构成?
+	
+		web标准不是某一种标准，它一系列标准的集合。
+
+	        结构(HTML) + 表现(CSS) + 行为（Javascript）= web标准（W3C标准）
+
+	2. 什么是CSS
+
+		层叠样式表
+
+
+	3. CSS的语法
+
+		选择器（选择符）{属性名:属性值; 属性名:属性值;}
+
+		eg:h1{color:red; text-align:center; width:200px; height:100px;}
+
+	4. CSS基本选择器
+
+		1. 标签选择器  标签名{属性名:属性值;} eg:h2{color:red;}
+
+		2. id选择器    #id名{属性名:属性值;} eg: #box{color:red;}
+
+		3. 类选择器    .类名{属性名:属性值;} eg：.one{color:red;}
+
+		4. 通配符选择器  *{属性名:属性值;} eg:*{color:red;} *:代表所有的标签
+
+
+
+
+
+
+
+
+
+
+
+
+
+

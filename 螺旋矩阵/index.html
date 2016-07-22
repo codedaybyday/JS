@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#list{
+		margin:0 auto;
+		border-top:1px solid #FFF;
+		border-left: 1px solid #FFF;
+		padding:0;
+		overflow:hidden;
+		list-style:none;
+		background:url('img/bg.jpg') 100% 100%;
+	}
+	#list li{
+		border-bottom:1px solid #FFF;
+		border-right: 1px solid #FFF;
+		float:left;
+		background-size:100% 100%; 
+	}
+	</style>
+	<script>
+		window.onload = function(){
+			var gridSize = 49;
+			var num = 8;
+			var col = 0;
+			var row = 0;
+			var min = 0;
+			var max = num - 1;
+			var list = document.getElementById('list');
+			var aLi = null;
+			var posArr = [],liArr = [];
+			var iNow = 0;
+
+			createGrid();
+			console.log(posArr);
+
+			for(var i=0,len=aLi.length;i<len;i=i+5){
+				//console.log(i);
+				var url = 'url(img/'+Math.floor(Math.random()*11+1)+'.jpg)';
+				liArr[i].style.backgroundImage = url;
+				posArr.push([i,url]);
+			}
+			setInterval(function(){
+				/*for(var i=0,len=posArr.length;i<len;i++){
+					var index = posArr[i][0];
+					liArr[index].style.backgroundImage = 'none';
+				}*/
+				for(var i=0,len=posArr.length;i<len;i++){
+					var index = ++posArr[i][0];
+					if(aLi[index]){
+						liArr[index-1].style.backgroundImage = 'none';
+						liArr[index].style.backgroundImage = posArr[i][1];
+					}else{
+						posArr.pop();
+						var url = 'url(img/'+Math.floor(Math.random()*11+1)+'.jpg)';
+						posArr.unshift([0,url]);
+					}
+					
+				}
+			},1000);
+
+			function createGrid(){
+				list.style.width = (gridSize+1)*num + 'px';;
+				for(var i=0,len=num*num;i<len;i++){
+					var oLi = document.createElement('li');
+					oLi.style.width = gridSize + 'px';
+					oLi.style.height = gridSize + 'px';
+					list.appendChild(oLi); 
+				}
+				aLi = list.getElementsByTagName('li');
+				for(var i=0,len=num*num;i<len;i++){
+					//aLi[row*num+col].innerHTML = i;
+					liArr.push(aLi[row*num+col]);
+					if( row == min && col<max){
+						col++;
+					}else if( col == max && row < max){
+						row++;
+					}else if( row == max && col > min){
+						col--;
+					}else if(col == min && row > min){
+						row--;
+					}
+					if(col == min && row == min+1){
+						min++;
+						max--;
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<ul id="list"></ul>
+</body>
+</html>

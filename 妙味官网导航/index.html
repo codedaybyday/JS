@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>ÃîÎ¶µ¼º½</title>
+<script>
+window.onload = function (){
+	var oUl = document.getElementById('nav');
+	var aLi = nav.getElementsByTagName('li');
+	var oBg = document.getElementById('bg');
+	
+	for(var i=0;i<aLi.length;i++){
+		aLi[i].onmouseover = function (){
+			doMove(oBg,this.offsetLeft,'left');
+		};
+	}
+};
+var left = 0;
+var speed = 0;
+function doMove(obj,target){	//	弹性运动
+	clearInterval(obj.timer);
+	obj.timer = setInterval(function(){
+		//var cur = parseInt( getStyle(obj,attr) );
+		//var speed = (target - cur)/8>0 ? Math.ceil( (target - cur)/8 ) : Math.floor( (target - cur)/8 );
+		speed += (target - obj.offsetLeft)/5;
+		//cur += speed;
+		speed *=0.7;
+		left += speed;
+		obj.style.left = left + 'px';
+		if(Math.abs( speed )<1  && Math.abs(left - target)<1){		//当离目标带你少于一个像素时，只能强制拉回
+			clearInterval(obj.timer);
+			obj.style.left = target + 'px';
+		}
+	},30);
+}
+
+function getStyle(obj,attr){
+	return getComputedStyle(obj)[attr]?getComputedStyle(obj)[attr]:obj.currentStyle[atrr];
+}
+</script>
+<style>
+body{
+	background:url(images/bg.gif) repeat-x;
+}
+#content{
+	height:105px;
+	width:960px;
+	margin:0 auto;
+	position:relative;
+}
+#log{
+	display:block;
+	float:left;
+	height:105px;
+	width:398px;
+}
+ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+#nav{
+	float:left;
+	position:absolute;
+	bottom:6px;
+	right:0;
+}
+#nav li{
+	float:left;
+	height:44px;
+	width:88px;
+}
+#nav a{
+	display:block;
+	line-height:44px;
+	text-align:center;
+	text-decoration:none;
+	color:#999;
+	font-weight:bold;
+}
+#bg{
+	height:44px;
+	width:88px;
+	background:url(images/btn_bg.gif) no-repeat center center;
+	position:absolute;
+	left:0;
+}
+#bg_btn{
+	height:44px;
+	width:528px;
+	position:absolute;
+	left:431px;
+	bottom:6px
+}
+</style>
+</head>
+	<div id="content">
+		<a id="log"><img src="images/logo.gif"/></a>
+		<div id="bg_btn"><div id="bg"></div></div>
+		<ul id="nav">
+			<li><a href="#">Ê×Ò³</a></li>
+			<li><a href="#">ÃîÎ¶¿Î³Ì</a></li>
+			<li><a href="#">ÃîÎ¶×ÊÔ´</a></li>
+			<li><a href="#">ÁôÑÔ</a></li>
+			<li><a href="#">ÃîÎ¶²©¿Í</a></li>
+			<li><a href="#">ÁªÏµÃîÎ¶</a></li>
+		</ul>
+		
+	</div>
+<body>
+</body>
+</html>

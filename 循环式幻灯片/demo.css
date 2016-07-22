@@ -1,0 +1,28 @@
+*{
+	margin:0;
+	padding:0;
+}
+#main{
+	width:1302px;
+	height:509px;
+	margin:0 auto;
+}
+h1{
+	text-align:center;
+	margin-bottom:20px;
+}
+#pic{
+	width:200px;
+	height:400px;
+	margin: 0 auto;
+}
+#link{
+	width:1302px;
+	height:30px;
+	text-align:center;
+}
+#link a{
+	font-size:20px;
+	font-weight:bold;
+	margin-right:20px;
+}

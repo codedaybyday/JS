@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		#canvas{
+			background:#ccc;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var canavs = document.getElementById('canvas');
+			var cobj = canvas.getContext('2d');
+			var oImg = document.getElementsByTagName('img')[0];
+			cobj.drawImage(oImg,0,0,200,200);
+			var imageData = cobj.getImageData(0,0,200,200);
+			mix(imageData.height*imageData.width,20);
+			cobj.putImageData(imageData,200,200);
+			function mix(sum,num){
+				var arr = [];
+				var newArr = [];
+				for(var i=0;i<sum;i++){
+					arr.push(i);
+				}
+				for(var i=0;i<sum/num;i++){
+					newArr.push(parseInt( arr.splice(Math.random()*arr.length,1) ));
+				}
+				for(var i=0;i<newArr.length;i++){
+					imageData.data[newArr[i]*4+0] = parseInt(255*Math.random());
+					imageData.data[newArr[i]*4+1] = parseInt(255*Math.random());
+					imageData.data[newArr[i]*4+2] = parseInt(255*Math.random());
+					imageData.data[newArr[i]*4+0] = 255;
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<canvas id="canvas" width=400 height=400></canvas>
+	<img src="1.jpg" alt="" hidden />
+</body>
+</html>

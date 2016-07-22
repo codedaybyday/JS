@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>首页淡入淡出效果</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+	text-decoration:none;
+}
+#box{
+	width:600px;
+	margin:20px auto;
+	padding:10px 20px 20px;
+	background:#EACFCF;
+	overflow:hidden;
+}
+#left,#right{
+	width:290px;
+}
+#left{
+	float:left;
+}
+#right{
+	float:right;
+}
+h2{
+	height:40px;
+	line-height:40px;
+	border-bottom:1px solid #D2A1A1;
+	color:#885050;
+	background:url(img/H2_Bg.png) no-repeat left center;
+	text-indent:10px;
+}
+h2 strong{
+	float:left;
+	display:block;
+}
+h2 a{
+	display:block;
+	background:url(img/a_bg.png) no-repeat left center;
+	float:right;
+	font-size:12px;
+	color:white;
+	width:52px;
+}
+ul li{
+	width:290px;
+	height:30px;
+	line-height:30px;
+	border-bottom:1px dashed #D2A1A1;
+	background:url(img/li_bg.gif) no-repeat left center;
+	text-indent:10px;
+	font-size:14px;
+	position:relative;
+	cursor:pointer;
+}
+ul li div{
+	position:absolute;
+	width:290px;
+	height:30px;
+	left:0;
+	top:0;
+	z-index:2;
+}
+.mark{
+	display:inline-block;
+	filter:alpha(opacity:0);
+	opacity:0;
+	width:290px;
+	height:30px;
+	line-height:30px;
+	position:absolute;
+	left:0;
+	top:0;
+	background:white;
+	z-index:1;
+}
+.text{
+	display:block;
+	height:30px;
+	line-height:30px;
+	color:#7F5454;
+	float:left;
+}
+.date{
+	height:30px;
+	line-height:30px;
+	display:block;
+	float:right;
+	color:#CF9494;
+	margin-right:10px;
+}
+</style>
+<script type="text/javascript">
+window.onload=function()
+{
+	var aLi = document.getElementsByTagName('li');		//获得列表
+	for( var i=0;i<aLi.length;i++){
+		aLi[i].onmouseover = function(){		//改成onmouseover鼠标移入的时候li下面的背景mark就会变成白色,（解决方案：用时间onmouseenter和onmouseleave，但是只有IE支持）
+			var oBg = this.getElementsByClassName('mark')[0];
+			oBg.style.opacity = 1;
+			oBg.style.filter = 'alpha(opacity:100)';
+			clearInterval(oBg.timer);			//之前的问题都是因为没有这句话，当移入的时候会先执行撒谎能够一个aLi[i]的onmouseout时间
+		};
+		aLi[i].onmouseout = function(){			//改成onmouseout鼠标移出的时候，背景逐渐淡出变成透明（但是目前的情况是鼠标移入后还没移出背景就淡出了，tell me why？？）
+			var oBg = this.getElementsByClassName('mark')[0];
+			doMove(oBg,0,'opacity');
+		};
+	}
+};
+function getStyle(obj,attr){			
+	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+}	
+function doMove(obj,target,attr,endFn){			//缓冲运动
+	clearInterval( obj.timer );
+	obj.timer = setInterval( function (){
+		var cur = parseInt( parseFloat( getStyle(obj ,attr) )*100 );
+		var speed = ( target- cur )/8 >0?Math.ceil( ( target-cur )/8):Math.floor( ( target-cur)/8 );
+		cur += speed;
+		obj.style.filter = 'alpha(opacity:"+cur+")';
+		obj.style.opacity = cur/100;
+		if( target == cur){
+			clearInterval( obj.timer );
+			//alert('关闭定时器');
+			if(endFn){
+				endFn();
+			}
+		}
+	},40);
+}
+</script>
+</head>
+<body>
+	<div id="box">
+		<div id="left">
+			<h2><strong>最新消息</strong><a href="#">more</a></h2>
+			<ul>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">课程常见问题合集</span><span class="date">2011-03-29</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">妙味课堂JS课程标准</span><span class="date">2011-03-27</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">网页特效大集合（每天更新）</span><span class="date">2011-03-22</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">妙味课堂上课地点</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">CSS课程最新开班时间</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">Javasript课程最新开班时间</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">妙味推出零基础网页制作课程</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div id="right">
+			<h2><strong>茶馆新鲜事</strong><a href="#">more</a></h2>
+			<ul>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">Javasript实现3D球面标签云</span><span class="date">2011-03-29</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">妙味课堂JS课程标准</span><span class="date">2011-03-27</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">周六Javasript聚会活动现场记</span><span class="date">2011-03-22</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">阿里前端面试题</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">浅析google地图前端实现原理</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">Windows计算器（简易版）作业</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+				<li>
+					<a class="mark"></a>
+					<div>
+						<span class="text">妙味课堂手风琴缓慢效果</span><span class="date">2011-03-19</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>缓冲运动</title>
+<script >
+/*
+	实现的效果：无论滚动条如何滚动，侧栏的红色块总是居在视野的中央
+*/
+window.onscroll=function(){	
+	var box = document.getElementById('box');
+	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	var target = scrollTop+(document.documentElement.clientHeight-box.offsetHeight)/2;
+	target = parseInt(target);
+	doMove(box,target,'top');		//	加上运动后FF上小块来回弹跳，最后在某一个位置固定，没有出现理想中的效果，IE则完全没有效果
+	/*box.style.top = target + 'px';*/		//不加上运动，完全没有问题
+	
+	function doMove(obj,target,attr){			//缓冲运动
+		clearInterval( timer );
+		var timer = setInterval( function (){
+			var t = parseInt( getStyle(obj , attr) );	//当前的属性值
+			var speed = ( target- t )/8 >0?Math.ceil( ( target-t )/8):Math.floor( ( target-t)/8 );	//缓冲公式	上下取整获取
+			t += speed;
+			if( (target < t&&speed>0) || (target > t&&speed<0)){
+				t = target;
+			}
+			obj.style[attr] = t + 'px';
+			if( target == t){	//到达目标点就取消定时器
+				clearInterval( timer );
+			}
+		},40);
+	}
+	function getStyle(obj,attr){	//获取指定属性的值
+		return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+	}
+}
+
+</script>
+<style>
+#box{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+	right:0;
+}
+body{
+	height:2000px;
+}
+</style>
+</head>
+<body>
+	<div id='box'>
+    </div>
+</body>
+</html>

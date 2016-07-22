@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>日历</title>
+	<style type="text/css">
+		.active{
+			color:red;
+		}
+	</style>
+</head>
+<script type="text/javascript">
+	window.onload = function(){
+		function Calendar(selector){
+			this.selector = selector;
+			this.week = ['日','一','二','三','四','五','六'];
+			this.init();
+			this.dateArr = this.getData();
+			this.showCalendar();
+		}
+		Calendar.prototype = {
+			constructor:'Calendar',
+			init:function(){
+				var date = new Date();
+				this.year = date.getFullYear();
+				this.month = date.getMonth();
+				this.now = date.getDate();
+				this.monthDays = [31,28+this.is_leap_year(this.year),31,30,31,30,31,31,30,31,30,31];//每年每月的天数
+			},
+			is_leap_year:function(){
+				if(this.year%400==0){
+					return 1;
+				}
+				if(this.year%100!=0){
+					if(this.year%4==0){
+						return 1;
+					}
+				}
+				return 0;
+			},
+			getData:function(){
+				var tmp_date = new Date(this.year,this.month,1);
+				var firstDay = tmp_date.getDay();
+				var dayNum = this.monthDays[this.month];
+				var row = Math.ceil((firstDay+dayNum)/7);
+				var dateArr = [];
+				var count = 0;
+
+				for(var i=0;i<row;i++){
+					dateArr[i] = [];
+					for(var j=0;j<7;j++){
+						count++;
+						dateArr[i][j] = count;
+						dateArr[i][j] -= firstDay;
+						if(dateArr[i][j] < 0 || dateArr[i][i] > dayNum){
+							dateArr[i][j] = '';
+						}
+					}
+				}
+				return dateArr;
+			},
+			showCalendar:function(){
+				var html = '<table border=1>';
+				html += '<caption>'+this.year+'年'+(this.month+1)+'月</caption>';
+				html += '<tr>';
+				for(var i=0,len=this.week.length;i<len;i++){
+					html += '<th>'+this.week[i]+'</th>'
+				}
+				html += '</tr>';
+				for(var i=0,len1=this.dateArr.length;i<len1;i++){
+					html += '<tr>';
+					for(var j=0,len2=this.dateArr[i].length;j<len2;j++){
+						if(this.dateArr[i][j] == this.now){
+							html += '<td class="active">'+this.dateArr[i][j]+'</td>';
+						}else{
+							html += '<td>'+this.dateArr[i][j]+'</td>';
+						}
+						
+					}
+					html += '</tr>';
+				}
+				html += '</table>';
+				//console.log(html);
+				this.selector.innerHTML = html;
+			}
+		};
+		new Calendar(document.getElementsByTagName('body')[0]);
+	};
+</script>
+<body>
+	
+</body>
+</html>

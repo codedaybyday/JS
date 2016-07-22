@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>贪吃蛇游戏</title>
+<link  rel="stylesheet"/>
+<script type="text/javascript">
+window.onload = function(){
+	var control = new Control();
+	control.Init();
+	control.start();
+};
+var Direction = new function(){
+	this.UP = 38;
+	this.DOWN = 40;
+	this.RIGHT = 39;
+	this.LEFT = 37;
+}
+var Common = new function(){
+	this.timer = null;
+	this.score = 0;
+	this.highestScore = 0;
+	var aLi = document.getElementsByTagName('li');
+	this.addScore = function(){
+		this.score++;
+		aLi[0].innerHTML = '您的得分是：'+this.score;
+	}
+	this.calScore = function(){
+		if(this.score > this.highestScore){
+			this.highestScore = this.score;
+		}
+		aLi[1].innerHTML = '您的最高得分是：'+this.highestScore;
+		this.score = 0;
+	}
+}
+function Position(x,y){
+	this.x = 0;
+	this.y = 0;
+	if(arguments.length == 1){
+		this.x = x;
+	}
+	if(arguments.length == 2){
+		this.x = x;
+		this.y = y;
+	}
+}
+function Control(){
+	this.snake = new Snake();
+	this.food = new Food();
+	this.Init = function(){
+		var html = [];
+		html.push('<table>');
+		for(var i=0;i<20;i++){
+			html.push('<tr>');
+			for(var j=0;j<20;j++){
+				html.push('<td id="box_'+i+'_'+j+'"></td>');
+			}
+			html.push('</tr>');
+		}
+		html.push('</table>');
+		this.pannel = document.getElementById('pannel');
+		html=html.join('');
+		this.pannel.innerHTML = html;
+		var aLi = document.getElementsByTagName('li');
+		aLi[0].innerHTML = '您的得分是：'+Common.score;
+		aLi[1].innerHTML = '您的最高得分是：'+Common.highestScore;
+	};
+	this.start = function(){
+		var btnStart = document.getElementById('start');
+		var _this = this;
+		btnStart.onclick = function(){
+			_this.snake.restart();
+			document.getElementById('box_'+_this.food.pos.x+'_'+_this.food.pos.y).className = '';
+			document.onkeydown = function(evt){	//	如果不写evt，FF将监听不到该事件
+				_this.snakeMove(evt);
+			};
+			this.disabled = 'disabled';
+			_this.food.create(_this.snake.pos);
+
+			Common.timer = setInterval(function(){
+				_this.snake.eat(_this.food);
+				_this.snake.move();
+			},300);
+
+		};
+		this.snakeMove = function(evt){
+			var event = evt || window.event;
+			_this.snake.setDir(event.keyCode);
+			//alert(event.keyCode)
+		}
+	}
+}
+function Snake(){
+	this.dir = Direction.RIGHT;
+	this.pos = new Array(new Position());
+	this.restart = function(){
+		this.dir = Direction.RIGHT;
+		//alert(this.pos.length)
+		for(var i = 0;i<this.pos.length -1;i++){
+			document.getElementById('box_'+this.pos[i].x+'_'+this.pos[i].y).className = '';
+		}
+		this.pos = new Array(new Position());
+		document.getElementById('box_'+this.pos[0].x+'_'+this.pos[0].y).className = 'snake';
+		//alert(this.pos[0].y)
+	}
+	this.move = function(){
+		document.getElementById('box_'+this.pos[0].x+'_'+this.pos[0].y).className = '';
+		for(var i=0;i<this.pos.length-1;i++){
+			this.pos[i].x = this.pos[i+1].x;
+			this.pos[i].y = this.pos[i+1].y;
+		}
+		var head = this.pos[this.pos.length - 1];
+		switch(this.dir){
+			case Direction.LEFT:
+			head.y--;
+			break;
+			case Direction.UP:
+			head.x--;
+			break;
+			case Direction.RIGHT:
+			head.y++;
+			break;
+			case Direction.DOWN:
+			head.x++;
+			break;
+		}
+		this.pos[this.pos.length - 1] = head;
+		var head = this.pos[this.pos.length - 1];
+		for(var i=0;i<this.pos.length;i++){
+			for(var k=i+1;k<this.pos.length;k++){
+				if(this.pos[k].x == this.pos[i].x && this.pos[k].y == this.pos[i].y){
+					//alert(this.pos[0].x+','+this.pos[0].y+'|'+this.pos[0].x+','+this.pos[0].y)
+					this.over();
+					break;
+				}
+
+			}
+			if(head.x<0 || head.x>=20 || head.y<0 ||head.y>=20 ){
+				this.over();
+				break;
+			}else{
+				document.getElementById('box_'+this.pos[i].x+'_'+this.pos[i].y).className = 'snake';
+			}
+			
+			
+		}
+	};
+	this.eat = function(food){
+		var head = this.pos[this.pos.length - 1];
+		var isEat = false;
+		switch(this.dir){
+			case Direction.LEFT:
+			if(head.x == food.pos.x && head.y == food.pos.y+1){
+				isEat = true;
+			}
+			break;
+			case Direction.UP:
+			if(head.x == food.pos.x+1 && head.y == food.pos.y){
+				isEat = true;
+			}
+			break;
+			case Direction.RIGHT:
+			if(head.x == food.pos.x && head.y == food.pos.y-1){
+				isEat = true;
+			}
+			break;
+			case Direction.DOWN:
+			if(head.x == food.pos.x-1 && head.y == food.pos.y){
+				isEat = true;
+			}
+			break;
+		}
+		if(isEat){
+			this.pos[this.pos.length] = new Position(food.pos.x,food.pos.y);
+			document.getElementById('box_'+food.pos.x+'_'+food.pos.y).className = '';
+			/*for(var i=0;i<this.pos.length;i++)
+			alert(this.pos[i].x + ','+this.pos[i].y)*/
+			Common.addScore();
+			food.create(this.pos);
+		}
+	}
+	this.setDir = function(dir){
+		switch(dir){
+			case Direction.LEFT:
+			if(this.dir != Direction.RIGHT ){
+				this.dir = dir;
+			}
+			break;
+			case Direction.UP:
+			if(this.dir != Direction.DOWN ){
+				this.dir = dir;
+			}
+			break;
+			case Direction.RIGHT:
+			if(this.dir != Direction.LEFT ){
+				this.dir = dir;
+			}
+			break;
+			case Direction.DOWN:
+			if(this.dir != Direction.UP ){
+				this.dir = dir;
+			}
+			break;
+		}
+	}
+	this.over = function(){
+		clearInterval(Common.timer);
+		Common.calScore();
+		alert("哈哈！你挂了！");
+		var btnStart = document.getElementById('start');
+		btnStart.disabled = '';
+	}
+}
+function Food(){
+	this.pos = new Position();
+	this.create = function(pos){
+		var isCover = false;
+		var x = 0;
+		var y = 0;
+		var i = 0;
+		do{
+			x = parseInt( Math.random()*19 );
+			y = parseInt( Math.random()*19 );
+			if(pos instanceof Array){
+				for(var i=0;i<pos.length;i++){
+					if(x == pos[i].x && y == pos[i].y){
+						isCover = true;
+						i++;
+						break;
+					}
+				}
+				//alert(1)
+			}
+			if(i > 5){
+				isCover = false;
+			}
+		}while(isCover);
+		var head = pos[pos.length - 1];
+		switch(this.dir){
+			case Direction.LEFT:
+			x = head.x;
+			y = head.y -1;
+			if(y<0){
+				y +=19;
+			}
+			break;
+			case Direction.UP:
+			x = head.x - 1;
+			if(x<0){
+				x +=19;
+			}
+			y = head.y;
+			break;
+			case Direction.RIGHT:
+			x = head.x;
+			y = head.y +1;
+			if(y>=20){
+				y -=19;
+			}
+			break;
+			case Direction.DOWN:
+			x = head.x+1;
+			if(x>=20){
+				x -= 19;
+			}
+			y = head.y;
+			break;
+		}
+		this.pos = new Position(x,y);
+		//alert(document.getElementById('box_'+this.pos.x+'_'+this.pos.y))
+		document.getElementById('box_'+this.pos.x+'_'+this.pos.y).className = 'food';
+	}
+}
+</script>
+<style>
+#pannel table{
+	border-collapse:collapse;
+	clear:both;
+}
+#pannel table td{
+	height:15px;
+	width:15px;
+	border:1px solid gray;
+}
+.snake{
+	background:green;
+}
+.food{
+	background:red;
+}
+#score{
+	list-style:none;
+	padding:0;
+	display:block;
+}
+#score li{
+	height:30px;
+	line-height:30px;
+	width:178.5px;
+	border:1px solid gray;
+	float:left;
+	text-align:center;
+	color:gray;
+	font-family:微软雅黑;
+}
+</style>
+</head>
+<body>
+	<ul id="score">
+		<li></li>
+		<li></li>
+	</ul>
+	<div id="pannel">
+	</div></br>
+	<input id="start" type="submit" value="开始" />
+</body>
+</html>

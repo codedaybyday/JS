@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		#canvas{
+			background:#ccc;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var canvas = document.getElementById('canvas');
+			var cobj = canvas.getContext('2d');
+			var img = document.getElementsByTagName('img')[0];
+			cobj.drawImage(img,0,0,100,100);
+			var imageData = cobj.getImageData(0,0,100,100);
+			var newImageData = cobj.createImageData(100,100);
+			var width = imageData.width;
+			var height = imageData.height;
+			for(var i=0;i<height;i++){
+				for(var j=0;i<width;j++){
+					newImageData.data[4*i*width+j*4+0] = imageData.data[(height-i)*(width*4)+j*4+0];
+					newImageData.data[4*i*width+j*4+1] = imageData.data[(height-i)*(width*4)+j*4+1];
+					newImageData.data[4*i*width+j*4+2] = imageData.data[(height-i)*(width*4)+j*4+2];
+					newImageData.data[4*i*width+j*4+3] = 255;
+				}
+			}
+			cobj.putImageData(newImageData,0,100);
+		};
+	</script>
+</head>
+<body>
+	<canvas id="canvas" height=400 width=400></canvas>
+	<img src="1.jpg" alt="" hidden/>
+</body>
+</html>

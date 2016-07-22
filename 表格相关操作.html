@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<style type="text/css">
+td{
+	text-align:center;
+}
+.active{
+	background:yellow;
+}
+</style>
+<script>
+window.onload = function(){
+	var oBody = document.getElementsByTagName('tbody')[0];
+	var aTr = oBody.getElementsByTagName('tr');
+	var oldStyle = null;
+	for(var i=0;i<aTr.length;i++){
+		aTr[i].onmouseover = function(){
+			oldStyle = this.className;
+			this.className = 'active';
+		};
+		aTr[i].onmouseout = function(){
+			//oldTr = this;
+			this.className = oldStyle;
+		};
+	}
+	var count = aTr.length;
+	var aInput = document.getElementsByTagName('input');
+	aInput[1].onclick = function(){
+		var newTr = document.createElement('tr');
+		var newTd1 = document.createElement('td');
+		newTd1.innerHTML = ++count;
+		newTr.appendChild(newTd1);
+		var newTd2 = document.createElement('td');
+		newTd2.innerHTML = aInput[0].value;
+		newTr.appendChild(newTd2);
+		var newTd3 = document.createElement('td');
+		newTd3.innerHTML = "2121"
+		newTr.appendChild(newTd3);
+		var newTd4 = document.createElement('td');
+		newTd4.innerHTML = "2121"
+		newTr.appendChild(newTd4);
+		oBody.appendChild(newTr);
+		//aTr.length = count;
+
+		for(var i=0;i<aTr.length;i++){
+		aTr[i].onmouseover = function(){
+			oldStyle = this.className;
+			this.className = 'active';
+		};
+		aTr[i].onmouseout = function(){
+			//oldTr = this;
+			this.className = oldStyle;
+		};
+	}
+	};
+
+	//搜索
+	var oTable = document.getElementsByTagName('table')[0];
+	aInput[3].onclick = function(){
+		for(var i=0;i<oTable.tBodies[0].rows.length;i++){
+			var find = false;
+			var k = -1;
+			for(var j=0;j<oTable.tBodies[0].rows[i].cells.length;j++){
+				var text = oBody.rows[i].cells[j].innerHTML.toLowerCase();
+				var arr = aInput[2].value.toLowerCase().split(' ');
+				for(var n = 0;n<arr.length;n++){
+					if(text.search(arr[n]) != -1){
+					find = true;
+					k = i;
+					break;
+				}
+				}
+				
+			}
+			if(find){
+				oTable.tBodies[0].rows[k].className = 'active';
+			}
+		}
+	};
+
+	//排序
+	var isAsc = true;
+	aInput[4].onclick = function(){
+		var arr = [];
+		for(var i=0;i<oTable.tBodies[0].rows.length;i++){
+			arr[i] = oTable.tBodies[0].rows[i];
+		}
+		arr.sort(function(tr1,tr2){
+			if(isAsc){
+				return parseInt(tr1.cells[0].innerHTML)-parseInt(tr2.cells[0].innerHTML);
+			}else{
+				return parseInt(tr2.cells[0].innerHTML)-parseInt(tr1.cells[0].innerHTML);
+			}
+		});
+
+		for(var i=0;i<arr.length;i++){
+			oTable.tBodies[0].appendChild(arr[i]);
+		}
+		isAsc = !isAsc;
+	};
+};
+</script>
+</head>
+<body>
+<input type="text" value=""/><input type="submit" value="点击添加"/></br>
+<input type="text" value=""/><input type="submit" value="点击搜索"/><input type="submit" value="点击排序"/>
+<table border="1" width=400;>
+	<thead><th>ID</th><th>姓名</th><th>年龄</th><th>工资</th></thead>
+	<tbody>
+		<tr>
+			<td>1</td><td>张三</td><td>132</td><td>433</td>
+		</tr>
+		<tr>
+			<td>4</td><td>张三</td><td>132</td><td>433</td>
+		</tr>
+		<tr>
+			<td>2</td><td>李四</td><td>123</td><td>43</td>
+		</tr>
+		<tr>
+			<td>6</td><td>王伟</td><td>32</td><td>433</td>
+		</tr>
+		<tr>
+			<td>3</td><td>王伟</td><td>32</td><td>433</td>
+		</tr>
+		
+		<tr>
+			<td>5</td><td>李四</td><td>123</td><td>43</td>
+		</tr>
+		
+	</tbody>
+</table>
+</body>
+</html>

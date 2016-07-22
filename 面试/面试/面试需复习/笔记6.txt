@@ -1,0 +1,121 @@
+一. 复习
+
+	1. 请写出文本装饰属性及值
+
+		text-decoration:none/underline/overline/line-through
+
+	2. 请写出缩进属性及值
+
+		text-indent
+
+	3. 请写出a链接的四种状态
+
+		a:link a:visited a:hover a:active
+
+	4. 请写出复合属性并描述值的作用
+
+		1. border:样式 颜色 边框粗细； border:1px solid #000;  border-bottom:1px solid #000;
+
+		2. background:颜色 背景图片 平铺方式 背景图片位置
+
+	5. 请写出盒子的组成
+
+		左外边距 + 左边框 + 左内边距 + 内容 + 右内边距 + 右边框 + 右外边距
+
+	6. 请写出内外边距的缩写形式并描述值的位置
+
+		padding:10px 20px 上下 左右
+
+		padding：10px 20px 30px; 上  左右 下
+
+	7. 请写出清除列表默认项目符号属性及值
+		
+		list-style：none;
+
+	8. 请写怎么让盒子居中
+
+		margin:0 auto;
+
+	9. 一行文本垂直居中的技巧
+
+		高=行高
+
+
+二. 元素的类型（标签，标记）
+
+	1. 行内元素  不能控制宽高，不独占一行
+
+	2. 块元素    可以控制宽高，独占一行
+
+	元素类型的转换
+
+		1. 行内转块  display:block;
+
+		2. 块转行内  display:inline;
+
+		3. 转行内块  display:inline-block;  可以控制宽高并且不独占一行
+
+三. 浮动
+
+	float:left/right;   浮动元素脱离文档流
+
+
+	清除浮动
+
+		1. clear:left/right/both;  
+
+		2. overflow:hidden;
+
+			1. 溢出隐藏
+
+			2. 盒子自适应内容的高度
+
+			3. 清除浮动
+
+		3. 伪类清除浮动
+
+			.clearFix:after{
+				clear:both;
+				display:block;
+				visibility:hidden;
+				height:0;
+				line-height:0;
+				content:"";
+			}
+
+			.clearFix{zoom:1;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+

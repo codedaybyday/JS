@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>图片时钟（动画版）</title>
+<script src="uniformMove.js"></script>
+<script >
+window.onload=function (){
+	var aLi = document.getElementsByTagName('li');
+	setInterval(showTime,1000);
+	function showTime(){
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		var day = date.getDay();
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		var str = '';
+		str = toTwo(hour)+':'+toTwo(minute)+':'+toTwo(second);
+		for(var i=0;i<aLi.length;i++){
+			turnUp(aLi,i);
+		}
+		function turnUp(aLi,i){
+			var aImage = aLi[i].getElementsByTagName('img');
+			var oDiv = aLi[i].getElementsByTagName('div')[0];
+			oDiv.index = i;
+			if(str.charAt(i) == ':'){
+				aImage[0].src= 'img/colon.JPG';
+			}else{
+				aImage[1].src = 'img/'+str.charAt(i)+'.jpg';
+				if(aImage[0].src != aImage[1].src){
+					startMove(oDiv,'top',-aImage[0].offsetHeight,function(){
+						aImage[0].src = aImage[1].src;
+						//console.log(oDiv.style.top,oDiv.index);
+						oDiv.style.top = 0+'px';
+						//console.log(oDiv.style.top,oDiv.index);
+						//aImage[1].src = aImage[0].src;
+					});
+				}
+			}
+		}
+	}
+	function toTwo(num){
+		return num<10?'0'+num:num;
+	}
+};
+</script>
+<style>
+ul{
+	list-style:none;
+	padding:0;
+}
+li{
+	float:left;
+	width:122px;
+	height:172px;
+	overflow:hidden;
+	position:relative;
+}
+div{
+	width:122px;
+	height:344px;
+	position:absolute;
+	left:0;
+	top:0;
+}
+</style>
+</head>
+<body>
+	<ul>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+		<li>
+			<div>
+				<img src="img/0.jpg"/>
+				<img src="img/0.jpg"/>
+			</div>
+		</li>
+	</ul>
+</body>
+</html>

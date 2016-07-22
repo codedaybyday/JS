@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>抖动</title>
+<script >
+window.onload=function (){
+	var oImg1=document.getElementById('img1');
+	
+	oImg1.onclick=function(){
+		shake(oImg1,'left');//这两个函数为什么是同时运行的？？？
+		shake(oImg1,'top');//如果想要实现先水平抖动然后再垂直抖动的效果的话，就要在shake函数参数中加入一个回调函数
+	};
+};
+
+function shake(obj,attr){
+	var shakeArr=[];
+	for(var i=20;i>=0;i-=2){
+		shakeArr.push(i,-i);
+	}
+	/*for(var i=0;i<shakeArr.length;i++){			//错误思路
+		var timer=setInterval(function(){
+			doMove(oImg1,shakeArr[i],'left');
+		},200);
+	}
+	if(i==shakeArr.length){
+		clearInterval(timer);
+	}*/
+	var num=0;
+	var pos=parseInt(getStyle(obj,attr));
+	clearInterval(timer);
+	var timer=setInterval(function(){
+			obj.style[attr]=pos+shakeArr[num]+'px';
+			num++;
+			if(num==shakeArr.length){
+				clearInterval(timer);
+			}
+	},50);
+}
+function getStyle(obj,attr){
+	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+}
+function doMove(obj,target,attr){
+	clearInterval(obj.timer);
+	obj.timer=setInterval(function (){
+		var dir=target>parseInt(getStyle(obj,attr))?20:-20;
+		var speed=parseInt(getStyle(obj,attr))+dir;
+		if( (speed>target&&dir>0 ) || (speed<target&&dir<0) ){
+			speed=target;
+		}
+		obj.style[attr]=speed+'px';
+		if((speed>target&&dir>0 ) || (speed<target&&dir<0) ){
+			clearInterval(obj.timer);
+		}
+	},200);
+}
+</script>
+<style>
+	#img1{
+		height:300px;
+		width:200px;
+		position:absolute;
+		top:100px;
+		left:400px;
+	}
+</style>
+</head>
+<body>
+	<img src="img/1.jpg" id="img1"/>
+</body>
+</html>

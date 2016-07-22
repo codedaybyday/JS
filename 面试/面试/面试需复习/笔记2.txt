@@ -1,0 +1,261 @@
+一. 复习
+
+	1. 什么是HTML？
+
+		超文本标记语言，最基础的网络语言
+
+	2. 请解释以下常用名词
+
+		1. WWW  万维网
+
+		2. URL  网址 路径
+
+		3. HTTP  超文本传输协议  
+
+		4. W3C  万维网联盟
+
+		5. 网站  多个网页的集合
+
+		6. 网页  后缀名以.html或者.htm
+
+	3. 请写出HTML的骨架
+
+		<html>
+			<head>
+				<title></title>
+			</head>
+			<body>
+			</body>
+		</html>
+
+	4. 请写出HTML的语法
+
+		1. 单标记
+
+			1. 有属性  eg：<hr color="red" />
+
+			2. 没有属性 eg:<br/>
+
+		2. 双标记
+			1. 有属性  eg:<h1 align="center"></h1>
+
+			2. 没有属性 eg:<title></title>
+
+	5. 请写出你所学习过的常用标记及该标记的属性
+
+		1. font   color size
+	
+		2. h1   align
+
+		3. p    align
+
+		4. hr  color width  size align
+
+		5. blockquote  
+
+		6. pre  
+
+		7. center
+
+		8. b i u del
+
+		9. body  bgcolor  background
+
+	6. doctype的作用？
+
+		不用的浏览器按照统一的规范现实页面
+
+	7. meta标记的作用？
+
+		在服务器和用户之间传达隐含信息
+
+		1. 设置关键字
+		
+		2. 设置字符集（编码）
+
+		3. 设置描述（简介）
+
+	8. 常用编码有哪几种？
+
+		1. gb2312  国家码  国标码 一个汉字占2个字节
+
+		2. UTF-8  国际码  一个汉字占3个字节
+
+	9. 请写出常用的特殊字符
+
+		1. &nbsp;
+
+		2. &lt; <
+
+		3. &gt; >
+
+		4. &copy; 版权
+
+		5. &reg; 注册
+
+
+二. XHTML的语法规范
+
+	1. 表名称必须小写
+
+	2. 属性名称必须小写
+
+	3. 必须严格嵌套   正确<p><b>XXXX</b></p> 错误:<p><b>XXXXX</p></b>
+
+	4. 必须有结束标记
+
+	5. 属性中的值要用双引号括起来
+
+三. 插入图片
+
+	<img src="图片的路径" alt="文本图片的信息" />
+
+		1. border  边框  ps：不能够设置颜色
+
+		2. width   宽度
+
+		3. height 高度
+
+		4. hspace  左右的空白
+
+		5. vspace  上下的空白
+
+		
+四. 常用图片类型
+
+	1. jpg 有1670万种颜色，不支持透明和动画，图片格式大加载慢，图片照片
+
+	2. gif  有256种颜色，支持透明和动画，图片格式小加载快，色彩不丰富logo和小图标
+
+	3. png  颜色从256种到1670万种，支持透明不支持动画，png8 png24 png32
+
+	        ps：png8=gif 不支持IE6下背景透明。（通过JS代码解决透明问题）
+
+
+五.路径
+
+	1. 绝对路径 带有盘符的 eg：F:/9期网页平面/aaa.jpg 完整的网络地址 eg:http://www.itcast.cn
+
+	2. 相对路径 不带有盘符的 eg: ../../9期网页平面/aaa.jpg  ps:相对路径不能跨盘符
+
+
+六. 列表
+
+	1. 无序列表
+
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			...
+		</ul>
+
+	2. 有序列表
+
+		<ol>
+			<li></li>
+			<li></li>
+			<li></li>
+			...
+		</ol>
+
+	3. 定义列表
+
+		<dl>
+			<dt></dt>  项目名称
+			<dd></dd>  对项目的描述
+		</dl>
+
+
+七. 链接
+
+	<a href="要链接的路径" target="_blank"></a>  target="_blank"新窗口打开
+
+
+
+八. 表格
+
+	<table></table>
+
+	table里的属性：
+
+		1. border 边框
+
+		2. bgcolor  背景颜色
+
+		3. background  背景图片
+
+		4. width/height  宽度/高度
+
+		5. align 水平对齐方式
+
+		6. cellspacing 单元格与单元格之间的距离
+
+		7. cellpadding  内容与边框之间的距离
+
+
+	行 <tr></tr>  列 <td></td> ps:在表格中真正存放内容的地方只有td
+
+	 	tr里的属性
+
+			1. align
+
+			2. valign  垂直对齐方式
+
+			3. bgcolor
+
+
+		td里的属性
+
+			1. width/height
+
+			2. align
+
+			3. valign
+
+			4. colspan  跨列
+		
+			5. rowspan  跨行
+
+			6. bgcolor
+
+
+	细线表格
+
+		1. 设置表格的边框为0  border=“0”
+
+		2. 设置表格的背景色 （背景色=表格边框的颜色）
+
+		3. 设置单元格与单元格之间的距离为1  cellspacing=“1”
+
+		4. 设置单元格的背景色 （建议背景色与浏览器背景色一致）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

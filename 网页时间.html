@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>网页时间</title>
+<script >
+window.onload=function (){
+	var oBody=document.body;
+	showTime();
+	setInterval(showTime,1000);
+	function showTime(){
+		var date=new Date();
+		var year=date.getFullYear();
+		var month=date.getMonth()+1;
+		var day=date.getDay();
+		var hour=date.getHours();
+		var minute=date.getMinutes();
+		var second=date.getSeconds();
+		var str='';
+		if(day==0){
+			day='星期天';
+		}else if(day==1){
+			day='星期一';
+		}else if(day==2){
+			day='星期二';
+		}else if(day==3){
+			day='星期三';
+		}else if(day==4){
+			day='星期四';
+		}else if(day==5){
+			day='星期五';
+		}else if(day==6){
+			day='星期六';
+		}
+		str=year+'年'+toTwo(month)+'月'+day+toTwo(hour)+':'+toTwo(minute)+':'+toTwo(second);
+		oBody.innerHTML=str;
+	}
+	function toTwo(num){
+		return num<10?'0'+num:num;
+	}
+};
+</script>
+<style>
+
+</style>
+</head>
+<body>
+	<img/>
+	<img/>
+	<img/>
+	<img/>
+	<img/>
+</body>
+</html>

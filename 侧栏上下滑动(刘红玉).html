@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C
+//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>缓冲运动</title>
+<script >
+/*
+    实现的效果：无论滚动条如何滚动，侧栏的红色块总是居在视野的中央
+*/
+window.onscroll=function(){ 
+    var box = document.getElementById('box');
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var target = scrollTop + (document.documentElement.clientHeight-box.offsetHeight)/2;
+    target = parseInt(target);
+    doMove(box,target);     //  加上运动后FF上小块来回弹跳，最后在某一个位置固定，没有出现理想中的效果，IE则完全没有效果
+    /*box.style.top = target + 'px';*/      //不加上运动，完全没有问题
+   }
+    var timer = null;  
+    function doMove(obj,target){
+            //缓冲运动
+        clearInterval( timer );
+        timer = setInterval(function(){
+            /*var t = parseInt(getStyle(obj,attr)); //当前的属性值*/
+            /*console.log(getStyle(obj,attr));*/
+            var t = parseInt(obj.offsetTop);
+            /*console.log(t);*/
+            var speed = ( target- t )/8 ;
+            speed = speed>0?Math.ceil(speed):Math.floor(speed);    //缓冲公式  上下取整获取
+            /*console.log(speed);*/
+            /*if( (target < t&&speed>0) || (target > t&&speed<0)){
+                t = target;
+            }*/
+            /*obj.style[attr] = t + 'px';*/
+            if( target == t){   //到达目标点就取消定时器
+                clearInterval( timer );
+            } else {
+                obj.style.top=t + speed + 'px';
+            }
+        },40);
+    }
+    function getStyle(obj,attr){    //获取指定属性的值
+        return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+    }
+</script>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+#box{
+    height:100px;
+    width:100px;
+    background:red;
+    position:absolute;
+    right:0;
+}
+body{
+    height:2000px;
+}
+</style>
+</head>
+<body>
+    <div id='box'>
+    </div>
+</body>
+</html>

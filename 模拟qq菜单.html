@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ä£Äâqq²Ëµ¥</title>
+	<script >
+		window.onload=function (){
+			var qq=document.getElementById('qq');
+			var title=document.getElementById('title');
+			var timer=null;
+			qq.onmouseover=show;
+			qq.onmouseout=hide;
+			title.onmouseout=hide;
+			title.onmouseover=show;
+			
+			function show(){
+				clearTimeout(timer);
+				title.style.display='block';
+			}
+			function hide(){
+				timer=setTimeout(function(){
+					title.style.display='none';
+				},500);
+			}
+		};
+	</script>
+	<style>
+		#qq{
+			height:400px;
+			width:200px;
+			background:yellow;
+		}
+		#title{
+			position:absolute;
+			height:200px;
+			width:100px;
+			top:10px;
+			left:220px;
+			background:red;
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<div id="qq"></div>
+	<div id="title"></div>
+</body>
+</html>

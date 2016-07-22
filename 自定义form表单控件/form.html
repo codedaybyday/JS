@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>自定义form表单控件 —— www.miaov.com —— 妙味课堂</title>
+<link href="miaov_style.css" rel="stylesheet"/>
+<script type="text/javascript">
+window.onload = function(){
+	var aText = document.getElementsByClassName('text');
+	var defaultText = ['尊姓大名','联系QQ或MSN','你来自哪里？'];
+	var oBtnCity = document.getElementById('btn_come_from_drop_down');
+	var area = document.getElementById('come_from_drop_down');
+	var gender_man = document.getElementById('gender_man');
+	var gender_woman = document.getElementById('gender_woman');
+	var gender =document.getElementById('gender');
+	var hobby = document.getElementsByClassName('hobby')[0];
+	var hobbyInput = document.getElementById('hobby');
+	//姓名，联系方式
+	for(var i=0;i<aText.length;i++){
+		aText[i].default = true;
+		aText[i].index = i;
+		aText[i].onfocus = function(){
+			if(this.default){
+				this.value = '';
+				this.style.color = 'black';
+			}
+			
+		};
+		aText[i].onblur = function(){
+			var re = /\S/;
+			if(!re.test(this.value)){				//之前用的是this.value == ''
+				this.value = defaultText[this.index];
+				this.style.color = '#777777';
+				this.default = true;
+			}else{
+				this.default = false;
+			}
+		};
+	}
+	//你来自哪里
+	oBtnCity.onclick = function(evt){
+		var event = evt || window.event;
+		area.style.display = 'block';
+		this.className = 'select_active';
+		event.cancelBubble = true;
+		
+		var aCityLi = area.getElementsByTagName('li');
+		for(var i=0;i<aCityLi.length;i++){
+			if(aText[2].value == aCityLi[i].innerHTML){
+				aCityLi[i].className = 'active';
+			}
+		}
+		for(var i=0;i<aCityLi.length;i++){
+			aCityLi[i].onmouseover = function (){
+				for(var j=0;j<aCityLi.length;j++){
+					aCityLi[j].className = '';
+				}
+				this.className = 'active';
+			};
+			aCityLi[i].onmouseout = function (){
+				this.className = '';
+			};
+			aCityLi[i].onclick = function (){
+				aText[2].value = this.innerHTML;
+				aText[2].style.color = 'black';
+			};
+		}
+	};
+	document.onclick = function(){
+		area.style.display = '';
+		oBtnCity.className = 'select_normal';
+	};
+	//性别
+	gender_man.onclick = function(){
+		this.className = 'men_active';
+		gender_woman.className = 'woman_normal';
+		gender.value = '男';
+	};
+	gender_woman.onclick = function(){
+		this.className = 'woman_active';
+		gender_man.className = 'men_normal';
+		gender.value = '女';
+	};
+	//爱好
+	var aHobbyLi = hobby.getElementsByTagName('li');
+	for(var i=0;i<aHobbyLi.length;i++){
+		var str = '';
+		aHobbyLi[i].onclick = function(){
+			if(this.className == ''){
+				this.className = 'hobby_select';
+			}else{
+				this.className = '';
+			}
+			var str = "";
+			for(var j=0;j<aHobbyLi.length;j++){
+				if(aHobbyLi[j].className == 'hobby_select'){
+					str += aHobbyLi[j].innerHTML + ',';
+				}
+			}
+			hobbyInput.value = str;
+		};
+	}
+}
+</script>
+<style>
+dl{
+	height:470px;
+	width:360px;
+	margin:30px auto;
+	background:url(images/dl_bg.gif);
+	font-family:微软雅黑;
+	padding:20px;
+	color:#777777;
+}
+dd{
+	position:relative;
+	width:360px;
+	margin-bottom:20px;
+	overflow:auto;
+}
+.clear{
+	overflow:auto;
+	zoom:1;
+}
+*{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+dl dt{
+	font-size:22px;
+	color:#6699cc;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+.text{
+	height:42px;
+	width:360px;
+	border:none;
+	background:url(images/ico.gif) no-repeat left top;
+	font-size:16px;
+	font-weight:bold;
+	line-height:42px;
+	color:#777777;
+	text-indent:10px;
+}
+#btn_come_from_drop_down,.select_normal{
+	height:42px;
+	line-height:42px;
+	position:absolute;
+	top:0;
+	right:0;
+	z-index:2;
+	width:57px;
+}
+.select_normal{
+	background:url(images/ico.gif) no-repeat -199px -52px;
+}
+.select_active{
+	background:url(images/ico.gif) no-repeat -256px -52px;
+}
+#come_from_drop_down{
+	width:300px;
+	overflow:hidden;
+}
+#come_from_drop_down li{
+	height:30px;
+	line-height:30px;
+	text-indent:10px;
+	width:150px;
+	float:left;
+	cursor:pointer;
+}
+#come_from_drop_down{
+	border:1px solid #bababa;
+	background:white;
+	position:absolute;
+	top:42px;
+	left:0;
+	display:none;
+	overflow:hidden;
+}
+.active{
+	background:#ffccff;
+}
+h2{
+	font-size:14px;
+	float:left;
+	padding-top:10px;
+}
+.sex{
+	float:left;
+	margin-left:50px;
+	width:84px;
+}
+#gender_man,#gender_woman{
+	width:42px;
+	height:35px;
+	float:left;
+}
+.men_active{
+	background:url(images/ico.gif) left -53px;
+}
+.men_normal{
+	background:url(images/ico.gif) -92px -53px;
+}
+.woman_active{
+	background:url(images/ico.gif) -134px -53px;
+}
+.woman_normal{
+	background:url(images/ico.gif) -42px -53px;
+}
+.hobby{
+	float:left;
+	margin-left:50px;
+	width:246px;
+}
+.hobby li{
+	float:left;
+	height:42px;
+	line-height:42px;
+	text-indent:30px;
+	width:82px;
+	background:url(images/ico.gif) no-repeat -328px -51px;
+	cursor:pointer;
+}
+.hobby .hobby_select{
+	background: url(images/ico.gif) no-repeat -72px -101px
+}
+.btn{
+	float:left;
+	margin-left:40px;
+}
+.btn input{
+	border:none;
+	background:url(images/ico.gif) no-repeat left -100px;
+	width:54px;
+	height:43px;
+	line-height:43px;
+	color:white;
+	font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<dl>
+<form action="http://www.baidu.com" method="get">
+    <dt>填写基本信息</dt>
+    <dd><input id="name" name="name" type="text" class="text" value="尊姓大名" /></dd>
+    <dd><input id="contact" name="contact" type="text" class="text" value="联系QQ或MSN" /></dd>
+    <dd style="z-index: 2;overflow:visible">
+        <div id="btn_come_from_drop_down" class="select_normal"></div>
+        <input id="come_from" name="come_from" type="text" class="text" value="你来自哪里？" />
+        <ul id="come_from_drop_down" class="area">
+            <li>北京</li>
+            <li>上海</li>
+            <li>杭州</li>
+            <li>深圳</li>
+            <li>妙味课堂</li>
+            <li>乌鲁木奇</li>
+            <li>哈尔滨</li>
+            <li>天津</li>
+            <li>湖北</li>
+            <li>海南</li>
+        </ul>
+    </dd>
+   	<dd class="clear">
+		<input id="gender" name="gender" type="hidden" />
+        <h2>性别</h2>
+        <ul class="sex">
+            <li id="gender_man" title="男" class="men_active"></li>
+            <li id="gender_woman" title="女" class="woman_normal"></li>
+        </ul>
+    </dd>
+    <dd class="clear">
+		<input id="hobby" name="hobby" type="hidden" />
+        <h2>爱好</h2>
+        <ul id="hobby_drop_down" class="hobby">
+            <li>上网</li>
+            <li>看电影</li>
+            <li>游泳</li>
+            <li>打篮球</li>
+            <li>唱歌</li>
+            <li>旅游</li>
+        </ul>
+    </dd>
+    <dd>
+        <h2>就这样！</h2>
+        <div class="btn"><input type="submit" value="提交" /></div>
+    </dd>
+</form>
+<h5><a href="http://www.miaov.com">妙味课堂 - www.miaov.com</a></h5>
+</dl>
+
+</body>
+</html>

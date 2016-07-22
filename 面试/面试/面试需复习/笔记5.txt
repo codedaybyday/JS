@@ -1,0 +1,191 @@
+一. 复习
+
+	1. 请写出CSS的引入方式并用代码表示
+
+		1. 行内式
+	
+		2. 内嵌式
+
+		3. 链接式  <link href="" rel="stylesheet" type="text/css" />
+	
+		4. 导入式  @import url();
+
+	2. 请写出CSS命名规则
+
+		1. 不能以数字开头
+
+		2. 不能占用关键字
+
+		3. 不能使用中文
+
+	3. 请写出所学过的CSS控制字体及常用属性值
+
+		1. font-variant:normal/small-caps
+
+		2. font-size
+
+		3. font-family
+
+		4. font-weight:normal/bold
+
+		5. font-style:normal/italic
+
+		6. line-height
+
+		7. text-indent 缩进
+
+	4. 请写出font的缩写形式
+
+		font:italic small-caps bold 12px/2em "宋体";
+
+	5. 请写出复合选择器有哪些，并用代码演示
+
+		1. 标签指定式  p.one{}
+	
+		2. 选择符分组 p,.one,#two{}
+
+		3. 后代选择器  ul li{}
+
+	6. 请写出你所学过的含有语义的标记
+
+		1. strong
+
+		2. em
+
+		3. cite
+
+		4. h1
+
+	7. 请写出CSS的特性
+
+		1. 层叠性  后写会覆盖先写的属性
+
+		2. 继承性   子级会继承父级的属性
+
+	8. 请写出CSS选择器的权限
+
+		行内式 > id选择器 > 类选择器 > 标签   id100  类10  标签1  通配符0
+
+	10. 请写出你所理解的DIV与SPAN的区别
+
+		两个标记都是容器，没有实意，div较大的容器 span较小的容器
+
+二. CSS控制文本
+
+	1. text-decoration：none/underline/overline/line-through； 文本装饰
+			    无    下划线   上划线    删除线
+
+	2. letter-spacing:normal[默认] length [长度单位]  字符间距
+
+	3. word-spacing:normal[默认] length [长度单位] 单词间距
+
+	4. word-break : normal [默认允许换行] break-all[中英文断词换行]  keep-all[中英文不换行]		
+	   ps：中文：中文之间没有空格也会自动换行，如果想让文字不换行使用keep-all
+               英文：英文之间没有空格不会自动换行，如果想让文字换行break-all或者给英文单词之间加空格
+
+	5. white-space:normal[自动换行] pre[换行和空白受保护] nowrap[强制在同一行显示] 对象中空白的处理
+
+	6. text-transform:none [正常大小] capitalize[每个单词的首字母转换成大写 ] uppercase [转大写] lowercase [转小写]
+
+	7. vertical-align : sub[设置文字为下标]  super[设置文字为上标] top [顶端对齐] text-bottom [底端对齐]
+
+三. a链接的四种状态
+
+	1. a:link  未访问时
+
+	2. a:visited 访问后的状态
+
+	3. a:hover  鼠标悬停时的状态
+
+	4. a:active 鼠标点击不动时的状态
+
+	ps:当页面中4种状态同时存在时，有书写顺序 L - V - H - A （注意浏览器版本）
+
+
+四. 复合属性
+
+	1. border:边框的粗细 边框的样式 边框的颜色；
+
+	   border-width     border-style  border-color
+
+
+	2. background : background-color || background-image || background-repeat || background-attachment || background-position 
+	
+			背景颜色             背景图片           背景图片平铺方式     背景图片依附方式          背景图片的位置
+
+	   background:#F00 url() repeat left center;
+
+
+五. 盒子模型
+
+	盒子宽度的组成：左外边距 + 左边框 + 左内边距 + 内容 + 右内边距 + 右边框 + 右外边距
+
+	1. 盒子的内外边距
+
+		1. 内边距： padding
+
+		2. 外边距： margin
+
+
+	2. 边距的书写形式
+
+		1. padding 
+
+			padding-left  padding-right padding-top padding-bottom
+
+		2. margin  同上
+
+
+	3. 边距的缩写形式
+
+		1. padding:10px;  一个值  上下左右
+
+	 	   padding:10px 20px; 两个值  上下  左右
+
+		   padding：10px 20px 30px; 三个值  上  左右 下
+
+		   padding:10px 20px 30px 40px; 四个值   上 右 下 左
+
+		2. margin 同上
+
+	4. 盒子的居中（水平）
+
+		margin:0 auto;  ps:auto是自动的意思，auto控制的一定是左右
+
+
+*****一行文本垂直居中技巧
+
+	盒子的高度和行高相等 （盒子的高度等于行高）
+
+*****list-style:none; 清除无序列表的项目符号
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

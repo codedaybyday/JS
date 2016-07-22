@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+	window.onload = function(){
+		var map = document.getElementsByClassName('map')[0];
+		var mapArr = [
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,0,0,3,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		];
+		var open = [];
+		var close = [];
+		var beginNode,endNode;
+		var size = 19;
+		var path = [];
+		init();
+
+		function init(){
+			var col = Math.sqrt(mapArr.length);
+			var oFrag = document.createDocumentFragment();
+
+			for(var i=0;i<mapArr.length;i++){
+				var li = document.createElement('li');
+				li.style.width = size + 'px';
+				li.style.height = size + 'px';
+				if(mapArr[i] == 1){//起点
+					li.className = 'sty1';
+				}else if(mapArr[i] == 2){//障碍物
+					li.className = 'sty2';
+					close.push(li);
+				}else if(mapArr[i] == 3){//终点
+					li.className = 'sty3';
+				}
+				oFrag.appendChild(li);
+			}
+			map.appendChild(oFrag);
+			map.style.width = col * (size +1)+'px';
+			beginNode = document.getElementsByClassName('sty1')[0];
+			endNode = document.getElementsByClassName('sty3')[0];
+			open.push(beginNode);
+			var button = document.getElementById('button_p').getElementsByTagName('input')[0];
+			button.onclick = find;
+		}
+		function find(){
+			/*if(node == undefined){
+				console.log('open队列已经没有元素了',open);
+			}*/
+			//console.log(open);
+			var result = [];
+			for(var i=0,len=map.children.length;i<len;i++){
+				if(filter(map.children[i])){
+					result.push(map.children[i]);
+				}
+			}
+			var node = open.shift();
+			for(var i=0;i<result.length;i++){
+				if(Math.abs(node.offsetLeft - result[i].offsetLeft)<=size+1 && Math.abs(node.offsetTop - result[i].offsetTop) <= size+1 ){
+					result[i].cost = f(result[i]);
+					result[i].parent = node;
+					open.push(result[i]);
+				}
+			}
+			open.sort(function(node1,node2){
+				return node1.cost-node2.cost;
+			});
+			//console.log(open,node);
+			close.push(node);
+			//console.log(open)
+			if(node == endNode){//递归终止条件
+				console.log('over');
+				find_path(node);
+				//node = node.parent;
+				//console.log(path);
+				node = node.parent;
+				//console.log(path);
+				var iNow = 0;
+				var timer = setInterval(function(){
+					path[iNow].className = 'sty1';
+					console.log(path.length,iNow);
+					iNow++;
+					if(iNow == path.length){
+						console.log('stop');
+						clearInterval(timer);
+					}
+					
+				}, 500);
+				return;
+			}
+			find();
+			function filter(node){
+				for(var i=0;i<close.length;i++){
+					if(close[i] == node){
+						return false;
+					}
+				}
+				for(var i=0;i<open.length;i++){
+					if(open[i] == node){
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		function find_path(node){
+			//console.log(node)
+			path.unshift(node);
+			if(node == beginNode){
+				return;
+			}
+			if(node.parent){
+				find_path(node.parent);
+			}
+			
+		}
+		function f(node){
+			return g(node)+h(node);
+		}
+		function g(node){
+			var a = node.offsetLeft-beginNode.offsetLeft;
+			var b = node.offsetTop-beginNode.offsetTop;
+			return Math.sqrt(a*a+b*b);
+		}
+		function h(node){
+			var a = node.offsetLeft-endNode.offsetLeft;
+			var b = node.offsetTop-endNode.offsetTop;
+			return Math.sqrt(a*a + b*b);
+		}
+	}	
+	</script>
+	<style>
+	.map{
+		border-left:1px solid #000;
+		border-top:1px solid #000;
+		margin: 0 auto;
+		overflow: hidden;
+		padding:0;
+	}
+	.map li{
+		border-right:1px solid #000;
+		border-bottom:1px solid #000;
+		float: left;
+		list-style:none;
+	}
+	.sty1{
+		background: #ED1111;
+	}
+	.sty2{
+		background: #071FF7;
+	}
+	.sty3{
+		background: green;
+	}
+	#button_p{
+		text-align:center;
+	}
+	</style>
+</head>
+<body>
+	<ul class="map"></ul>
+	<p id="button_p"><input type="button" value="开始寻路" /></p>
+</body>
+</html>

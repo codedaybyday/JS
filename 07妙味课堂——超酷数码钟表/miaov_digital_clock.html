@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//h2D XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/h2D/xhtml1-transitional.h2d">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>超酷数码钟表 - 妙味课堂 - www.miaov.com</title>
+<link href="miaov_style.css" rel="stylesheet" type="text/css" />
+<!-- <script type="text/javascript" src="miaov.js"></script> -->
+<script>
+window.onload = function(){
+	var oDiv = document.getElementById('clock');
+	var aImg = oDiv.getElementsByTagName('img');
+	var aNum_img = [];
+	var aNow = [];
+	var timer = null;
+	var week = ['one','two','three','four','five','six','seven'];
+	for(var i=0;i<aImg.length;i++){
+		if(aImg[i].alt && !isNaN(aImg[i].alt)){
+			aNum_img.push(aImg[i]);
+		}
+	}
+	aNum_img.push(aImg[aImg.length-2]);
+	for(var i=0;i<aNum_img.length;i++){
+		aNum_img[i].now = -1;
+	}
+	var iHeight = 0;
+	var targetHeight = 0;
+	var maxHeight = 0;
+	timer = setInterval(runtime,1000);
+	function runtime(){
+		iHeight = aNum_img[0].offsetHeight;
+		targetHeight = -iHeight;
+		maxHeight = iHeight;
+		//alert(maxHeight)
+		var beStop = false;
+		var timer = setInterval(function(){
+			iHeight -= 5;
+			//alert(iHeight)
+			aNow = getArrayTime();
+			if(iHeight<=targetHeight){
+				clearInterval(timer);
+				beStop = true;
+				iHeight = targetHeight;
+			}
+			
+			for(var i=0;i<aNum_img.length;i++){
+				if(aNum_img[i].now != aNow[i]){
+					if(iHeight>0){
+						aNum_img[i].style.height = iHeight+'px';
+						aNum_img[i].style.top = -(maxHeight - iHeight)/2+'px';
+					}else{
+						if(i == aNum_img.length - 1){	//如果是星期，就直接变换
+							aNum_img[i].src = 'images/'+week[aNow[i]]+'.png';
+							aNum_img[i].style.height = maxHeight+'px';
+							aNum_img[i].style.top = 0+'px';
+						}else{
+							aNum_img[i].src = 'images/'+aNow[i]+'.png';
+							aNum_img[i].style.height = -iHeight+'px';
+							aNum_img[i].style.top = -(maxHeight+iHeight)/2+'px';
+						}
+						//aNum_img[i].now = aNow[i];
+					}
+				}
+			}
+			if(beStop){
+				for(var i=0;i<aNum_img.length;i++){
+					aNum_img[i].now = aNow[i];
+				}
+			}
+		},30);
+		
+	}
+	function getArrayTime(){
+		var oDate = new Date();
+		var year = oDate.getFullYear();
+		var month = oDate.getMonth();
+		var day = oDate.getDate();
+		var hours = oDate.getHours();
+		var minutes = oDate.getMinutes();
+		var seconds = oDate.getSeconds();
+		var week = (oDate.getDay()+6)%7;
+		var str = ''+year+toTwo(month+1)+toTwo(day)+toTwo(hours)+toTwo(minutes)+toTwo(seconds)+toTwo(week);
+		var arr = str.split('');
+		return arr;
+	}
+	function toTwo(num){
+		return num<10?'0'+num:num;
+	}
+}
+</script>
+</head>
+
+<body>
+
+<div id="clock" class="date">
+    <h2><img src="images/title.png" /></h2>
+    <div class="year">
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/year.png" alt="year" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/month.png" alt="month" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/seven.png" alt="seven" longdesc="http://www.miaov.com" />
+    </div>
+    <div class="time">
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/sign.png" alt="sign" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/sign.png" alt="sign" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="pos2" src="images/week.png" alt="week" longdesc="http://www.miaov.com" />
+        <img class="num2" src="images/one.png" alt="one" longdesc="http://www.miaov.com" />
+    </div>
+    <div class="url" title="妙味课堂-超酷时钟"><a href="http://www.miaov.com/"><img src="images/miaov.png" alt="妙味课堂" longdesc="http://www.miaov.com" /></a></div>
+</div>
+
+</body>
+</html>

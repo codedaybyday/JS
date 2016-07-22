@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>divœ¬¬‰</title>
+<script >
+window.onload=function (){
+	var oBody=document.getElementsByTagName('body')[0];
+	var str='';
+	var len=20;
+	var timer=null;
+	oBody.onOff=true;
+	for(var i=0;i<len;i++){
+		/*str+='<div style="height:100px;width:100px;position:absolute;top:20px;left:110*i+'px';background:red;"></div>';*/
+		str += '<div style="width:50px; height:50px; background:red; position:absolute; top:0px; left:'+ i*60 +'px;"></div>';
+	}
+	oBody.innerHTML=str;
+	var aDiv=document.getElementsByTagName('div');
+	var num=0;
+	oBody.onclick=function(){
+		clearInterval(timer);
+		timer=setInterval(function(){
+			if(oBody.onOff==true){
+				doMove(aDiv[num],400,'top');
+			}else{
+				doMove(aDiv[num],0,'top');
+			}
+			num++;
+			if(num==aDiv.length){
+				clearInterval(timer);
+				oBody.onOff=!oBody.onOff;
+				num=0;
+			}
+		},300);
+	};
+};
+
+function shake(obj,attr){
+	var shakeArr=[];
+	for(var i=20;i>=0;i-=2){
+		shakeArr.push(i,-i);
+	}
+	/*for(var i=0;i<shakeArr.length;i++){			//¥ÌŒÛÀº¬∑
+		var timer=setInterval(function(){
+			doMove(oImg1,shakeArr[i],'left');
+		},200);
+	}
+	if(i==shakeArr.length){
+		clearInterval(timer);
+	}*/
+	var num=0;
+	var pos=parseInt(getStyle(obj,attr));
+	clearInterval(timer);
+	var timer=setInterval(function(){
+			obj.style[attr]=pos+shakeArr[num]+'px';
+			num++;
+			if(num==shakeArr.length){
+				clearInterval(timer);
+			}
+	},50);
+}
+function getStyle(obj,attr){
+	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+}
+function doMove(obj,target,attr,endFn){
+	clearInterval(obj.timer);
+	obj.timer=setInterval(function (){
+		var dir=target>parseInt(getStyle(obj,attr))?50:-50;
+		var speed=parseInt(getStyle(obj,attr))+dir;
+		if( (speed>target&&dir>0 ) || (speed<target&&dir<0) ){
+			speed=target;
+		}
+		obj.style[attr]=speed+'px';
+		if((speed>target&&dir>0 ) || (speed<target&&dir<0) ){
+			clearInterval(obj.timer);
+		}
+	},200);
+	if(typeof endFn=='function'){
+		endFn();
+	}
+}
+</script>
+<style>
+	
+</style>
+</head>
+<body>
+
+</body>
+</html>

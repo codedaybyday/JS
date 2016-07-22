@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.main{
+			width:400px;
+		}
+		input{
+			height:30px;
+			line-height:30px;
+			border:1px solid red;
+		}
+		#list{
+			width:400px;
+			padding:0;
+			list-style:none;
+		}
+		#list li{
+			height:30px;
+			line-height:30px;
+			background:orange;
+		}
+	</style>
+	<script type="text/javascript">
+	function list(data){
+		console.log(data)
+		var oList = document.getElementById('list');
+		var html = '';
+		for(var i=0;i<data.s.length;i++){
+			html += '<li>'+data.s[i]+'</li>';
+		}
+		oList.innerHTML = html;
+	}
+	window.onload = function(){
+		var oBtn = document.getElementsByTagName('input')[0];
+
+		oBtn.onkeyup = function(){
+			if(this.value != ''){
+				var oScript = document.createElement('script');
+
+				oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+this.value+'&json=1&p=3&req=2&bs='+this.value+'&pbs='+this.value+'&sc=eb&csor=0&cb=list';
+
+				document.documentElement.appendChild(oScript);
+			}
+		};
+	};
+	</script>
+</head>
+<body>
+	<div class="main">
+		<input type="text"/>
+		<ul id="list">
+		</ul>
+	</div>
+</body>
+</html>

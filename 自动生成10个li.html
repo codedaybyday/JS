@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>自动生成10个li</title>
+	<script >
+		window.onload=function (){
+			var flag=true;
+			var colorArr=["yellow","green","blue","red"];
+			var str='';
+			var ull=document.getElementById('ull');
+			var btn=document.getElementById('btn');
+			btn.onclick=function (){
+				if(flag){
+					for(var i=0;i<10;i++){
+						str+='<li class="block">'+i+'</li>';
+					}
+					ull.innerHTML=str;
+					var blocks=ull.getElementsByTagName('li');
+					var len=blocks.length;
+					for(var i=0;i<len;i++){
+						var num=Math.floor(Math.random()*4,0);
+						blocks[i].style.background=colorArr[num];
+					}
+					flag=false;
+				}
+			};
+			
+		};
+	</script>
+	<style>
+	.block{
+		height:50px;
+		width:50px;
+		font-size:30px;
+		text-align:center;
+		line-height:50px;
+		list-style:none;
+		float:left;
+		margin-right:10px;
+		border:1px solid black;
+	}
+	</style>
+</head>
+<body>
+	<input type="submit" value="自动生成10个li" id="btn"/>
+	<ul id="ull">
+	</ul>
+</body>
+</html>

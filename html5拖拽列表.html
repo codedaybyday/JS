@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#container{
+		width:400px;
+		height:200px;
+		border:1px solid #ccc;
+	}
+	#list{
+		width:300px;
+		border:1px solid red;
+		min-height:100px;
+	}
+	#list li{
+		height:40px;
+		line-height:40px;
+	}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var oList = document.getElementById('list');
+			var oContainer = document.getElementById('container');
+			var aLi = document.getElementsByTagName('li');
+			for(var i=0;i<aLi.length;i++){
+				aLi[i].draggable = true;
+				aLi[i].flag = false;
+				aLi[i].ondragstart = function(e){
+					//e.preventDefault();//preventDefault()
+					this.flag = true;
+				};
+				aLi[i].ondragend = function(e){
+					e.preventDefault();
+					this.flag = false;
+				};
+				oContainer.ondragleave = function(e){
+					//e.preventDefault();
+					for(var i=0;i<aLi.length;i++){
+						if(aLi[i].flag){
+							this.appendChild(aLi[i]);
+						}
+					}
+				};
+				oList.ondragleave = function(e){
+					//e.preventDefault();
+					//console.log(aLi)
+					for(var i=0;i<aLi.length;i++){
+						if(aLi[i].flag){
+							this.appendChild(aLi[i]);
+						}
+					}
+				};
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="container"></div>
+	<ul id="list">
+		<li>第一条数据</li>
+		<li>第二条数据</li>
+		<li>第三条数据</li>
+	</ul>
+</body>
+</html>

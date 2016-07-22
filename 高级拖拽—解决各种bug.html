@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+#div1{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	Drag('div1');
+}
+
+function Drag(id){		//拖拽
+	var oDiv = document.getElementById(id);
+	oDiv.onmousedown = fnDown;
+	function fnDown(ev){
+		var event = window.event || ev;
+		var disX = event.clientX - this.offsetLeft;
+		var disY = event.clientY - this.offsetTop;
+		if(oDiv.setCapture){	//	兼容IE
+			oDiv.onmousemove = fnMove;
+			oDiv.setCapture();	//事件捕获
+			oDiv.onmouseup = fnUp;			///////////////////////----------2
+			/*oDiv.onmouseup = function(){	//////////////--------------1
+				fnUp();	//这样写的时候fnUp中this变量是window对象，而不是此div元素 了，所以this.onmousemove = 
+						//null;根本没有取消div元素的鼠标移动事件
+				if(this.releaseCapture){		
+					this.releaseCapture();
+				}
+			};*/
+		}else{
+			document.onmousemove = fnMove;
+			document.onmouseup = fnUp;
+		}
+		
+		return false;
+
+		function fnMove(ev){
+			var event = window.event || ev;
+			oDiv.style.left = event.clientX - disX + 'px';
+			oDiv.style.top = event.clientY - disY + 'px';
+		}
+		function fnUp(){
+			this.onmousemove = null;
+			this.onmouseup = null;
+			if(this.releaseCapture){		//为什么把这句注释掉，再注释掉2处，改成1处的样子 处，FF就会出现bug，放开鼠标的时候，小块还是会跟着动
+				this.releaseCapture();
+			}
+		}
+	}
+
+}
+</script>
+</head>
+<body>
+	<div id="div1">这是一个拖拽层</div>
+</body>
+</html>

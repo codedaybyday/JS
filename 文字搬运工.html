@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>文字搬运工</title>
+<script >
+window.onload = function (){
+	var oA = document.getElementsByTagName('a')[0];
+	var oTextarea = document.getElementsByTagName('textarea')[0];
+	var oSpan = document.getElementsByTagName('span')[0];
+	var oUl = document.getElementsByTagName('ul')[0];
+	var aLi = oUl.getElementsByTagName('li');
+	var oRight = document.getElementById('right');
+	
+	var timer = null;
+	var oldLi = aLi[0];
+	oA.onclick = function (){
+		if( oTextarea.value ==''){
+			alert("输入为空！无法转移！");
+		}else{
+			clearInterval( timer );
+			var len = oTextarea.value.length;
+			var num = 0;
+			oRight.innerHTML = '';
+			oUl.style.display = 'block';
+			oA.className = 'btn_active';
+			timer = setInterval( function (){
+				var text = oTextarea.value;
+				var firstWord = text.substring(0,1);
+				var otherWord = text.substring(1);
+				oldLi.className = '';
+				aLi[num%aLi.length].className = 'active';
+				oldLi = aLi[num%aLi.length];
+				right.innerHTML += firstWord; 
+				oTextarea.value = otherWord;
+				oSpan.innerHTML = num+1+'/'+len;
+				num++;
+				if(num == len){
+					clearInterval( timer );
+					oUl.style.display = 'none';
+					oA.className = '';
+				}
+			},50);
+		}
+	};
+	
+};
+</script>
+<style>
+#content{
+	height:250px;
+	width:800px;
+	border:10px solid gray;
+	margin:50px auto;
+	padding:10px;
+}
+#left{
+	height:250px;
+	float:left;
+	width:300px;
+}
+#middle{
+	height:250px;
+	float:left;
+	width:200px;
+}
+#middle a{
+	display:block;
+	height:40px;
+	line-height:40px;
+	width:100px;
+	background:orange;
+	text-align:center;
+	margin:0 auto;
+	color:white;
+	font-weight:bold;
+	cursor:pointer;
+}
+#middle span{
+	height:40px;
+	width:60px;
+	display:block;
+	line-height:40px;
+	text-align:center;
+	margin:0 auto;
+}
+
+#right{
+	height:228px;
+	width:278px;
+	float:left;
+	padding:10px;
+	background:orange;
+	border:1px dashed black;
+	word-wrap:break-word;
+	overflow:hidden;
+}
+textarea{
+	height:228px;
+	display:block;
+	width:278px;
+	resize:none;
+	padding:0;
+	padding:10px;
+	border:1px dashed black;
+	background:pink;
+}
+ul{
+	list-style:none;
+	padding:0;
+	margin-left:50px;;
+	display:none;
+}
+ul li{
+	float:left;
+	height:10px;
+	width:10px;
+	background:orange;
+	margin-right:2px;
+}
+.active{
+	background:red;
+}
+.btn_active{
+	opacity:0.5;
+}
+</style>
+</head>
+<body>
+	<div id="content">
+		<div id="left">
+			<textarea >在影视制作的前期拍摄中，拍摄出来的图片由于受到自然环境、光照和设备等客观因素的影响，有的拍摄画面与真实效果有一定的偏差，可能会出现偏色、曝光不足或者是曝光过度的现象。这时就必须对画面进行调色处理，最大限度还原它的本来面目。而在AE等后期制作软件中，通过色彩校正的功能就可以实现目标。</textarea>
+		</div>
+		<div id="middle">
+			<a >把文字右移</a>
+			<span></span>
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<div id="right"></div>
+	</div>
+</body>
+</html>

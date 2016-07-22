@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>自动轮播</title>
+<script >
+window.onload=function(){						//遗留的问题：如果黄色小块点击得太快的话，图片的运动就会在中间位置来回运动，卡住
+	var box = document.getElementById('box');
+	var ol = document.getElementsByTagName('ol')[0];
+	var ul = document.getElementsByTagName('ul')[0];
+	var aLi = ol.getElementsByTagName('li');
+	var aImg = ol.getElementsByTagName('img');
+	var timer = null;		//有两个定时器，必须要有两个变量，共用一个的话就会，出现遗留的那个问题
+	var timer1 = null;
+	var oldLi=aLi[0];
+	var num = 0;
+	timer = setInterval(function (){
+		num = (num + 1)%aLi.length;
+		aLi[num].className = 'active';
+		oldLi.className = '';
+		oldLi = aLi[num];
+		doMove(ul,-num*box.clientHeight,'top');
+	},2000);
+	
+	box.onmouseover = function (){
+		clearInterval(timer);
+	};
+	
+	box.onmouseout = function (){
+		clearInterval(timer);
+		timer = setInterval(function (){
+			num = (num + 1)%aLi.length;
+			aLi[num].className = 'active';
+			oldLi.className = '';
+			oldLi = aLi[num];
+			doMove(ul,-num*box.clientHeight,'top');
+		},2000);
+	};
+	
+	for(var i=0 ;i<aLi.length; i++){
+		aLi[i].index = i;
+		aLi[i].onclick = function (){
+			this.className = 'active';			//this不能用aLi[i]代替，匿名函数中的变量是全局变量，而在全局变量中没有定义i
+			oldLi.className = '';
+			num = this.index;
+			oldLi = this;
+			doMove(ul,-num*box.clientHeight,'top');
+		}
+	}
+	
+	function getStyle(obj,attr){
+		return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+	}
+	
+	function doMove(obj,target,attr){			//缓冲运动
+		clearInterval( timer1 );
+		timer1 = setInterval( function (){
+			var t = parseInt( getStyle(obj , attr) );
+			var speed = ( target- t )/8 >0?Math.ceil( ( target-t )/8):Math.floor( ( target-t)/8 );
+			t += speed;
+			if( (target < t&&speed>0) || (target > t&&speed<0)){
+				t = target
+			}
+			obj.style[attr] = t + 'px';
+			if( target == t){
+				clearInterval( timer1 );
+			}
+		},40);
+	}
+}
+
+</script>
+<style>
+*{
+	margin:0;
+}
+#box{
+	height:300px;
+	width:500px;
+	background:blue;
+	margin:0 auto;
+	position:relative;
+	overflow:hidden;
+}
+ul,ol{
+	list-style:none;
+	padding:0;
+	margin:0;
+	position:absolute;
+}
+img{
+	height:300px;
+	width:500px;
+	border:none;
+	float:left;
+}
+ol{
+	z-index:10;
+	bottom:30px;
+	right:30px;
+}
+ul{
+	left:0;
+	top:0;
+}
+ul li{
+	padding:0;
+	margin:0;
+}
+ol li{
+	float:left;
+	height:30px;
+	width:30px;
+	border:1px solid orange;
+	margin-right:2px;
+	line-height:30px;
+	text-align:center;
+	color:orange;
+}
+.active{
+	color:white;
+	font-weight:bold;
+	background:#FFB442;
+}
+a{
+	display:block;
+}
+</style>
+</head>
+<body>
+	 <div id='box'>
+		<ol>
+			<li class='active'>1</li>
+			<li>2</li>
+			<li>3</li>	
+		</ol>
+		<ul>
+			<li><a href='###'><img src='images/1.jpg'/></a></li>
+			<li><a href='###'><img src='images/2.jpg'/></a></li>
+			<li><a href='###'><img src='images/3.jpg'/></a></li>
+		</ul>
+    </div>
+
+
+</body>
+</html>

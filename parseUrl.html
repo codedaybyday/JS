@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		var url = 'http://item.taobao.com/item.htm?a=1&b=2&c=&d=xxx&e[]=1&e[]=2&e[]=3';
+		function parseUrl(url){
+			var queryString = url.split('?')[1].split('&');
+			var json = {};
+			queryString.forEach(function(el,index){
+				var _temp = el.split('=');
+				var index = _temp[0].indexOf('[]')
+				if( index == -1 ){
+					json[_temp[0]] = _temp[1];
+				}else{//解析数组
+					//console.log(_temp[0].substr(0,index),json[_temp[0]]);
+					if(json[_temp[0].substr(0,index)]){
+						json[_temp[0].substr(0,index)].push(_temp[1]);
+					}else{
+						json[_temp[0].substr(0,index)] = [];
+					}
+					
+				}
+			});
+			return json;
+		}
+		console.log(parseUrl(url));
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>for的图片生成应用</title>
+	<script >
+	window.onload=function(){
+		var pic=document.getElementById('pic');
+		var div='<div class="small"></div>';
+		for(var i=0;i<100;i++){
+			pic.innerHTML+=div;
+			
+		}
+		var small=document.getElementsByClassName('small');
+		for(var i=0;i<small.length;i++){
+			small[i].style.left+=(i%10)*51+'px';
+			small[i].style.top+=Math.floor(i/10)*51+'px';
+			small[i].onmouseover=function(){
+					this.className='touming';
+			}
+		}
+		
+	};
+	</script>
+	<style>
+		#pic{
+			height:510px;
+			width:510px;
+			background:url(img/pic.jpg);
+			position:relative;
+		}
+		.small{
+			height:50px;
+			width:50px;
+			border-right:1px solid gray;
+			border-bottom:1px solid gray;
+			position:absolute;
+			background:gray;
+		}
+		.touming{
+			border-right:1px solid white;
+			border-bottom:1px solid white;
+			filter:alpha(opacity:0);
+			opacity:0;
+			height:50px;
+			width:50px;
+		}
+	</style>
+</head>
+<body>
+	<div id="pic">
+	</div>
+</body>
+</html>

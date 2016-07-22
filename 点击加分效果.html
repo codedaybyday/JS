@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>点击加分</title>
+<script >
+window.onload=function (){
+	var aNumber=document.getElementsByClassName('number');
+	var oContent=document.getElementById('content');
+	var oCanvas=document.getElementById('canvas');
+	for(var i=0;i<aNumber.length;i++){
+		aNumber[i].style.left+=i*50+'px';
+	}
+	/*aNumber[0].onclick=function(){
+			 changeOpacity(aNumber[0],0.2,0);
+	};*/
+	content.onclick=function (){
+		clearInterval(timer);
+		var num=0;
+		var timer=setInterval(function (){
+			doMove(aNumber[num],-100,'top');			//运动效果目前只有FF浏览器兼容？？？？？？其他浏览器不兼容可能是aNumber[num]无法传递过去
+			changeOpacity(aNumber[num],0.1,0);	
+			num++;
+			if(num==aNumber.length){
+				clearInterval(timer);
+			}
+			widen(oCanvas,500);
+			
+		},300);
+	}
+	
+};
+
+function getStyle(obj,attr){			//获取样式
+	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+}
+
+
+function doMove(obj,target,attr,endFn){
+	clearInterval(obj.timer);
+	obj.timer=setInterval(function (){
+		var dir=target>parseInt(getStyle(obj,attr))?20:-20;
+		var speed=parseInt(getStyle(obj,attr))+dir;
+		if( (speed>target&&dir>0 ) || (speed<target&&dir<0) ){
+			speed=target;
+		}
+		obj.style[attr]=speed+'px';
+		if((speed>target&&dir>0 ) || (speed<target&&dir<0) ){
+			clearInterval(obj.timer);
+		}
+	},200);
+	if(typeof endFn=='function'){		//回调函数
+		endFn();
+	}
+}
+
+
+function changeOpacity(obj,speed,target){			//透明变化
+	clearInterval(timer);
+	var timer=setInterval(function(){
+		var opacity=parseFloat(getStyle(obj,'opacity'));
+		opacity-=speed;
+		if(opacity<=target){
+			opacity=target
+		}
+		obj.style.opacity=opacity;
+		if(opacity==target){
+			clearInterval(timer); 
+		}
+	},100);
+}
+
+
+function widen(obj,target,endFn){		//当数字上升的同时，黄色的区域慢慢从最左端蔓延到最右端
+	clearInterval(timer);
+	var timer=setInterval(function (){
+		var width=parseInt(getStyle(obj,'width'))+20;
+		if(width>=target){
+			width=target;
+		}
+		obj.style.width=width+'px';
+		if(width==target){
+			clearInterval(timer);
+		}
+	},500);
+	if(typeof endFn=='function'){
+		endFn();
+	}
+}
+</script>
+<style>
+#content{
+	height:50px;
+	width:500px;
+	margin:100px auto;
+	position:relative;
+	border:1px solid black;
+}
+.number{
+	height:50px;
+	width:50px;
+	position:absolute;
+	line-height:50px;
+	font-weight:bold;
+	text-align:center;
+	font-size:30px;
+}
+#canvas{
+	height:50px;
+	width:0;
+	top:0;
+	background:yellow;
+	left:0;
+	overflow:hidden;
+	position:absolute;
+	z-index:-1;
+}
+</style>
+</head>
+<body>
+	<div id="content">
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div class="number">+1</div>
+		<div id="canvas"></div>
+	</div>
+</body>
+</html>

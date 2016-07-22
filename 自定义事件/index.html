@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义事件</title>
+	<style type="text/css">
+		body{
+			height:100%;
+			width:100%;
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript">
+//------------- 以下为测试代码 -----------
+
+var myEvents = new EventTarget();
+myEvents.addEvents({
+    "once": function() {
+        alert("该弹框只会出现一次！");    
+        this.removeEvent("once");
+    },
+    "infinity": function() {
+        alert("每次点击页面，该弹框都会出现！");    
+    }
+});
+
+document.onclick = function(e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+    if (!target || !/input|pre/i.test(target.tagName)) {
+        myEvents.fireEvents(["once", "infinity"]);
+    }
+};
+</script>
+</html>

@@ -1,0 +1,89 @@
+程序的写法
+
+
+// math.js
+　　define(function (){
+
+
+　　　　var add = function (x,y){
+　　　　　　return x+y;
+　　　　};
+　　　　return {
+　　　　　　add: add
+　　　　};
+　　});
+
+
+如果程序有依赖：
+
+define(['myLib'], function(myLib){
+
+
+　　　　function foo(){
+　　　　　　myLib.doSomething();
+　　　　}
+　　　　return {
+　　　　　　foo : foo
+　　　　};
+　　});
+
+
+主入口的写法：
+
+有依赖
+// main.js
+
+　　require(['math'], function (math){
+　　　　alert(math.add(1,1));
+　　});
+
+
+两个函数：require.cofing 和require函数
+
+
+默认都在根目录，如果不在，可以这么写：
+
+　require.config({
+　　　　paths: {
+　　　　　　"jquery": "lib/jquery.min",
+　　　　　　"underscore": "lib/underscore.min",
+　　　　　　"backbone": "lib/backbone.min"
+　　　　}
+　　});
+
+require.config({
+　　　　baseUrl: "js/lib",
+　　　　paths: {
+　　　　　　"jquery": "jquery.min",
+　　　　　　"underscore": "underscore.min",
+　　　　　　"backbone": "backbone.min"
+　　　　}
+　　});
+
+
+shim的应用——如果我们的JS文件没有按照AMD规则去写
+
+
+
+require.config({
+　　　　shim: {
+
+　　　　　　'underscore':{
+　　　　　　　　exports: '_'
+　　　　　　},
+　　　　　　'backbone': {
+　　　　　　　　deps: ['underscore', 'jquery'],
+　　　　　　　　exports: 'Backbone'
+　　　　　　}
+　　　　}
+　　});
+
+每个模块要定义（1）exports值（输出的变量名），表明这个模块外部调用时的名称；（2）deps数组，表明该模块的依赖性。
+
+
+
+任何疑问都可以咨询本人：148334733
+
+
+
+

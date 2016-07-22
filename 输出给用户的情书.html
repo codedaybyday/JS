@@ -1,0 +1,141 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>让用户输入自己的名字，输出给用户的情书</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="zh-CN" />
+	
+	<script>
+		/*var user_name,from_name,to_name;
+		var str_prompt="请输入你的名字和对方的名字，两个名字间用空格分开";
+		var str_prompt_default="你的名字 对方的名字";
+		user_name=prompt(str_prompt,str_prompt_default);
+		user_name=user_name?user_name_name:"小强 小美";
+		from_name=user_name.split(" ")[0];
+		to_name=user_name.split(" ")[1];
+		document.write(("<p>亲爱的"+to_name+"</p>").fontsize(3));
+		document.write("<p>想起你那洒脱的笑容与动人的曲线，我不进提起笔，我选择这种原始的方式来表达的对你的爱，希望你能接受。</p>".replace(/你/g,to_name+"你").replace(/我/g,from_name+"我"));
+		document.write("<p>你在我心中的分量日益增加。你的眼，你的脸，你的笑容，悄悄的偷走我的心，在我闲暇时总有那种幻想的美...</p>".replace(/你/g,to_name+"你").replace(/我/g,from_name+"我"));
+		document.write(("<p>爱你的"+from_name+"</p>").fontsize(2).fontcolor("gold").link("1573018715@qq.com"));
+
+		
+		
+		var pattern=/8(.+?)8/g;
+	var str="this is 8google8,this is 8google8,this is 8google8";
+	var result=str.replace(pattern,'<strong>$1</strong>');
+	document.write(result);
+		
+		
+		*/
+		document.write(navigator.userAgent);
+document.write('<br />');
+document.write(navigator.platform);
+
+
+	
+var client = function () {					//创建一个对象
+	
+	//引擎
+	var engine = {
+		ie : false,									//这个属性用于确定是否是IE引擎
+		gecko : false,
+		webkit : false,
+		khtml : false,
+		opera : false,
+		
+		//引擎的版本
+		ver : 0
+	};
+	
+	//浏览器
+	var browser = {
+		ie : false,
+		firefox : false,
+		chrome : false,
+		safari : false,
+		opera : false,
+		
+		//浏览器的版本号
+		ver : 0,
+		//浏览器通用名称
+		name : ''
+	};
+	
+	//系统
+	var system = {
+		win : false,
+		mac : false,
+		x11 : false,
+		
+		//系统名称
+		sysname : ''
+	};
+	
+	
+	
+	//核心检测程序区
+	var ua = navigator.userAgent;
+	var p = navigator.platform;
+	
+	if (p.indexOf('Win') == 0) {
+		system.win = true;						//用于确定是windows系统
+		system.sysname = 'Windows';
+	} else if (p.indexOf('Mac') == 0) {
+		system.mac = true;						//用于确定是Mac系统
+		system.sysname = 'Macintosh';
+	} else if (p == 'X11' || p.indexOf('Linux') == 0) {
+		system.x11 = true;						//用于确定是Mac系统
+		system.sysname = 'Linux';
+	}
+	
+	
+	if (window.opera) {
+		engine.opera = browser.opera = true;				//表示确定opera引擎
+		engine.ver = browser.ver = window.opera.version();
+		browser.name = 'Opera';
+	} else if (/AppleWebKit\/(\S+)/.test(ua)) {
+		engine.webkit = true;				//表示确定webkit引擎
+		engine.ver = RegExp['$1'];
+		if (/Chrome\/(\S+)/.test(ua)) {
+			browser.chrome = true;
+			browser.ver = RegExp['$1'];
+			browser.name = 'Chrome';
+		} else {
+			browser.safari = true;
+			if (/Version\/(\S+)/.test(ua)) browser.ver = RegExp['$1'];
+			browser.name = 'Safari';
+		}
+	} else if (/rv:([^\)]+)\) Gecko\/\d{8}/.test(ua)) {
+		engine.gecko = true;				//表示确定gecko引擎
+		engine.ver = RegExp['$1'];
+		if (/Firefox\/(\S+)/.test(ua)) {
+			browser.firefox = true;
+			browser.ver = RegExp['$1'];
+			browser.name = 'Firefox';
+		}
+	} else if (/MSIE ([^;]+)/.test(ua)) {
+		engine.ie = browser.ie = true;						//表示确定ie引擎
+		engine.ver = browser.ver = RegExp['$1'];
+		browser.name = 'Internet Explorer';
+	}
+	
+	return {										//返回一个对象，可以同时返回引擎，浏览器和系统的对象
+		engine : engine,						//前一个engine是属性，后一个engine是对象值
+		browser : browser,
+		system : system
+	}
+	
+}();													//自我执行，并赋值
+
+
+
+
+
+alert(client.system.sysname + '|' +client.browser.name + client.browser.ver);
+
+	
+	</script>
+</head>
+<body>
+</body>
+</html>

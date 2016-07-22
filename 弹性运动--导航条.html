@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>弹性运动</title>
+<script>
+window.onload = function (){
+	var oUl = document.getElementsByTagName('ul')[0];
+	var aLi = oUl.getElementsByTagName('li');
+	var oBg = aLi[aLi.length - 1];
+	
+	for(var i=0;i<aLi.length-1;i++){
+		aLi[i].onmouseover = function(){
+			doMove(oBg,this.offsetLeft);
+		};
+	}
+};
+	
+var speed = 0;
+var left = 0;
+function doMove(obj,target){			
+	clearInterval( obj.timer );
+	obj.timer = setInterval(function (){
+		speed += (target - obj.offsetLeft)/5;
+		speed *= 0.7;
+		left += speed;
+		obj.style.left = left + 'px';
+		if( Math.abs(speed)<1 && Math.abs(left-target)<1){
+			clearInterval(obj.timer);
+			obj.style.left = targer + 'px';
+		}
+	},40);
+}
+</script>
+<style >
+ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	position:relative;
+	height:30px;
+}
+ul li{
+	width:100px;
+	height:30px;
+	float:left;
+	line-height:30px;
+	text-align:center;
+	border:1px solid gray;
+}
+#bg{
+	position:absolute;
+	bottom:0;
+	left:0;
+	height:10px;
+	background:red;
+	z-index:-1;
+	border:none;
+}
+</style>
+</head>
+<body>
+	<ul>
+		<li>首页</li>
+		<li>业务</li>
+		<li>产品</li>
+		<li>联系我们</li>
+		<li id="bg"></li>
+	</ul>
+</body>
+</html>

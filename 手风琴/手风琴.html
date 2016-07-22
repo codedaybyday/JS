@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+div{
+	height:300px;
+	width:650px;
+	margin:30px auto;
+	overflow:hidden;
+}
+ul{
+	height:300px;
+	width:650px;
+	position: relative;
+	overflow:hidden;
+}
+img{
+	height:300px;
+	width:500px;
+}
+li{
+	position:relative;
+	float:left;
+	width:30px;
+	height:300px;
+	overflow:hidden;
+}
+span{
+	height:300px;
+	width:29px;
+	text-align:center;
+	position:absolute;
+	right:0;
+	top:0;
+	color:white;
+	border-right:1px solid white;
+}
+.bg0 { 
+	background: #00FFCC; 
+}
+.bg1 { 
+	background: #636363; 
+}
+.bg2 { 
+	background: #3d7fbb; 
+}
+.bg3 { 
+	background: #5ca716; 
+}
+.bg4 { 
+	background: #f28b24; 
+}
+.bg5 { 
+	background: #7c0070; 
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	var aSpan = document.getElementsByTagName('span');
+	var aLi = document.getElementsByTagName('li');
+	var oDiv = document.getElementsByTagName('div')[0];
+	var iMinWidth = 999;
+	var timer = null;
+	for(var i=0;i<aSpan.length;i++){
+		aSpan[i].index = i;
+		iMinWidth = Math.min(iMinWidth,aLi[i].offsetWidth);		//找出li的最小宽度
+		aSpan[i].onmouseover = function(){
+			imageMove(this.index);
+		}
+	}
+	function imageMove(index){
+		//var index = this.index;
+		clearInterval(timer);
+		timer = setInterval(function(){
+			var iWidth = oDiv.offsetWidth;////////////////////////
+			var beEnd = true;
+			var w = 0;
+			for(var i=0;i<aLi.length;i++){
+				if(i == index){
+					continue;
+				}
+				if(aLi[i].offsetWidth == iMinWidth){
+					iWidth -= iMinWidth;	
+					continue;
+				}
+				beEnd = false;
+				var speed = Math.ceil( (aLi[i].offsetWidth - iMinWidth)/10 );
+				w = aLi[i].offsetWidth - speed;
+				if(w<iMinWidth){
+					w = iMinWidth;
+				}
+				aLi[i].style.width = w+'px';
+				iWidth -= w;
+			}
+			aLi[index].style.width = iWidth+'px';
+			if(beEnd){
+				clearInterval(timer);
+				timer = null;
+			}
+		},50);
+	}
+}
+</script>
+</head>
+<body>
+<div>
+	<ul>
+		<li style="width:500px">
+			<img src="images/1.jpg"/>
+			<span class="bg0">这是第一个</span>
+		</li>
+		<li>
+			<img src="images/2.jpg"/>
+			<span class="bg1">这是第二个</span>
+		</li>
+		<li>
+			<img src="images/3.jpg"/>
+			<span class="bg2">这是第三个</span>
+		</li>
+		<li>
+			<img src="images/4.jpg"/>
+			<span class="bg3">这是第四个</span>
+		</li>
+		<li>
+			<img src="images/5.jpg"/>
+			<span class="bg4">这是第五个</span>
+		</li>
+		<li>
+			<img src="images/6.jpg"/>
+			<span class="bg5">这是第六个</span>
+		</li>
+	</ul>
+<div>
+</div>
+</body>
+</html>

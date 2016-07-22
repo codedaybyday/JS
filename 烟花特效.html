@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0039)http://js.fgm.cc/learn/lesson10/10.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>放烟花效果（面向对象版）</title>
+<style type="text/css">
+html,body{overflow:hidden;}
+body,div,p{margin:0;padding:0;}
+body{background:#000;font:12px/1.5 arial;color:#7A7A7A;}
+a{text-decoration:none;outline:none;}
+#tips,#copyright{position:absolute;width:100%;height:50px;text-align:center;background:#171717;border:2px solid #484848;}
+#tips{top:0;border-width:0 0 2px;}
+#tips a{font:14px/30px arial;color:#FFF;background:#F06;display:inline-block;margin:10px 5px 0;padding:0 15px;border-radius:15px;}
+#tips a.active{background:#FE0000;}
+#copyright{bottom:0;line-height:50px;border-width:2px 0 0;}
+#copyright a{color:#FFF;background:#7A7A7A;padding:2px 5px;border-radius:10px;}
+#copyright a:hover{background:#F90;}
+p{position:absolute;top:55px;width:100%;text-align:center;}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	var FireWork = function(){
+		//this.type = 0;
+		this.timer = null;
+	}
+	FireWork.prototype = {
+		init:function(){
+
+		},
+		getRanRange:function(lower,upper){
+			return Math.ceil(Math.random()*(upper - lower + 1) + lower );
+		},
+		getRanColor:function(){
+			var color = this.getRanRange(0,0xFFFFFF).toString(16);
+			if(color.length < 6){
+				color = '0' +　color;
+			}
+			return '#'+color;
+		},
+		manual:function(){
+			//console.log(this)
+			var _this = this;
+			document.onclick = function(ev){
+				var e = window.event || ev;
+				_this.create({x:e.clientX,y:e.clientY});
+				
+			}
+		},
+		auto:function(){
+			var _this = this;
+			this.timer = setInterval(function(){
+				var x = _this.getRanRange(50,document.documentElement.clientWidth-50);
+				var y = _this.getRanRange(50,document.documentElement.clientHeight-50);
+				_this.create({x:x,y:y});
+			},this.getRanRange(900,1100));
+		},
+		create:function(json){
+			var oEntity = document.createElement('div');
+			with(oEntity.style){
+				position = 'absolute';
+				left = json.x + 'px';
+				height = 30+'px';
+				width = 4 + 'px';
+				borderRadius = 4+'px';
+				background = this.getRanColor();
+				top = document.documentElement.clientHeight + 'px';
+			}
+			document.body.appendChild(oEntity);
+			var _this = this;
+			oEntity.timer = setInterval(function(){
+				var top = oEntity.offsetTop - 20;
+				oEntity.style.top =  top+ 'px';
+				if(top<=json.y){
+					clearInterval(oEntity.timer);
+					document.body.removeChild(oEntity);
+					//散花
+					var oFrag = document.createDocumentFragment();
+					var len = ( /msie/i.test(navigator.userAgent)|| _this.type == 2)?_this.getRanRange(20,30):_this.getRanRange(50,100);
+					var aChip = [];
+					for(var i=0;i<len;i++){
+						var oChip = document.createElement('div');
+						with(oChip.style){
+							height = 4 +'px';
+							width = 4 + 'px';
+							background = _this.getRanColor();
+							borderRadius = 4 + 'px';
+							position = 'absolute';
+							left = json.x + 'px';
+							top = json.y + 'px';
+						}
+						oChip.speedX = _this.getRanRange(-20,20);
+						oChip.speedY = _this.getRanRange(-20,20);
+						oFrag.appendChild(oChip);
+						aChip.push(oChip);
+					}
+					document.body.appendChild(oFrag);
+					//console.log(aChip.length,len)
+					var timer = setInterval(function(){
+						for(var i=0;i<aChip.length;i++){	//aChip.length换成len就会出错
+							var obj = aChip[i];
+							obj.speedY++;
+							
+							var top = obj.offsetTop + obj.speedY;
+							var left =obj.offsetLeft + obj.speedX
+							obj.style.top = top + 'px';
+							obj.style.left = left + 'px';
+							if(obj.offsetTop<0 || obj.offsetLeft<0 ||obj.offsetTop>document.documentElement.clientHeight || obj.offsetLeft>document.documentElement.clientWidth){
+								aChip.splice(i,1);
+								document.body.removeChild(obj);
+							}
+						}
+						if(aChip.length == 0){
+							clearInterval(timer);
+						}
+					},30);
+					
+				}
+			},30);
+		}
+	}
+	var f = new FireWork();
+	//f.manual();
+	//f.auto();
+	var oTips = document.getElementById('tips');
+	var aA = oTips.getElementsByTagName('a');
+	aA[0].onclick = function(ev){
+		var e = window.event || ev;
+		for(var i=0;i<aA.length;i++){
+			aA[i].className = '';
+			this.className = 'active';
+			clearInterval(f.timer);
+			f.manual();
+		}
+		stopEventBubble(e);
+	}
+	aA[1].onclick = function(ev){
+		var e = window.event || ev;
+		for(var i=0;i<aA.length;i++){
+			aA[i].className = '';
+			this.className = 'active';
+			clearInterval(f.timer);
+			f.auto();
+		}
+		stopEventBubble(e)
+	}
+	aA[2].onclick = function(ev){
+		var e = window.event || ev;
+		for(var i=0;i<aA.length;i++){
+			aA[i].className = '';
+			this.className = 'active';
+			clearInterval(f.timer);
+		}
+		stopEventBubble(ev);
+	}
+	function stopEventBubble(ev){
+		var e = window.event || ev;
+		if(e.stopPropagation){
+			e.stopPropagation();
+		}else{
+			e.cancelBubble();
+		}
+	}
+}
+</script>
+</head>
+<body>
+<div id="tips">
+	<a id="manual" href="javascript:;" class="">手动放烟花</a>
+	<a id="auto" href="javascript:;" class="">自动放烟花</a>
+	<a id="stop" href="javascript:;" class="active">停止放烟花</a>
+</div>
+<p>由于浏览器渲染能力有限, 当浏览器为IE或选择自动放烟花时, 随机生成的烟花碎片范围自动调整至20-30</p>
+<div id="copyright">建议使用Firefox, Chrome浏览器预览效果. 如蒙转载请注明出处 <a href="http://js.fgm.cc/">Fgm.cc</a> 
+</div>
+</body>
+</html>

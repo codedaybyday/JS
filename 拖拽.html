@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>拖拽</title>
+<script>
+window.onload = function(){
+	var drag = new Drag('div1');
+};
+function Drag( id ){
+	this.oDiv = document.getElementById(id);
+	this.distanceX = 0;
+	this.distanceY = 0;
+	var _this = this;
+	this.oDiv.onmousedown = function (evt){
+		_this.fnDown( evt);
+	};
+	
+};
+
+Drag.prototype.fnDown = function(evt){
+	var e = evt||event;
+	this.distanceX = e.clientX - this.oDiv.offsetLeft;
+	this.distanceY = e.clientY - this.oDiv.offsetTop;
+	var _this = this;
+	document.onmousemove = function (evt){
+		_this.fnMove(evt);
+	};
+	document.onmouseup = function (evt){
+		_this.fnUp(evt);
+	};
+};
+Drag.prototype.fnMove = function (evt){
+	var e = evt||event;
+	var left = e.clientX - this.distanceX;
+	var top = e.clientY - this.distanceY;
+	this.oDiv.style.left = left + 'px';
+	this.oDiv.style.top = top + 'px';
+};
+Drag.prototype.fnUp = function (){
+	document.onmousemove = null;
+	document.onmouseup = null;
+};
+</script>
+<style >
+#div1{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+}
+</style>
+</head>
+<body>
+	<div id="div1"></div>
+</body>
+</html>

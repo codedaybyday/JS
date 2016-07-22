@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>电子时钟-天猫版</title>
+</head>
+<style type="text/css">
+	*{margin: 0;padding: 0;list-style: none}
+	body{background-color: #D7154A;font-family: 'Microsoft Yahei'}
+	.demo{width: 330px;height: 100px;border: 3px solid #fff;margin: 200px auto;line-height: 100px;text-align: center;color: #fff;font-size: 50px;font-weight: 600;position: relative;overflow: hidden;}
+	.size{width: 100px;height: 100px;float: left;}
+	.pointer{width: 10px;height: 100px;float: left;}
+	.bottom{width: 200px;height: 100px;text-align: center; margin: 0 auto;color: #fff}
+
+	#next-h{position: absolute;width: 100px;height: 100px;left: 0px;top: 100px;}	
+	#next-m{position: absolute;width: 100px;height: 100px;left: 110px;top: 100px;}
+	#next-s{position: absolute;width: 100px;height: 100px;left: 220px;top: 100px;}
+
+</style>
+<body>
+	<div class="demo">
+		<div id="hour" class="size"></div>
+		<div id="next-h"></div>
+		<div class="pointer">:</div>
+		<div id="minute" class="size"></div>
+		<div id="next-m"></div>
+		<div class="pointer">:</div>
+		<div id="second" class="size"></div>
+		<div id="next-s"></div>
+	</div>
+	<div class="bottom">灵感:天猫国际</div>
+</body>
+<script type="text/javascript">
+    //获取当前时间
+	var date=new Date();
+	var hour=date.getHours();
+	var minute=date.getMinutes();
+	var second=date.getSeconds();
+
+	// 获取正在显示的时间的dom
+	var ohour=document.getElementById("hour");
+    var ominute=document.getElementById("minute");
+    var osecond=document.getElementById("second");
+
+    //时间初始化
+    function init(){
+    	ohour.innerHTML=fill(hour);
+    	ominute.innerHTML=fill(minute);
+    	osecond.innerHTML=fill(second);
+    }
+    init();
+    
+    // 获取被隐藏的dom，这里的dom是为了显示接下来的时间
+    var nhour=document.getElementById("next-h");
+    var nminute=document.getElementById("next-m");
+    var nsecond=document.getElementById("next-s");
+
+    //定时器   控制时间的变化
+    setInterval(function(){
+       if(second==60){
+       	   second=0;
+       	   //分针数加1
+       	   if(minute==60){
+       	   	   minute=0;
+       	   	   //时针+1
+       	   	   if(hour==24){
+       	   	   	   hour=0;
+       	   	   }
+	       	   //显示在影藏的盒子中
+	       	   nhour.innerHTML=fill(hour);
+	       	   nhour++;
+	       	   //调用浮动函数
+	           move(nhour,ohour);
+	           //盒子还要复位
+	        	nhour.style.top="100px";       	   	   
+       	   }
+       	   
+       	   //显示在影藏的盒子中
+       	   nminute.innerHTML=fill(minute);
+       	   minute++;
+       	   //调用浮动函数
+           move(nminute,ominute);
+           //盒子还要复位
+        	nminute.style.top="100px";
+       }else{
+       	   second++;
+       }
+       nsecond.innerHTML=fill(second);
+    }, 1000)
+
+    
+    //下一秒dom向上运动
+    //参数1:要运动的盒子   
+    //参数2:最终显示时间的盒子
+    function move(obj,show){
+	    var timer=setInterval(function(){
+	        obj.style.top=getStyle(obj,"top")-1+'px';
+	        if(getStyle(obj,"top")<=0){
+	        	clearInterval(timer);  
+                show.innerHTML=obj.innerHTML;
+	        }
+	    }, 1)    	
+    }
+
+    // 监听时间有没有变化
+    var old=0;
+    setInterval(function(){
+        if(old!=nsecond.innerHTML){
+        	move(nsecond,osecond);
+        	nsecond.style.top="100px";
+        	old=nsecond.innerHTML;
+        }
+    }, 1)
+
+
+    //辅助函数，获取属性值
+	function getStyle(obj,style){
+	    var attr=window.getComputedStyle ? window.getComputedStyle(obj,null)[style]:obj.currentStyle[style];
+	    //去掉单位px
+	    attr=attr.slice(0, -2);
+	    return parseInt(attr); 
+	}    	
+
+	//如果时间的长度是1位，则在前面补0
+	function fill(str){
+		var s=str.toString();
+        if(s.length==1){
+        	s='0'+s;
+        	return s;
+        }else{
+        	return str;
+        }
+	}
+
+</script>
+</html>

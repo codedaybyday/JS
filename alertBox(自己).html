@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>alert</title>
+<link  rel="stylesheet"/>
+<script type="text/javascript">
+window.onload = function(){
+	var aA = document.getElementsByTagName('a');
+	var pre = document.getElementById('pre');
+	pre.style.display = 'block';
+	var targetW = pre.offsetWidth;
+	var targetH = pre.offsetHeight;
+	pre.style.display = 'none';
+	aA[0].onclick = function(){
+		pre.style.display = 'block';
+		pre.style.width = 0;
+		pre.style.height = '5px';
+		doMove(pre,'width',targetW,function(){
+			doMove(pre,'height',targetH);
+		});
+	};
+
+	aA[1].onclick = function(){
+		doMove(pre,'height',0,function(){
+			doMove(pre,'width',0,function(){
+				pre.style.display = 'none';
+			});
+		});
+		
+	};
+
+	//鼠标拖动
+	pre.onmousedown = function(evt){
+		var event = evt || window.event;
+		var disX = event.clientX - this.offsetLeft;
+		var disY = event.clientY - this.offsetTop;
+		this.style.filter = 'alpha(opacity:60)';
+		this.style.opacity = 0.6;
+		this.onmousemove = function(evt){
+			var event = evt || window.event;
+			this.style.left = event.clientX - disX + 'px';
+			this.style.top = event.clientY - disY + 'px';
+		};
+		this.onmouseup = function(){
+			this.onmousemove = null;
+			this.style.filter = 'alpha(opacity:100)';
+			this.style.opacity = 1;
+		};
+	}
+}
+
+function getStyle(obj,attr){
+	return obj.currentStyle?obj.currentStyle[attr]:window.getComputedStyle(obj)[attr];
+}
+function doMove(obj,attr,target,endFn){
+	clearInterval(obj.timer);
+	obj.timer = setInterval(function(){
+		var cur = parseInt( getStyle(obj,attr) );
+		var speed = (target - cur)/8 >0? Math.ceil((target - cur)/8):Math.floor((target - cur)/8);
+		//var speeg = cur < target ?
+		cur += speed;
+		/*if(cur > target ){
+			cur = target;
+		}*/
+		if(cur == target){
+			clearInterval(obj.timer);
+			if(endFn){
+				endFn();
+			}
+		}
+		obj.style[attr] = cur + 'px';
+	},30);
+}
+</script>
+<style>
+#box a{
+	display:block;
+	height:30px;
+	line-height:30px;
+	width:80px;
+	text-decoration:none;
+	font-weight:bold;
+	border:2px solid blue;
+	margin-bottom:3px;
+}
+#pre{
+	height:200px;
+	width:300px;
+	border:2px solid blue;
+	background:green;
+	display:none;
+	position:absolute;
+	top:0;
+	left:0;
+	cursor:move;
+}
+</style>
+</head>
+<body>
+	<div id="box">
+		<a href="javascript:void(0)" >[打开层]</a>
+		<a href="javascript:void(0)">[关闭层]</a>
+	</div>
+	<div id="pre"></div>
+</body>
+</html>

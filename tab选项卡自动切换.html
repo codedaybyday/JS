@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>tab选项卡自动切换</title>
+<link  rel="stylesheet"/>
+<script type="text/javascript">
+window.onload = function(){
+	var title = document.getElementById('title');
+	var aTitleLi = title.getElementsByTagName('li');
+	var aBox = document.getElementsByClassName('box');
+	var timer = null;
+	//标题
+	var num = 0;
+	timer = setInterval(function(){
+		num =(num+1)%aTitleLi.length;
+		for(var j=0;j<aTitleLi.length;j++){
+			aTitleLi[j].className = '';
+		}
+		for(var k=0;k<aBox.length;k++){
+			aBox[k].style.display = 'none';
+		}
+		aTitleLi[num].className = 'active';
+		aBox[num].style.display = 'block';
+	},1000);
+	for(var i=0;i<aTitleLi.length;i++){
+		aTitleLi[i].index = i;
+		aTitleLi[i].onmouseover = function(){
+			clearInterval(timer);
+			for(var j=0;j<aTitleLi.length;j++){
+				aTitleLi[j].className = '';
+			}
+			this.className = 'active';
+			for(var k=0;k<aBox.length;k++){
+				aBox[k].style.display = 'none';
+			}
+			aBox[this.index].style.display = 'block';
+			num = this.index;
+		};
+
+		aTitleLi[i].onmouseout = function(){
+			timer = setInterval(function(){
+			num =(num+1)%aTitleLi.length;
+			for(var j=0;j<aTitleLi.length;j++){
+				aTitleLi[j].className = '';
+			}
+			for(var k=0;k<aBox.length;k++){
+				aBox[k].style.display = 'none';
+			}
+			aTitleLi[num].className = 'active';
+			aBox[num].style.display = 'block';
+			},1000);
+		};
+	}
+}
+</script>
+<style>
+#content{
+	width:300px;
+	position:relative;
+	height:100px;
+	border:1px solid #eee;
+}
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+	font-size:14px;
+}
+ a{
+	text-decoration:none;
+	color:black;
+}
+#title{
+	width:302px;
+	height:30px;
+	border:1px solid #eee;
+	background:#F7F7F7;
+	position:absolute;
+	left:-2px;
+	top:0;
+}
+#title li{
+	width:60px;
+	height:30px;
+	line-height:30px;
+	float:left;
+	text-align:center;
+
+}
+#title li.active{
+	font-weight:bold;
+	border:1px solid #eee;
+	border-bottom:none;
+	background:white;
+}
+.box{
+	width:290px;
+	position:absolute;
+	left:0;
+	top:30px;
+	padding-left:10px;
+	display:none;
+	overflow:auto;
+}
+.box li{
+	float:left;
+	height:30px;
+	line-height:30px;
+	width:143px;
+}
+.box a{
+	font-size:12px;
+}
+a:hover{
+	color:#F90;
+}
+</style>
+</head>
+<body>
+	<div id="content">
+		<ul id="title">
+			<li><a href="#">公告</a></li>
+			<li><a href="#">规则</a></li>
+			<li><a href="#">论坛</a></li>
+			<li><a href="#">安全</a></li>
+			<li><a href="#">公益</a></li>
+		</ul>
+		<div class="box" style="display:block">
+			<ul>
+				<li><a href="#">张勇：要玩快乐足球</a></li>
+				<li><a href="#">阿里2000晚驰援灾区</a></li>
+				<li><a href="#">旅游宝让你边玩边赚钱</a></li>
+				<li><a href="#">多行跟进阿里信用贷款</a></li>
+			</ul>
+		</div>
+		<div class="box">
+			<ul>
+				<li><a href="#">[通知]“滥发”即将换新</a></li>
+				<li><a href="#">[通知]比特币严管啦</a></li>
+				<li><a href="#">[通知]禁发商品名录！</a></li>
+				<li><a href="#">[通知]商品属性限制</a></li>
+			</ul>
+		</div>
+		<div class="box">
+			<ul>
+				<li><a href="#">[聚焦]金牌买家再起航</a></li>
+				<li><a href="#">[功能]橱窗功能升级啦</a></li>
+				<li><a href="#">[话题]又爱又恨优惠券</a></li>
+				<li><a href="#">[工具]购后送店铺红</a></li>
+			</ul>
+		</div>
+		<div class="box">
+			<ul>
+				<li><a href="#">个人重要信息要管牢</a></li>
+				<li><a href="#">卖家防范红包欺诈提醒</a></li>
+				<li><a href="#">更换收货地址的陷阱</a></li>
+				<li><a href="#">注意骗子的技术升级了！</a></li>
+			</ul>
+		</div>
+		<div class="box">
+			<ul>
+				<li><a href="#">走进无声课堂</a></li>
+				<li><a href="#">淘宝之行大众评审赢公益金</a></li>
+				<li><a href="#">爱心品牌联合征集</a></li>
+				<li><a href="#">名公益机构淘宝开店攻略</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

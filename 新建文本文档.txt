@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>ctl+enter提交</title>
+<script>
+window.onload = function(){
+	var textarea = document.getElementsByTagName('textarea')[0];
+	var aInput = document.getElementsByTagName('input');
+	
+	aInput[1].onclick = function (){
+		textarea.innerHTML += aInput[0].value + '\n';
+		aInput[0].value = '';		
+	};
+	aInput[0].onkeydown = function(evt){
+		var e = evt || event;
+		if(e.keyCode == 13 && e.ctrlKey  ){
+			textarea.innerHTML += aInput[0].value + '\n';
+			aInput[0].value = '';
+		}
+	};
+};
+
+</script>
+<style >
+textarea{
+	height:300px;
+	width:200px;
+	resize:none;
+}
+</style>
+</head>
+<body>
+	<textarea></textarea></br>
+	<input type="text"/>
+	<input type="submit" value="留言"/>
+</body>
+</html>

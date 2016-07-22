@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>简单对话框</title>
+	<style>
+		#area{
+			height:300px;
+			width:250px;
+			display:block;
+			background:yellow;
+		}
+	</style>
+	<script >
+		window.onload=function(){
+			var strong=document.getElementById('strong');
+			var text=document.getElementById('text');
+			var send=document.getElementById('send');
+			var span=document.getElementById('area');
+			
+			send.onclick=function(){
+				if(text.value!=''){
+				span.innerHTML+=strong.innerHTML+text.value+'<br/>';
+				text.value='';
+				}else{
+					alert("输入的内容为空，不能发送！");
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<span id="area"></span><br/>
+	<strong id="strong">妙微:</strong><input type="text"  id="text"/><input type="submit" value="发送" id="send"/>
+</body>
+</html>

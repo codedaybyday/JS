@@ -1,0 +1,15 @@
+.red{
+	width:200px;
+	height:200px;
+	background:red;
+}
+.blue{
+	width:200px;
+	height:200px;
+	background:blue;
+}
+#text{
+	font-size:20px;
+	font-weight:bold;
+	color:blue;
+}

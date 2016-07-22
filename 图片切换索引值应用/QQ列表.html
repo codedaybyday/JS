@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QQ列表</title>
+	<script >
+		window.onload=function (){
+			var aH2=document.getElementsByTagName('h2');
+			var list=document.getElementById('list');
+			var aUl=list.getElementsByTagName('ul');
+			var liArr=[];
+			for(var i=0;i<aH2.length;i++){
+				aH2[i].index=i;//为每个h2添加索引值
+				aH2[i].onOff=true;
+				aH2[i].onclick=function (){
+					for(var i=0;i<aH2.length;i++){
+						if(i!=this.index){//如果点击的不是同一个列表
+						aUl[i].style.display='none';
+						aH2[i].className='';
+						aH2[i].onOff=true;
+						}
+					}
+					if(this.onOff){
+						aUl[this.index].style.display='block';
+						this.className='hover';
+						this.onOff=false;
+					}else{
+						aUl[this.index].style.display='none';
+						this.onOff=true;
+						this.className='';
+					}
+				};
+				var aLi=aUl[i].getElementsByTagName('li');
+				for(var k=0;k<aLi.length;k++){
+					liArr.push(aLi[k]);
+				}
+				
+					
+			}
+			for(var j=0;j<liArr.length;j++ ){
+				liArr[j].onclick=function (){
+					for(var k=0;k<liArr.length;k++){
+						liArr[k].className=" ";
+					}
+					this.className='active';
+				};
+			}	
+		};
+	</script>
+	<style>
+		ul{
+			list-style:none;
+			margin:0;
+		}
+		#list{
+			background:pink;                           
+			border:1px solid black;
+			width:200px;
+			margin:0 auto;
+			padding:0;
+		}	
+		#list li ul{
+			margin:0;
+			padding:0;
+			display:none;
+		}
+		#list li ul li{
+			height:30px;
+			line-height:30px;
+			text-indent:20px;
+			border-bottom:1px solid black;
+		}
+		h2{
+			text-indent:20px;
+			background:green url(img/ico1.gif) no-repeat 5px center;
+			width:200px;
+			padding:0;
+			margin:0;
+		}
+		.hover{
+		background:yellow url(img/ico2.gif) no-repeat 5px center;
+		}
+		.active{
+			background:red;
+			height:30px;
+			line-height:30px;
+			text-indent:20px;
+			border-bottom:1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<ul id="list">
+		<li class="lis">
+			<h2>我的好友</h2>
+			<ul>
+				<li>张三</li>
+				<li>李四</li>
+				<li>王五</li>
+			</ul>
+		</li>
+		<li class="lis">
+			<h2>企业好友</h2>
+			<ul>
+				<li>李狗蛋</li>
+				<li>赵四</li>
+				<li>钱七</li>
+			</ul>
+		</li>
+		<li class="lis">
+			<h2>黑名单</h2>
+			<ul>
+				<li>张三</li>
+				<li>李四</li>
+				<li>王五</li>
+			</ul>
+		</li>
+	</ul>
+</body>
+</html>

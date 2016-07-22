@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+#div1{
+	height:100px;
+	width:100px;
+	background:yellow;
+	position:absolute;
+}
+#square{
+	height:10px;
+	width:10px;
+	background:red;
+	position:absolute;
+	bottom:0;
+	right:0;
+	cursor:se-resize;
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	Drag('square');
+}
+
+function Drag(id){		//拖拽
+	var oDiv = document.getElementById(id);
+	var bigDiv = document.getElementById('div1');
+	oDiv.onmousedown = fnDown;
+	function fnDown(ev){
+		var event = window.event || ev;
+		var disX = event.clientX - this.offsetLeft;
+		var disY = event.clientY - this.offsetTop;
+		if(oDiv.setCapture){	//	兼容IE
+			oDiv.onmousemove = fnMove;
+			oDiv.setCapture();	//事件捕获
+			oDiv.onmouseup = fnUp;			///////////////////////----------2
+			/*oDiv.onmouseup = function(){	//////////////--------------1
+				fnUp();
+				if(this.releaseCapture){		
+					this.releaseCapture();
+				}
+			};*/
+		}else{
+			document.onmousemove = fnMove;
+			document.onmouseup = fnUp;
+		}
+		
+		return false;
+
+		function fnMove(ev){
+			var event = window.event || ev;
+			bigDiv.style.width = event.clientX - disX + oDiv.offsetWidth+'px';
+			bigDiv.style.height = event.clientY - disY + oDiv.offsetHeight+'px';
+		}
+		function fnUp(){
+			this.onmousemove = null;
+			this.onmouseup = null;
+			if(this.releaseCapture){		//为什么把这句注释掉，再注释掉2处，改成1处的样子 处，FF就会出现bug，放开鼠标的时候，小块还是会跟着动
+				this.releaseCapture();
+			}
+		}
+	}
+
+}
+</script>
+</head>
+<body>
+	<div id="div1">这是一个拖拽层<div id="square"></div></div>
+</body>
+</html>

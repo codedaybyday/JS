@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+*{ margin:0; padding:0;}
+.box{width:600px; height:500px; border:1px solid #999; margin:10px auto; position:relative;}
+.ball{width:20px; height:20px; border-radius:50%; background:#999; position:absolute; }
+</style>
+</head>
+
+<body>
+<div class="box">
+	<div class="ball" id="ball"></div>
+    <div class="ball" id="ball2"></div>
+    <div class="ball" id="ball3"></div>
+</div>
+<script>
+window.onload = function(){
+	var ball=document.getElementById("ball");
+	move("ball",5,10);	
+	move("ball2",5,8);	
+	move("ball3",5,5);	
+}
+
+function move(ele,lefts,tops){
+	var ball=document.getElementById(ele);
+	var speed_left=lefts;
+	var speed_top=tops;
+	var speedX=0;
+	var speedY=0;
+	var left=0;
+	var top=0;
+	setInterval(function(){
+		var ballX=ball.offsetLeft;
+		var ballY=ball.offsetTop;
+		if(ballX<=0){
+			speedX=speed_left;
+		}else if(ballX>=580){
+			speedX=-speed_left;
+		}
+		left+=speedX;
+		ball.style.left=left+"px";
+		if(ballY==0){
+			speedY=speed_top;
+		}else if(ballY==480){
+			speedY=-speed_top;
+		}
+		top+=speedY;
+		ball.style.top=top+"px";	
+	},30);
+	
+}
+</script>
+</body>
+</html>

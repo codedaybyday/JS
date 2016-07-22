@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>js实现横向手风琴效果</title>
+<link  type="text/css" rel="stylesheet">
+<style>
+#slider{
+	width:980px;
+	height:350px;
+	position:relative;
+	overflow:hidden;
+	border:1px solid #000;
+}
+#slider .slide{
+	position:absolute;
+	border-left:1px solid #000;
+}
+</style>
+<script type="text/javascript" >
+window.onload = function(){
+	var aSlide = document.getElementsByClassName('slide');
+	var oSlider = document.getElementById('slider');
+	var interval = oSlider.offsetWidth/aSlide.length;
+	var min = (oSlider.offsetWidth - aSlide[0].offsetWidth)/(aSlide.length-1);
+	var tmp_width = interval;
+	var over = false;
+	for(var i=0;i<aSlide.length;i++){
+		aSlide[i].style.left = interval*i+'px';
+		//aSlide[i].style.filter = 'alpha(opacity=70)';
+		//aSlide[i].style.opacity = 0.7;
+	}
+	function run(){
+		tmp_width += over?(min - tmp_width)/2:(interval - tmp_width)/2;
+		for(var i=0;i<aSlide.length;i++){
+			
+		}
+	}
+}
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+	<div id="center">
+		<div class="box">
+			<div id="slider">
+				<div class="slide" style="border:none;">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf10.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf14.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf24.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf04.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf01.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf15.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf41.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf26.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf50.jpg" alt=""></a>
+				</div>
+				<div class="slide">
+					<a href="http://www.lanrenzhijia.com"><img class="diapo" src="images/sf19.jpg" alt=""></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

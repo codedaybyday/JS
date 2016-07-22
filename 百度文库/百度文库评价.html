@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>百度文库评价</title>
+	<script >
+		window.onload=function (){
+			var textArr=["很差","较差","还行","推荐","力荐"];
+			var aLi=document.getElementsByTagName('li');
+			var text=document.getElementById('text');
+			for(var i=0;i<aLi.length;i++){
+				aLi[i].index=i;
+				aLi[i].onmouseover=function (){
+					for(var j=0;j<aLi.length;j++){
+						aLi[j].className="star";
+					}
+					for(var j=0;j<=this.index;j++){
+						if(this.index>1){
+							aLi[j].className="active1";
+						}else{
+							aLi[j].className="active2";
+						}
+						text.innerHTML=textArr[this.index];
+					}
+				};
+				aLi[i].onclick=function (){
+					for(var j=0;j<aLi.length;j++){
+						aLi[j].className="star";
+					}
+					for(var j=0;j<=this.index;j++){
+						if(this.index>1){
+							aLi[j].className="active1";
+						}else{
+							aLi[j].className="active2";
+						}
+						text.innerHTML=textArr[this.index];
+					}
+				};
+			}
+		};
+	</script>
+	<style>
+		ul{
+			list-style:none;
+			height:50px;
+			width:600px;
+			border-top:1px solid black;
+			margin:0 auto;
+			line-height:50px;
+			background:yellow;
+			padding:0;
+		}
+		li{
+			
+			float:left;
+		}
+		.star{
+			background:url(img/1.jpg);
+			height:50px;
+			width:50px;
+		}
+		#title{
+			width:100px;
+			text-align:center;
+			display:inline-block;
+			height:50px;
+			float:left;
+		}
+		#text{
+			text-align:center;
+			height:50px;
+			width:50px;
+			display:block;
+			float:left;
+		}
+		.active1{
+			background:url(img/2.jpg);
+			height:50px;
+			width:50px;
+		}
+		.active2{
+			background:url(img/3.jpg);
+			height:50px;
+			width:50px;
+		}
+	</style>
+</head>
+<body>
+	<ul id="list">
+		<strong id="title">总体评价</strong>
+		<li class="star"></li>
+		<li class="star"></li>
+		<li class="star"></li>
+		<li class="star"></li>
+		<li class="star"></li>
+		<strong id="text"></strong>
+	</ul>
+</body>
+</html>

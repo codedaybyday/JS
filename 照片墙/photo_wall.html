@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<style type="text/css">
+img{
+	height:200px;
+	width:200px;
+}
+*{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+ul{
+	width:630px;
+	margin:0 auto;
+	position:relative;
+}
+ul li{
+	float:left;
+	margin-left:10px;
+}
+li.active{
+	border:1px dashed red;
+}
+</style>
+<script type="text/javascript" src="move.js"></script>>
+<script>
+window.onload = function(){
+	var aImg = document.getElementsByTagName('img');
+	var aLi = document.getElementsByTagName('li');
+	var pos = [];
+	var minZindex = 2;
+	//布局转换
+	for(var i=0;i<aLi.length;i++){
+		var l = aLi[i].offsetLeft;
+		var t = aLi[i].offsetTop;
+		pos[i] = {left:l,top:t};
+	}
+
+	for(var i=0;i<aLi.length;i++){
+		aLi[i].index = i;
+		aLi[i].style.left = pos[i].left+'px';
+		aLi[i].style.top = pos[i].top+'px';
+		aLi[i].style.position = 'absolute';
+	}
+
+	
+	for(var i=0;i<aLi.length;i++){
+		setDrag(aLi[i]);
+		//if()
+	}
+	function setDrag(obj){		//拖拽
+		obj.onmousedown = function(ev){
+			var event = window.event || ev;
+			var disX = event.clientX - obj.offsetLeft;
+			var disY = event.clientY - obj.offsetTop;
+			var oNear = null;
+			document.onmousemove = function(ev){
+				var event = window.event || ev;
+				obj.style.left = event.clientX - disX + 'px';
+				obj.style.top = event.clientY - disY + 'px';
+				obj.style.zIndex = minZindex++;
+				for(var i=0;i<aLi.length;i++){
+					aLi[i].className = '';
+				}
+				oNear = findNearest(obj);
+				if(oNear){
+					oNear.className = 'active'
+				}
+			};
+			document.onmouseup = function(){
+				if(!oNear){		//	如果没有找到碰撞到的最近的对象，就把照片恢复到原来的地方
+					doMove(obj,pos[obj.index]);
+				}else{		//	如果找到了
+					obj.style.zIndex = minZindex++;
+					oNear.style.zIndex = minZindex++;
+					var temp = oNear.index;		//交换她们的索引值////////////////////////////////////-------1
+					oNear.index = obj.index;
+					obj.index = temp;
+					doMove(obj,pos[obj.index]);		//交换他们的位置
+					doMove(oNear,pos[oNear.index]);
+					oNear.className = '';
+				}
+				document.onmousemove = null;
+				document.onmouseup = null;
+			};
+			clearInterval(this.timer);
+			return false;//阻止默认行为
+		}
+		
+	}
+
+	//碰撞检测
+	function cdTest(obj1,obj2){
+		var l1 = obj1.offsetLeft;
+		var r1 = obj1.offsetLeft+obj1.offsetWidth;		//	没有offsetRight和offsetBottom
+		var t1 = obj1.offsetTop;
+		var b1 = obj1.offsetTop+obj1.offsetHeight;
+
+		var l2 = obj2.offsetLeft;
+		var r2 = obj2.offsetLeft+obj2.offsetWidth;
+		var t2 = obj2.offsetTop;
+		var b2 = obj2.offsetTop+obj2.offsetHeight;
+
+		if(r1<l2 || l1>r2 || b1<t2 || t1>b2){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	//找到最近的那个对象
+	function findNearest(obj){
+		var minDis = 999999;
+		var num = -1;
+		for(var i=0;i<aLi.length;i++){
+			if(obj !== aLi[i]){
+				if(cdTest(obj,aLi[i])){			//	是在已经碰撞上的几个aLi里面找距离最近的
+					var a = obj.offsetLeft - aLi[i].offsetLeft;
+					var b = obj.offsetTop - aLi[i].offsetTop;
+					var dis = Math.sqrt(a*a+b*b);
+					if(minDis > dis){
+						minDis = dis;	//findNearest这个方法中，num = aLi[i].index;  这句改成：num = i;其实index是为了和pos里面的值去做对应的，而在做检测碰撞的时候你循环的是aLi，那num返回的是对应的i
+						num = i;	//第一次交换的时候i=aLi[i].index。但是在i处时，并非是直接交换两个aLi[i].index的值
+						//alert("i="+i+",aLi[i].index="+aLi[i].index);
+						var oInput = document.getElementById('input1');
+						oInput.value = "i="+i+",aLi[i].index="+aLi[i].index;
+					}
+				}
+				
+			}
+		}
+		if(num == -1){
+			return null;
+		}else{
+			return aLi[num];
+		}
+	}
+}
+</script>
+</head>
+<body>
+<ul id="pic_lis">
+	<li><img src="images/1.jpg"/></li>
+	<li><img src="images/2.jpg"/></li>
+	<li><img src="images/3.jpg"/></li>
+	<li><img src="images/4.jpg"/></li>
+	<li><img src="images/5.jpg"/></li>
+	<li><img src="images/6.jpg"/></li>
+	<li><img src="images/7.jpg"/></li>
+	<li><img src="images/8.jpg"/></li>
+	<li><img src="images/9.jpg"/></li>
+	<li><img src="images/10.jpg"/></li>
+</ul>
+<input type="text" id="input1" />
+</body>
+</html>

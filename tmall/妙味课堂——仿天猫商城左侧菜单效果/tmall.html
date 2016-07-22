@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>妙味课堂JS特效_tmall导航条</title>
+<meta name="keywords" content="妙味课堂 | javascript | miaov | 培训 | 北京 "/>
+<meta name="description" content="妙味课堂是一支独具特色的IT培训团队，妙味反对传统IT教育枯燥乏味的教学模式，妙味提供一种全新的快乐学习方法！目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。"/>
+<link rel="stylesheet" href="img/style.css"/>
+<script src="js/byClass.js"></script>
+<script src="js/move.js"></script>
+<script src="js/style.js"></script>
+</head>
+<body>
+<script>
+window.onload=function(){
+	var oNav=document.getElementById("nav");
+	var oNavC=document.getElementById("navContent");
+	var oDdList=document.getElementById("dl-list");
+	var oContentList=document.getElementById("contentList");
+	var aContentList=oContentList.getElementsByTagName("li");
+	var aDd=oDdList.getElementsByTagName("dd");
+	var iMinTop=oNav.offsetTop;
+	var sTopClass="toFixed";
+	var oClos=document.getElementById('clos');
+	var oPen=document.getElementById("open");
+	var iListLeft=getPositionXy(oContentList).x;
+	var bOff=true;
+	var iMaxTop=420+iMinTop;
+	var bIe=navigator.userAgent.indexOf("MSIE")>0 ? true : false;
+	if(typeof document.body.style.maxHeight === "undefined")
+	{
+		oPen.style.display=oClos.style.display="none";
+		return;
+	}
+	oClos.onclick=function()
+	{
+		removeClass(oPen,"on");
+		addClass(this,"on");
+		if(bIe)
+		{
+			for(var i=0;i<aDd.length;i++)
+			{
+				starMove(aDd[i],{height:14},0);
+			}
+		}
+		else
+		{
+			for(var i=0;i<aDd.length;i++)
+			{
+				addClass(aDd[i],"ddSelect");
+			}
+		}
+		bOff=false;
+	};
+	oPen.onclick=function()
+	{
+		removeClass(oClos,"on");
+		addClass(this,"on");
+		if(bIe)
+		{
+			for(var i=0;i<aDd.length;i++)
+			{
+				starMove(aDd[i],{height:aDd[i].iH},0);
+			}
+		}
+		else
+		{
+			for(var i=0;i<aDd.length;i++)
+			{
+				removeClass(aDd[i],"ddSelect");
+			}
+		}
+		bOff=true;
+	};
+	for(var i=0;i<aDd.length;i++)
+	{
+		aDd[i].index=i;
+		aDd[i].timer2=null;
+		aDd[i].off=true;
+		aDd[i].iH=aDd[i].offsetHeight-12;
+		aContentList[i].index=i;
+		aDd[i].onmouseover=function()
+		{
+			for(var i=0;i<aDd.length;i++)
+			{
+				clearTimeout(aDd[i].timer2);
+				removeClass(aDd[i],"active");
+				removeClass(aContentList[i],"show");
+			}
+			addClass(this,"active");
+			addClass(aContentList[this.index],"show");
+		};
+		aContentList[i].onmouseout=aDd[i].onmouseout=function()
+		{
+			var index=this.index;
+			aDd[index].timer2=setTimeout(function()
+			{
+				removeClass(aContentList[index],"show");
+				removeClass(aDd[index],"active");
+				aDd[index].timer2=null;
+			},50);
+		};
+		aContentList[i].onmouseover=function()
+		{
+			clearTimeout(aDd[this.index].timer2);
+		}
+	}
+	window.onscroll=function()
+	{
+		var iScrollTop=document.body.scrollTop||document.documentElement.scrollTop;
+		
+		if(iScrollTop>=iMinTop)
+		{
+			addClass(oNavC,sTopClass);
+			addClass(oContentList,sTopClass);
+			oContentList.style.left=iListLeft+"px";
+		}
+		else
+		{
+			removeClass(oNavC,sTopClass);
+			removeClass(oContentList,sTopClass);
+			oContentList.style.left=241+"px";
+		}
+		if(bOff)
+		{
+			if(iScrollTop>iMaxTop)
+			{
+				
+				if(bIe)
+				{
+					for(var i=0;i<aDd.length;i++)
+					{
+						starMove(aDd[i],{height:14},0);
+					}
+				}
+				else
+				{
+					for(var i=0;i<aDd.length;i++)
+					{
+						addClass(aDd[i],"ddSelect");
+					}
+				}
+				oPen.style.display=oClos.style.display="none";
+			}
+			else
+			{
+				if(bIe)
+				{
+					for(var i=0;i<aDd.length;i++)
+					{
+						starMove(aDd[i],{height:aDd[i].iH},0);
+					}
+				}
+				else
+				{
+					for(var i=0;i<aDd.length;i++)
+					{
+						removeClass(aDd[i],"ddSelect");
+					}
+				}
+				oPen.style.display=oClos.style.display="block";
+			}
+		}
+	};
+};
+</script>
+<div class="main">
+	<img src="img/bg.png"/>
+	<div class="left-nav" id="nav">
+		<div class="navs" id="navContent">
+			<h2><!-- add class  on -->
+				<img src="img/title-1.jpg"/>
+				<a href="javascript:void(0);" class="btn-a on" id="open"></a>
+				<a href="javascript:void(0);" class="btn-b" id="clos"></a>
+			</h2>
+			<dl id="dl-list"><!-- add class  active -->
+				<dd><h3 class="icon-1"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-2"><i></i>鞋/箱包</h3><p class="p1">女鞋 男鞋 雪地靴 靴子 休闲鞋</p><p>箱包 女包 男包 拉杆箱 钱包</p><s></s></dd>
+				<dd><h3 class="icon-3"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-4"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd><h3 class="icon-5"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-6"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd><h3 class="icon-7"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-8"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd><h3 class="icon-9"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-10"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd><h3 class="icon-11"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-12"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd><h3 class="icon-13"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-14"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd><h3 class="icon-15"><i></i>服装/内衣/配件</h3><p class="p1">女装 男装 内衣 羽绒 呢大衣</p><p>毛衣 保暖 睡衣 男羽绒 男毛衣</p><s></s></dd>
+				<dd class="bg-gray"><h3 class="icon-16"><i></i>服装/内衣/配件</h3><s></s></dd>
+			</dl>
+		</div>
+		<ul class="floats" id="contentList">
+			<li><img src="img/ptr-1.png"/></li>
+			<li><img src="img/ptr-2.png"/></li>
+			<li><img src="img/ptr-3.png"/></li>
+			<li><img src="img/ptr-4.png"/></li>
+			<li><img src="img/ptr-5.png"/></li>
+			<li><img src="img/ptr-6.png"/></li>
+			<li><img src="img/ptr-7.png"/></li>
+			<li><img src="img/ptr-8.png"/></li>
+			<li><img src="img/ptr-9.png"/></li>
+			<li><img src="img/ptr-10.png"/></li>
+			<li><img src="img/ptr-11.png"/></li>
+			<li><img src="img/ptr-12.png"/></li>
+			<li><img src="img/ptr-13.png"/></li>
+			<li><img src="img/ptr-14.png"/></li>
+			<li><img src="img/ptr-15.png"/></li>
+			<li><img src="img/ptr-16.png"/></li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>

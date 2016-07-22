@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>查找替换删除</title>
+<script >
+window.onload = function (){
+	var oBtn1 = document.getElementById('btn1');
+	var oFindBtn = document.getElementById('findBtn');
+	var oFind = document.getElementById('find');
+	var oReplaceBtn = document.getElementById('replaceBtn');
+	var oReplace = document.getElementById('replace');
+	var oMenu = document.getElementById('menu');
+	var oBtn1 = document.getElementById('btn1');
+	var oBtn_list = document.getElementById('btn_list');
+	var oForm = document.getElementById('form');
+	var oExit = document.getElementById('exit');
+	var oP=document.getElementsByTagName('p')[0];
+	
+	var findText = '<input type="text" style="height:22px;"/><input type="submit" style="height:30px;" value="查找"/>';
+	var replaceText = '<input type="text" style="height:22px;"/><input type="text" style="height:22px;"/><input type="submit" style="height:30px;" value="替换"/>';
+	
+
+	oBtn1.onclick = function (){
+		oBtn_list.style.display = 'block';
+	};
+	oFindBtn.onclick = function(){
+		oMenu.style.display = 'block';
+		oForm.innerHTML = findText;
+		oBtn_list.style.display = 'none';
+		oFind.className = 'active';	
+		oReplace.className = '';
+		
+		var aInput=oForm.getElementsByTagName('input');
+		aInput[1].onclick = function (){
+			var str = aInput[0].value;
+			if(str==''){
+				alert( '输入为空，请重新输入！');
+			}else{
+				if(oP.innerHTML.indexOf( str) >-1){
+					var textArr = oP.innerHTML.split(str);
+					oP.innerHTML = textArr.join( '<span class="active">'+str+'</span>');
+				}else{
+					alert('您输入的['+str+']查找不到');
+				}
+				
+			}
+		};
+	};
+	oFind.onclick = function(){
+		oForm.innerHTML = findText;
+		oReplace.className = '';
+		oFind.className = 'active';
+		
+		var aInput=oForm.getElementsByTagName('input');
+		aInput[1].onclick = function (){
+			var str = aInput[0].value;
+			if(str==''){
+				alert( '输入为空，请重新输入！');
+			}else{
+				if(oP.innerHTML.indexOf( str) >-1){
+					var textArr = oP.innerHTML.split(str);
+					oP.innerHTML = textArr.join( '<span class="active">'+str+'</span>');
+				}else{
+					alert('您输入的['+str+']查找不到');
+				}
+				
+			}
+		};
+	};
+	oReplaceBtn.onclick = function(){
+		oMenu.style.display = 'block';
+		oForm.innerHTML = replaceText;
+		oBtn_list.style.display = 'none';
+		oReplace.className = 'active';
+		oFind.className = '';	
+		var aInput=oForm.getElementsByTagName('input');
+		
+		aInput[2].onclick = function (){
+			var str = aInput[0].value;
+			if(	str=='' ){
+				alert( '输入为空，请重新输入！');
+			}else{
+				if(oP.innerHTML.indexOf( str ) > -1){
+					var textArr = oP.innerHTML.split( str );
+					if( aInput[1].value =='' ){
+						confirm('您确定要删除'+aInput[1].value+'吗？');
+						oP.innerHTML = textArr.join(aInput[1].value);
+					}else{
+						oP.innerHTML = textArr.join(aInput[1].value);
+					}
+				}else{
+					alert('您输入的['+str+']查找不到');
+				}
+			}
+		};
+	};
+	
+	oReplace.onclick = function(){
+		oForm.innerHTML = replaceText;
+		oFind.className = '';
+		oReplace.className = 'active';
+		
+		var aInput=oForm.getElementsByTagName('input');
+		
+		aInput[2].onclick = function (){
+			var str = aInput[0].value;
+			if(	str ==''){
+				alert( '输入为空，请重新输入！');
+			}else{
+				if(oP.innerHTML.indexOf( str ) > -1){
+					var textArr = oP.innerHTML.split( str );
+					if( aInput[1].value ==''){
+						confirm('您确定要删除'+aInput[1].value+'吗？');
+						oP.innerHTML = textArr.join( aInput[1].value );
+					}else{
+						oP.innerHTML = textArr.join( aInput[1].value );
+					}
+				}else{
+					alert('您输入的['+str+']查找不到');
+				}
+			}
+		};
+	};
+	oExit.onclick = function (){
+		oMenu.style.display = 'none';
+	};
+	
+};
+</script>
+<style>
+#content{
+	width:400px;
+	background:red;
+	margin:20px auto;
+	padding:20px;
+	line-height:20px;
+	position:relative;
+	font-family:微软雅黑;
+}
+ul{
+	list-style:none;
+	top:0;
+	margin:0;
+	padding:0;
+}
+#btn{
+	position:absolute;
+	width:50px;
+	color:white;
+	right:-60px;
+}
+#btn li{
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	background:gray;
+	margin-bottom:1px;
+}
+#btn_list{
+	display:none;
+}
+#menu_list{
+	height:30px;
+	line-height:30px;
+	width:380px;
+	border-bottom:2px solid orange;
+	margin-bottom:20px;
+}
+#menu_list li{
+	float:left;
+	width:80px;
+	text-align:center;
+
+}
+#menu{
+	height:80px;
+	width:380px;
+	border:10px solid pink;
+	position:absolute;
+	bottom:-140px;
+	padding:20px;
+	left:0;
+	display:none;
+}
+#exit{
+	height:30px;
+	width:30px;
+	position:absolute;
+	display:block;
+	line-height:30px;
+	text-align:center;
+	top:0;
+	right:0;
+	font-size:20px;
+	font-weight:bold;
+	cursor:pointer;
+}
+a{
+	underline:none;
+	display:block;
+}
+a:hover{
+	background:orange;
+}
+.active{
+	background:orange;
+}
+p{
+	padding:0;
+	margin:0;
+}
+
+</style>
+</head>
+<body>
+	<div id="content">
+		<p>四年，不短。无论想学好上面哪一个职业所需要的知识，都是可能的。建议：
+		1）列书单。根据同学的建议，老师的建议，BBS的推荐等，列出一个书单。建议不要多，列上5-10本足够！
+		书目覆盖的范围至少应该有：网络原理方面的、协议原理方面的、网络管理方面的、网络安全方面的、方案设计方面的。
+		2）研读书单内容。把上面的书反复读几遍。 3）实验内容设定。根据自己所学的内容，努力找实践/实验的机会。
+		</p>
+		<ul id="btn">
+			<li id="btn1">展开</li>
+			<ul id="btn_list">
+				<li id="findBtn"><a >查找</a></li>
+				<li id="replaceBtn"><a >替换</a></li>
+			</ul>
+		</ul>
+		<div id="menu">
+			<ul id="menu_list">
+				<li id="find">查找</li>
+				<li id="replace">替换</li>
+			</ul><span id="exit">X</span>
+			<div id="form">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

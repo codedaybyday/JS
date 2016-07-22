@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+*{
+	margin:0;
+	padding:0;
+}
+.centerDiv{
+	width:400px;
+	height:600px;
+	margin:0 auto;
+}
+.squareson{
+	height:38px;
+	width:38px;
+	border:1px solid black;
+	background:yellow;
+	float:left;
+}
+.squaresoff{
+	height:40px;
+	width:40px;
+	background:black;
+	float:left;
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	var Square = function(){
+		this.speed = 400;
+		this.loaddingData = {arr:null,x:3,y:0,height:0,width:0};	//当前正在下落的方块
+		this.square = new Array();//网格
+		this.linenum = 15;
+		this.beStop = false;
+		this.obj = {};
+		this.keyLock = false;
+		for(var i=0;i<this.linenum;i++){
+			this.square[i] = new Array();
+			for(var j=0;j<10;j++){
+				this.square[i][j] = 0;
+				//obj[node+'i'+'j'] = this.creatNode({className:'squaresoff',parentNode:this.centerDiv});
+			}
+		}
+		this.centerDiv = this.createDiv();		//////////////顺序？？
+	}
+	Square.prototype.start = function(){	//初始化
+		this.createEvent();
+		this.run();
+	}
+	Square.prototype.run = function(){		//运行游戏
+		var _this = this;
+		this.loaddingData = this.createLoaddingData();
+		this.showAll();
+		this.keyLock = false;
+		if(this.canMove()){
+			this.clearAndShow(null,this.loaddingData);
+			this.timer = setTimeout(function(){
+				_this.downData(_this);
+			},this.speed);
+		}else{
+			this.clearAndShow(null,this.loaddingData);
+			clearTimeout(this.timer);
+			this.timer = null;
+			alert("游戏结束！");
+		}
+	}
+	Square.prototype.downData = function(obj){		//方块循环下落
+		var data = obj.copy(obj.loaddingData,{});
+		obj.loaddingData.y += 1;
+		if(!obj.canMove()){
+			obj.loaddingData = data;
+			/*var y = obj.loaddingData.y;
+			var height = obj.loaddingData.height;
+			console.log(y,height);*/
+			if(obj.timer != null){
+				clearTimeout(obj.timer);
+				obj.timer = null;
+			}
+			obj.combine();
+			obj.wipe();
+			obj.showAll();
+			//console.log(obj.square);
+			obj.run();
+		}else{
+			//var line = this.wipe();
+			obj.showAll();				/////////////////////////////////////////
+			obj.clearAndShow(data,obj.loaddingData);
+			obj.timer = setTimeout(function(){
+				obj.downData(obj);
+			},obj.speed);
+		}
+	}
+	Square.prototype.combine = function(){	//当方块无法在移动的时候，将该方块加入到网格中去
+		for(var i=0;i<this.loaddingData.height;i++){
+			var y = this.loaddingData.y + i;
+			var squareX = this.square[y];
+			for(var j=0;j<this.loaddingData.width;j++){
+				var x = this.loaddingData.x + j;
+				if(this.loaddingData.arr[i][j] == 1){
+					//this.obj['node_'+y+'_'+x].className = 'squareson';
+					squareX[x] = 1;				//只改变二维数组里面的数字就可以了
+				}
+			}
+		}
+	}
+	Square.prototype.wipe = function(){		//一行满了的时候，消去这一行
+		for(var i=0;i<this.square.length;i++){
+			var squareX = this.square[i];
+			var flag = true;
+			for(var j=0;j<squareX.length;j++){
+				if(squareX[j] == 0){
+					flag = false;
+					continue;
+				}
+			}
+			if(flag){
+				this.square.splice(i,1);
+				this.square.unshift([0,0,0,0,0,0,0,0,0,0]);
+			}
+		}
+		//alert(this.square);
+		//console.log(this.square);
+	}
+	Square.prototype.createDiv = function(){	//绘制
+		//var body = document.getElementsByTagName('body')[0];
+		var centerDiv = this.createNode({className:'centerDiv'});
+		for(var i=0;i<this.square.length;i++){
+			var squareX = this.square[i];
+			for(var j=0;j<squareX.length;j++){	
+				this.obj['node_'+i+'_'+j] = this.createNode({className:'squaresoff',parentNode:centerDiv});
+			}
+		}
+		return centerDiv;
+	}
+	Square.prototype.createNode = function(data){	//创建结点，并把它加到文档流中，同时将该结点保存到obj中，方便以后对这些结点进行控制
+		var passData = this.copy({tagName:'DIV',className:'',parentNode:document.body},data || {});
+		var node = document.createElement(passData.tagName);
+		node.className = passData.className;
+		//console.log(passData.parentNode);
+		passData.parentNode.appendChild(node);
+		return node;
+	}
+	Square.prototype.copy = function(initData,data){
+		var returnData = {};
+		for(var attr in initData){
+			if(data.hasOwnProperty(attr)){
+				returnData[attr] = data[attr];
+			}else{
+				returnData[attr] = initData[attr];
+			}
+		}
+		return returnData;
+	}
+	Square.prototype.change = function(){	//方块变形
+		var _this = this;
+		var arr = new Array(_this.loaddingData.width);
+		for(var i=0;i<arr.length;i++){
+			arr[i] = new Array(_this.loaddingData.height);
+		}
+		for(var i=0;i<arr.length;i++){
+			for(var j=0;j<arr[i].length;j++){
+				arr[i][j] = _this.loaddingData.arr[j][i];
+			}
+		}
+		for(var i=0;i<arr.length;i++){
+			arr[i] = arr[i].reverse();
+		}
+		_this.loaddingData.height = arr.length;
+		_this.loaddingData.width = arr[0].length;
+		_this.loaddingData.arr = arr;
+	}
+	Square.prototype.createEvent = function(ev){
+		var _this = this;
+		document.onkeydown = function(ev){
+			var event = window.event || ev;
+			switch(event.keyCode){
+				case 37:
+					var data = _this.copy(_this.loaddingData,{});
+					_this.loaddingData.x -= 1;
+					if(!_this.canMove()){
+						_this.loaddingData = data;
+					}else{
+						_this.clearAndShow(data,_this.loaddingData);
+					}
+					break;
+				case 38:
+					var data = _this.copy(_this.loaddingData,{});
+					_this.change();
+					//console.log(data);
+					//console.log(_this.loaddingData);
+					//alert(1)
+					if(!_this.canMove()){
+						_this.loaddingData = data;
+						//_this.combine();
+					}else{
+						_this.clearAndShow(data,_this.loaddingData);
+					}
+					break;
+				case 39:
+					var data = _this.copy(_this.loaddingData,{});
+					_this.loaddingData.x += 1;
+					if(!_this.canMove()){
+						_this.loaddingData = data;
+					}else{
+						_this.clearAndShow(data,_this.loaddingData);
+					}
+					break;
+				case 40:
+					if(_this.canMove()){	//按住下键方块开始加速
+						if(!_this.keyLock){
+							_this.speed = 150;
+							_this.keyLock = true;
+						}
+					}
+					break;
+				case 32:
+					/*if(!_this.keyLock){
+						_this.speed = 0;
+						_this.keyLock = true;
+					}*/
+					//console.log(_this.beStop)
+					if(!_this.beStop){
+						clearTimeout(_this.timer);
+						//_this.timer = null;
+						_this.beStop = !_this.beStop;
+					}else{
+						clearTimeout(_this.timer);
+						_this.timer = setTimeout(function(){
+							_this.downData(_this);
+						},this.speed);
+						_this.beStop = !_this.beStop;
+					}
+					break;
+			}
+		}
+		document.onkeyup = function(ev){
+			var event = window.event || ev;
+			if(event.keyCode == 40){
+				_this.speed = 400;
+				_this.keyLock = false;
+			}
+		}
+	}
+	Square.prototype.clearAndShow = function(oldData,newData){//用来更新当前的方块信息（位置，形状）
+		var data = oldData;
+		if(data){
+			for(var i=0;i<data.height;i++){
+				for(var j=0;j<data.width;j++){
+					if( data.arr[i][j]== 1){
+						var y = data.y+i;
+						var x = data.x+j;
+						//console.log(y,x);
+						this.obj['node_'+y+'_'+x].className = 'squaresoff';
+						//this.square[y][x] = 0;
+					}
+				}
+			}
+		}
+		data = newData;
+		for(var i=0;i<data.height;i++){
+			for(var j=0;j<data.width;j++){
+				if( data.arr[i][j]== 1){
+					var y = data.y+i;
+					var x = data.x+j;
+					this.obj['node_'+y+'_'+x].className = 'squareson';
+				}
+			}
+		}
+	}
+	Square.prototype.canMove = function(){		//判断当前的方块是否可以再继续移动
+		if(this.loaddingData.x < 0 || this.loaddingData.x + this.loaddingData.width> this.square[0].length){
+			return false;
+		}
+		if(this.loaddingData.y < 0 || this.loaddingData.y + this.loaddingData.height > this.square.length){
+			return false;
+		}
+		for(var i=0;i<this.loaddingData.height;i++){
+			var y = this.loaddingData.y + i;
+			var squareX = this.square[y];
+			for(var j=0;j<this.loaddingData.width;j++){
+				var x = this.loaddingData.x + j;
+				if(this.loaddingData.arr[i][j] == 1 && squareX[x] == 1){
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	Square.prototype.createLoaddingData = function(){		//创建方块
+		var num = Math.ceil(Math.random()*9+1);
+		var arr = null;
+		switch(num){
+			case 1 :
+			case 2 :
+				arr=[[1,1],[1,1]];
+				break;
+			case 3 :
+				arr=[[1,1,0],[0,1,1]];
+				break;
+			case 4 :
+				arr=[[0,1,1],[1,1,0]];
+				break;
+			case 5 :
+				arr=[[0,1],[1,1],[0,1]];
+				break;
+			case 6 :
+				arr=[[1,0],[1,1],[1,0]];
+				break;
+			case 7 :
+				arr=[[1,1],[1,0],[1,0]];
+				break;
+			case 8 :
+				arr=[[1,1],[0,1],[0,1]];
+				break;
+			case 9 :
+				arr=[[1],[1],[1],[1]];
+				break;
+			default:
+				arr=[[1,1,1,1]];
+		}
+		var data = {arr:arr,x:3,y:0,height:arr.length,width:arr[0].length};
+		return data;
+	}
+	Square.prototype.showAll = function(){		//显示网格中所有的方块
+		//console.log(this)
+		for(var i=0;i<this.square.length;i++){
+			var squareX = this.square[i];
+			for(var j=0;j<squareX.length;j++){
+				//console.log(this.obj['node_'+i+'_'+j]);
+				if(this.square[i][j] == 1){
+					this.obj['node_'+i+'_'+j].className = 'squareson';
+				}else{
+					this.obj['node_'+i+'_'+j].className = 'squaresoff';
+				}
+			}
+		}
+	}
+	var s = new Square();
+	s.start();
+}
+</script>
+</head>
+<body>
+</body>
+</html>

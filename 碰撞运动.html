@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>碰撞运动</title>
+<script>
+window.onload = function (){
+	var oInput = document.getElementsByTagName('input')[0];
+	var oDiv = document.getElementById('div1');
+	
+	oInput.onclick = function (){
+		doMove(oDiv);
+	};
+};
+	
+var speedX = 6;
+var speedY = 8;
+function doMove(obj){			
+	clearInterval( obj.timer );
+	obj.timer = setInterval(function (){
+		
+		
+		obj.style.top = obj.offsetTop + speedY + 'px';
+		obj.style.left = obj.offsetLeft + speedX + 'px';
+		var t = document.documentElement.clientHeight - obj.offsetHeight;
+		var l = document.documentElement.clientWidth - obj.offsetWidth;
+		if(obj.offsetTop >= t){
+			speedY *= -0.8;
+			speedX *= 0.8
+			obj.style.top = t + 'px';;
+		}else if(obj.offsetTop <= 0){
+			speedY *= -1;
+			obj.style.top = 0;
+		}
+		
+		if(obj.offsetLeft >= l){
+			speedX *= -0.8;
+			obj.style.left = l + 'px';
+		}else if(obj.offsetLeft <= 0){
+			speedX *= -0.8;
+			obj.style.left = 0;
+		}
+	},40);
+}
+</script>
+<style >
+#div1{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+}
+</style>
+</head>
+<body>
+	<input type="submit" value="点击运动"/>
+	<div id="div1"></div>
+</body>
+</html>

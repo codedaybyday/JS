@@ -1,0 +1,164 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>js弹出层特效点击按钮弹出窗口支持鼠标拖动</title>
+<meta name="description" content="用js特效制作一个鼠标点击按钮弹出层一个动画窗口，点击关闭按钮弹出层动画效果关闭，弹出层支持鼠标拖动。内含js代码下载。" />
+</head>
+
+<body>
+
+<style type="text/css">
+*{margin:0;padding:0;list-style-type:none;}
+a,img{border:0;}
+body{font:12px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;}
+/* btnbox */
+.btnbox{float:left;width:84px;}
+.btnbox a.od{border:#849bca 2px solid;margin-top:2px;display:block;font-weight:bold;float:left;width:80px;color:#547bc9;line-height:25px;height:25px;text-align:center;text-decoration:none}
+.btnbox a.od{background:#eef1f8}
+.btnbox a.od:hover{background:#eee}
+#feedbox{border:#849bca 2px solid;margin:2px 0 0 2px;background:#edf1f8;float:left;overflow:hidden;width:500px;cursor:move;position:absolute;top:0px;left:0px;height:200px;filter:alpha(opacity=100);opacity:1;}
+#feedbox .main{padding:10px;}
+</style>
+
+<div class="btnbox">
+	<a class="od" onClick="show('feedbox');return false;" href="#">[打开层]</a>
+	<a class="od" onclick="closeed('feedbox');return false;" href="#">[关闭层]</a>
+</div>
+
+<div id="feedbox" style="display:none;">
+	<div class="main">移动层</div>
+</div>
+
+<script type="text/javascript">
+var prox;
+var proy;
+var proxc;
+var proyc;
+function show(id){
+	clearInterval(prox);
+	clearInterval(proy);
+	clearInterval(proxc);
+	clearInterval(proyc);
+	var o = document.getElementById(id);
+	o.style.display = "block";
+	o.style.width = "1px";
+	o.style.height = "1px"; 
+	prox = setInterval(function(){
+		openx(o,500)
+	},10);
+} 
+function openx(o,x){
+	var cx = parseInt(o.style.width);
+	if(cx < x){
+		o.style.width = (cx + Math.ceil((x-cx)/5)) +"px";
+	}else{
+		clearInterval(prox);
+		proy = setInterval(function(){
+			openy(o,200)
+		},10);
+	}
+}
+
+function openy(o,y){
+	var cy = parseInt(o.style.height);
+	if(cy < y){
+		o.style.height = (cy + Math.ceil((y-cy)/5)) +"px";
+	}else{
+		clearInterval(proy);   
+	}
+}
+
+function closeed(id){
+	clearInterval(prox);
+	clearInterval(proy);
+	clearInterval(proxc);
+	clearInterval(proyc);  
+	var o = document.getElementById(id);
+	if(o.style.display == "block"){
+		proyc = setInterval(function(){
+			closey(o)
+		},10);   
+	}  
+}
+
+function closey(o){
+	var cy = parseInt(o.style.height);
+	if(cy > 0){
+		o.style.height = (cy - Math.ceil(cy/5)) +"px";
+	}else{
+		clearInterval(proyc);    
+		proxc = setInterval(function(){closex(o)},10);
+	}
+}
+
+function closex(o){
+	var cx = parseInt(o.style.width);
+	if(cx > 0){
+		o.style.width = (cx - Math.ceil(cx/5)) +"px";
+	}else{
+		clearInterval(proxc);
+		o.style.display = "none";
+	}
+} 
+
+/*-------------------------鼠标拖动---------------------*/ 
+var od = document.getElementById("feedbox"); 
+var dx,dy,mx,my,mouseD;
+var odrag;
+var isIE = document.all ? true : false;
+document.onmousedown = function(e){
+	var e = e ? e : event;
+	if(e.button == (document.all ? 1 : 0)){
+		mouseD = true;   
+	}
+}
+
+document.onmouseup = function(){
+	mouseD = false;
+	odrag = "";
+	if(isIE){
+		od.releaseCapture();
+		od.filters.alpha.opacity = 100;
+	}else{
+		window.releaseEvents(od.MOUSEMOVE);
+		od.style.opacity = 1;
+	}  
+}
+
+
+//function readyMove(e){ 
+od.onmousedown = function(e){
+	odrag = this;
+	var e = e ? e : event;
+	if(e.button == (document.all ? 1 : 0)){
+		mx = e.clientX;
+		my = e.clientY;
+		od.style.left = od.offsetLeft + "px";
+		od.style.top = od.offsetTop + "px";
+		if(isIE){
+			od.setCapture();    
+			od.filters.alpha.opacity = 50;
+		}else{
+			window.captureEvents(Event.MOUSEMOVE);
+			od.style.opacity = 0.5;
+		}
+	} 
+}
+
+document.onmousemove = function(e){
+	var e = e ? e : event;
+	if(mouseD==true && odrag){  
+		var mrx = e.clientX - mx;
+		var mry = e.clientY - my; 
+		od.style.left = parseInt(od.style.left) +mrx + "px";
+		od.style.top = parseInt(od.style.top) + mry + "px";   
+		mx = e.clientX;
+		my = e.clientY;
+	}
+}
+</script>
+
+</body>
+</html>

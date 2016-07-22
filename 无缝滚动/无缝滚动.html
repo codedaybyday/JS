@@ -1,0 +1,130 @@
+Ôªø<!DOCTYPE html>
+<html>
+<head>
+<title>Êó†ÁºùÊªöÂä®</title>
+<script>
+window.onload = function (){
+	var content = document.getElementById('content');
+	var div1 = document.getElementById('div1');
+	var timer = null;
+	var speed = -10;
+	var btn = document.getElementsByTagName('input');
+	
+	content.innerHTML += content.innerHTML;
+	var aLi = content.getElementsByTagName('li');
+	content.style.width = aLi.length*aLi[0].offsetWidth + 'px';
+	timer = setInterval (function(){
+		content.style.left = content.offsetLeft +speed + 'px';
+		if(content.offsetLeft<-content.offsetWidth/2){
+			content.style.left = 0;
+		}else if(content.offsetLeft>0){
+			content.style.left = -content.offsetWidth/2 + 'px';
+		}
+	},100)
+	
+	div1.onmouseover = function(){
+		clearInterval(timer);
+	};
+	div1.onmouseout = function(){
+		clearInterval(timer);
+		timer = setInterval (function(){
+			content.style.left = content.offsetLeft +speed + 'px';
+			if(content.offsetLeft<-content.offsetWidth/2){
+				content.style.left = 0;
+			}else if(content.offsetLeft>0){
+				content.style.left = -content.offsetWidth/2 + 'px';
+			}
+		},100)
+	};
+	btn[0].onclick = function(){
+		speed = -10;
+	};
+	btn[1].onclick = function(){
+		speed = 10;
+	};
+};
+function getStyle(obj,attr){			
+	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+}	
+function doMove(obj,json,endFn){			
+	clearInterval( obj.timer );
+	var bStop = true;
+	obj.timer = setInterval( function (){
+		for(var attr in json){
+			if( attr == 'opacity'){
+				var cur = parseInt( parseFloat( getStyle(obj ,attr) )*100 );
+			}else{
+				var cur = parseInt( getStyle(obj ,attr) );
+			}
+			var speed = ( json[attr]- cur )/8 >0?Math.ceil( ( json[attr]-cur )/8):Math.floor( ( json[attr]-cur)/8 );	//ª∫≥Âπ´ Ω	…œœ¬»°’˚ªÒ»°
+			cur += speed;
+			/*if( (target < t&&speed>0) || (target > t&&speed<0)){
+				t = target;
+			}*/
+			if( attr == 'opacity'){
+				obj.style.filter = 'alpha(opacity:"+cur+")';
+				obj.style.opacity = cur/100;
+			}else{
+				obj.style[attr] = cur + 'px';
+			}
+			if( json[attr] != cur){	
+				bStop = false;
+			}
+		}
+		if(bStop == true){
+			clearInterval(obj.timer);
+			if(endFn){
+				endFn();
+			}
+		}
+		
+	},50);
+}
+</script>
+<style >
+ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+#div1{
+	width:440px;
+	border:1px solid gray;
+	margin:20px auto;
+	height:100px;
+	position:relative;
+	overflow:hidden;
+	padding:10px 5px 10px 5px;
+}
+#content{
+	height:100px;
+	position:absolute;
+	
+}
+#content li{
+	height:100px;
+	width:100px;
+	float:left;
+	padding-left:5px;
+	padding-right:5px;
+}
+#content li img{
+	height:100px;
+	width:100px;
+}
+
+</style>
+</head>
+<body>
+	<div id="div1">
+		<ul id="content">
+			<li><img src="images/1.jpg"/></li>
+			<li><img src="images/2.jpg"/></li>
+			<li><img src="images/3.jpg"/></li>
+			<li><img src="images/4.jpg"/></li>
+		</ul>
+	</div>
+	<input type="submit" value="ÂêëÂ∑¶"/>
+	<input type="submit" value="ÂêëÂè≥"/>
+</body>
+</html>

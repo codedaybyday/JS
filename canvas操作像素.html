@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		#canvas{
+			background:#ccc;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var canvas = document.getElementById('canvas');
+			var cobj = canvas.getContext('2d');
+			var imgData = cobj.createImageData(100,100);
+			for(var i=0;i<imgData.width*imgData.height;i++){
+				imgData.data[i*4+0] =255+i*(0-255)/(imgData.width*imgData.height);
+				imgData.data[i*4+1] =0+i*(255-0)/(imgData.width*imgData.height);
+				imgData.data[i*4+2] = 0;
+				imgData.data[i*4+3] = 255;
+			}
+			cobj.putImageData(imgData,0,0);
+		}
+	</script>
+</head>
+<body>
+	<canvas id="canvas" width=400 height=400></canvas>
+</body>
+</html>

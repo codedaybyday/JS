@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>全选操作</title>
+	<script >
+		window.onload=function (){
+			var oAllChoose=document.getElementById('allChoose');
+			var aInput=document.getElementsByTagName('input');
+			var aLi=document.getElementsByClassName('line');
+			for(var i=0;i<aInput.length;i++){
+				aInput[i].index=i;
+				aInput[i].onclick=function (){
+					if(this.checked==true){
+						aLi[this.index].className="line active";
+					}else{
+						aLi[this.index].className="line";
+					}
+				}
+			}
+			for(var i=0;i<aLi.length;i++){
+				aLi[i].index=i;
+				aLi[i].onmouseover=function(){
+					if(this.className.indexOf("active")==-1){
+						this.className="line active";
+					}
+				};
+				aLi[i].onmouseout=function(){
+					if(aInput[this.index].checked==false){
+						this.className="line";
+					}
+				};
+			}
+			oAllChoose.onclick=function (){
+					if(this.checked){
+						for(var i=0;i<aInput.length;i++){
+							aInput[i].checked=true;
+							aLi[i].className="active line";
+						}
+						this.checked=false;
+					}else{
+						for(var i=0;i<aInput.length;i++){
+							aInput[i].checked=false;
+							aLi[i].className="line";
+						}
+						this.checked=true;
+					}
+			}
+		};
+	</script>
+	<style>
+		ul{
+			width:300px;
+			margin:0 auto;
+			padding:0;
+			list-style:none;
+			background:red;
+		}
+		ul li{
+			width:300px;
+			height:30px;
+			line-height:30px;
+		}
+		span{
+			display:inline-block;
+			height:30px;
+			line-height:30px;
+		}
+		.song{
+			margin-left:10px;
+			width:100px;
+		}
+		.singer{
+			margin-left:30px;
+			width:100px;
+		}
+		.active{
+			height:30px;
+			line-height:30px;
+			background:gray;
+		}
+	</style>
+</head>
+<body>
+	<ul id="list">
+		<li class="line"><input type="checkbox"/><span class="song">私奔</span><span class="singer">梁博</span></li>
+		<li class="line"><input type="checkbox"/><span class="song">北京北京</span><span class="singer">梁博，黄勇</span></li>
+		<li class="line"><input type="checkbox"/><span class="song">我爱你中国</span><span class="singer">梁博</span></li>
+		<li class="line"><input type="checkbox"/><span class="song">花火</span><span class="singer">梁博</span></li>
+		<li class="line"><input type="checkbox"/><span class="song">回来</span><span class="singer">梁博</span></li>
+		<li class="line"><input type="checkbox"/><span class="song">爱要你才完美</span><span class="singer">梁博，那英</span></li>
+		<li><input type="checkbox" id="allChoose"/><span class="song">全选</span></li>
+	</ul>
+</body>
+</html>

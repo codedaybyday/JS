@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>妙微预热</title>
+	<style>
+		ul{
+			list-style:none;
+			
+		}
+		#lis{
+			position:relative;
+		}
+		#lis ul{
+			padding:0;
+			margin:0;
+			position:absolute;
+			border:1px black solid;
+			top:30;
+			background:red;
+			display:none;
+		}
+		#lis ul li{
+			height:30px;
+			line-height:30px;
+			width:120px;
+			text-align:center;
+		}
+		ul li a{
+			text-decoration:none;
+			display:block;
+			height:30px;
+			width:80px;
+			border:1px black solid;
+			background:gray;
+			line-height:30px;
+			text-align:center;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+			var lis=document.getElementById('lis');
+			var ull=document.getElementById('ull');
+			var link=document.getElementById('link');
+			lis.onmouseover=show;
+			lis.onmouseout=hide;
+		}
+		function show(){
+			ull.style.display='block';
+			link.style.background='yellow';
+		}
+		function hide(){
+			ull.style.display='none';
+			link.style.background='gray';
+		}
+	</script>
+</head>
+<body>
+		<ul>
+			<li id="lis">
+				<a href="#" id="link">微博</a>
+				<ul id="ull">
+					<li>私信</li>
+					<li>评论</li>
+					<li>@我</li>
+				</ul>
+			</li>
+		</ul>
+</body>
+</html>

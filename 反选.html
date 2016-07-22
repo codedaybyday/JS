@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>反选</title>
+	<script >
+		window.onload = function (){
+			var aInput = document.getElementsByTagName('input');
+			aInput[0].onclick=function(){
+				for(var i=1;i<aInput.length;i++){
+						aInput[i].checked=!aInput[i].checked;
+				}
+			};
+		};
+	</script>
+	<style>
+		
+	</style>
+</head>
+<body>
+	<ul id="list">
+		<li>
+			<input type="button" value="反选"/><br/>
+			<input type="checkbox" /><br/>
+			<input type="checkbox" /><br/>
+			<input type="checkbox" /><br/>
+			<input type="checkbox" /><br/>
+			<input type="checkbox" /><br/>
+		</li>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+#div1{
+	height:100px;
+	width:100px;
+	background:red;
+	position:absolute;
+}
+.active{
+	border:1px dashed black;
+	position:absolute;
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	Drag('div1');
+}
+
+function Drag(id){		//拖拽
+	var oDiv = document.getElementById(id);
+	oDiv.onmousedown = fnDown;
+	function fnDown(ev){
+		var event = window.event || ev;
+		var disX = event.clientX - this.offsetLeft;
+		var disY = event.clientY - this.offsetTop;
+		var newDiv = document.createElement('div');
+		newDiv.style.width = oDiv.offsetWidth - 2 + 'px';
+		newDiv.style.height = oDiv.offsetHeight - 2 + 'px';
+		newDiv.className = 'active';
+		
+		if(oDiv.setCapture){	//	兼容IE
+			oDiv.onmousemove = fnMove;
+			oDiv.setCapture();	//事件捕获
+			oDiv.onmouseup = fnUp;			///////////////////////----------2
+			/*oDiv.onmouseup = function(){	//////////////--------------1
+				fnUp();
+				if(this.releaseCapture){		
+					this.releaseCapture();
+				}
+			};*/
+		}else{
+			document.onmousemove = fnMove;
+			document.onmouseup = fnUp;
+		}
+		
+		return false;
+
+		function fnMove(ev){
+			var event = window.event || ev;
+			//oDiv.style.left = event.clientX - disX + 'px';
+			//oDiv.style.top = event.clientY - disY + 'px';
+			newDiv.style.left = event.clientX - disX + 'px';
+			newDiv.style.top = event.clientY - disY + 'px';
+			document.body.appendChild(newDiv);
+			
+		}
+		function fnUp(){
+			this.onmousemove = null;
+			oDiv.style.left = newDiv.style.left;
+			oDiv.style.top = newDiv.style.top;
+			document.body.removeChild(newDiv);
+			if(this.releaseCapture){		//为什么把这句注释掉，再注释掉2处，改成1处的样子 处，FF就会出现bug，放开鼠标的时候，小块还是会跟着动
+				this.releaseCapture();
+			}
+			this.onmouseup = null;
+		}
+	}
+
+}
+</script>
+</head>
+<body>
+	<div id="div1">这是一个拖拽层</div>
+</body>
+</html>
